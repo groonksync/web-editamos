@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editamos | Elevamos tu visión cinematográfica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/css/intlTelInput.css">
+    <style>
+        :root {
+            --cyan-accent: #00F0FF;
+            --slate-deep: #020617; /* Slate-950 */
+        }
+        
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--slate-deep);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* International Phone Input Customization */
+        .iti { --iti-text-color: white; --iti-hover-bg: rgba(255,255,255,0.05); width: 100%; }
+        .iti__country-list { background-color: #0f172a; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        .iti__country-name, .iti__dial-code { color: #94a3b8; }
+        .iti__active { background-color: rgba(0, 240, 255, 0.1) !important; }
+
+        /* Technical Grid Background */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        .glow-radial {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.07) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02), 0 8px 32px rgba(0, 0, 0, 0.4);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3), transparent);
+        }
+
+        .btn-glow {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .card-hover:hover {
+            transform: scale(1.05) translateY(-5px);
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .pricing-card {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* 3D Tilt Simulation via Hover */
+        .tilt-card {
+            transition: transform 0.3s ease;
+        }
+        .tilt-card:hover {
+            transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
+        }
+
+        .tracking-tight-custom {
+            letter-spacing: -0.04em;
+        }
+    </style>
+</head>
+<body class="bg-grid">
+
+    <!-- Radial Glows -->
+    <div class="glow-radial top-[-200px] left-[-200px]"></div>
+    <div class="glow-radial bottom-[-200px] right-[-200px]"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between liquid-glass px-8 py-3 bg-opacity-40 backdrop-blur-xl">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-[#00F0FF] rounded-lg shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
+                <span class="text-xl font-extrabold tracking-tighter">EDITAMOS</span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-10 text-sm font-medium text-gray-300">
+                <a href="#proyectos" class="hover:text-[#00F0FF] transition-colors">Proyectos</a>
+                <a href="#marcas" class="hover:text-[#00F0FF] transition-colors">Marcas</a>
+                <a href="#precios" class="hover:text-[#00F0FF] transition-colors">Precios</a>
+            </div>
+
+            <a href="#demo" class="btn-glow bg-[#00F0FF] text-slate-950 px-5 py-2 rounded-full text-sm font-bold">
+                Schedule Demo
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-40 pb-20 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight-custom mb-6 leading-tight">
+                Editamos tu video.<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-blue-400">
+                    Elevamos tu visión.
+                </span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                Transformamos metraje crudo en experiencias cinematográficas de alto impacto. 
+                Precisión técnica, narrativa fluida y estética de vanguardia para tu marca.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                <a href="#demo" class="btn-glow bg-[#00F0FF] text-slate-950 px-10 py-4 rounded-xl font-bold text-lg w-full md:w-auto">
+                    Book a demo
+                </a>
+                <a href="#proyectos" class="px-10 py-4 rounded-xl border border-white/10 hover:bg-white/5 transition-all w-full md:w-auto">
+                    View Portfolio
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Data Dashboard Visual Section -->
+    <section class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="liquid-glass p-8 md:p-12 border-t border-white/20">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">Technical Precision</h2>
+                        <p class="text-gray-400 text-sm">Real-time metrics on production efficiency and quality control.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-xs">May 2024</div>
+                        <div class="px-4 py-2 bg-[#00F0FF]/10 text-[#00F0FF] rounded-lg border border-[#00F0FF]/20 text-xs font-bold">Active</div>
+                    </div>
+                </div>
+
+                <!-- Mock Table / Dashboard -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-xs uppercase tracking-widest text-gray-500 border-b border-white/10">
+                                <th class="pb-4 font-medium">Project ID</th>
+                                <th class="pb-4 font-medium">Render Status</th>
+                                <th class="pb-4 font-medium">Quality Score</th>
+                                <th class="pb-4 font-medium text-right">Delivery Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="border-b border-white/5 group hover:bg-white/5 transition-colors">
+                                <td class="py-6 font-mono text-gray-300">#ED-9920</td>
+                                <td class="py-6">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse"></span>
+                                        Optimized
+                                    </span>
+                                </td>
+                                <td class="py-6">
+                                    <div class="w-32 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                        <div class="w-[94%] h-full bg-[#00F0FF]"></div>
+                                    </div>
+                                </td>
+                                <td class="py-6 text-right font-medium">24 Oct, 2024</td>
+                            </tr>
+                            <tr class="border-b border-white/5 group hover:bg-white/5 transition-colors">
+                                <td class="py-6 font-mono text-gray-300">#ED-9841</td>
+                                <td class="py-6">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-[#00F0FF]"></span>
+                                        Finalized
+                                    </span>
+                                </td>
+                                <td class="py-6">
+                                    <div class="w-32 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                        <div class="w-[98%] h-full bg-[#00F0FF]"></div>
+                                    </div>
+                                </td>
+                                <td class="py-6 text-right font-medium">18 Oct, 2024</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposal Section -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="tilt-card liquid-glass p-10 hover:border-[#00F0FF]/30 transition-all">
+                    <div class="w-12 h-12 bg-[#00F0FF]/10 rounded-xl flex items-center justify-center mb-8">
+                        <svg class="w-6 h-6 text-[#00F0FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Velocidad Extrema</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Procesamos tu material con infraestructura de alta gama, garantizando entregas en tiempos récord sin comprometer la calidad.
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="tilt-card liquid-glass p-10 hover:border-[#00F0FF]/30 transition-all">
+                    <div class="w-12 h-12 bg-[#00F0FF]/10 rounded-xl flex items-center justify-center mb-8">
+                        <svg class="w-6 h-6 text-[#00F0FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Calidad Certificada</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Cada frame pasa por un riguroso control de calidad para asegurar una colorización perfecta y una narrativa impecable.
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="tilt-card liquid-glass p-10 hover:border-[#00F0FF]/30 transition-all">
+                    <div class="w-12 h-12 bg-[#00F0FF]/10 rounded-xl flex items-center justify-center mb-8">
+                        <svg class="w-6 h-6 text-[#00F0FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Escalabilidad Total</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Desde creadores individuales hasta grandes corporaciones, nos adaptamos a tu volumen de producción de manera orgánica.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section (Redesigned) -->
+    <section id="proyectos" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-left mb-16">
+                <h2 class="text-4xl font-extrabold mb-4 tracking-tight-custom">Más populares</h2>
+                <p class="text-gray-400">Ediciones verticales de alto impacto optimizadas para Reels y TikTok.</p>
+            </div>
+
+            <!-- Vertical Cards Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                
+                <!-- Project Card 1 (ULTRA-COMPATIBLE TEST) -->
+                <div class="relative aspect-[9/16] liquid-glass group cursor-pointer overflow-hidden card-hover transition-all duration-500 bg-slate-900">
+                    <video 
+                        class="portfolio-video absolute inset-0 w-full h-full object-cover transition-opacity" 
+                        muted 
+                        loop
+                        playsinline
+                        preload="metadata"
+                    >
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    </video>
+                    <!-- Overlay de carga / Título -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent group-hover:opacity-0 transition-opacity flex items-end p-6">
+                        <h4 class="text-xl font-black leading-tight uppercase tracking-tighter">RECAP<br><span class="text-[#00F0FF]">HYPERLAPSE</span></h4>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="relative aspect-[9/16] liquid-glass group cursor-pointer overflow-hidden card-hover transition-all duration-500">
+                    <video 
+                        class="portfolio-video absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" 
+                        muted 
+                        loop
+                        poster="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000"
+                    >
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-urban-fashion-video-in-a-city-at-night-4437-large.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h4 class="text-xl font-black leading-tight uppercase tracking-tighter">VILLA<br><span class="text-[#00F0FF]">EDIT</span></h4>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="relative aspect-[9/16] liquid-glass group cursor-pointer overflow-hidden card-hover transition-all duration-500 border-[#00F0FF]/30">
+                    <video 
+                        class="portfolio-video absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" 
+                        muted 
+                        loop
+                        poster="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=1000"
+                    >
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-urban-fashion-video-in-a-city-at-night-4437-large.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h4 class="text-xl font-black leading-tight uppercase tracking-tighter text-[#00F0FF]">ENERGY<br><span class="text-white">CLUB</span></h4>
+                    </div>
+                </div>
+
+                <!-- Project Card 4 -->
+                <div class="relative aspect-[9/16] liquid-glass group cursor-pointer overflow-hidden card-hover transition-all duration-500">
+                    <video 
+                        class="portfolio-video absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" 
+                        muted 
+                        loop
+                        poster="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=1000"
+                    >
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-urban-fashion-video-in-a-city-at-night-4437-large.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h4 class="text-lg font-black leading-tight uppercase tracking-tighter">SOCIAL MEDIA<br><span class="text-[#00F0FF] text-xs">BUSINESS MASTERY</span></h4>
+                    </div>
+                </div>
+
+                <!-- Project Card 5 -->
+                <div class="relative aspect-[9/16] liquid-glass group cursor-pointer overflow-hidden card-hover transition-all duration-500">
+                    <video 
+                        class="portfolio-video absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" 
+                        muted 
+                        loop
+                        poster="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1000"
+                    >
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-urban-fashion-video-in-a-city-at-night-4437-large.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h4 class="text-xl font-black leading-tight uppercase tracking-tighter">SPEED<br><span class="text-[#00F0FF]">RAMPING</span></h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Brands Section -->
+    <section id="marcas" class="py-20 px-6 border-y border-white/5 bg-white/[0.01]">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-12 font-bold">Trusted by industry leaders</p>
+            <div class="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all">
+                <span class="text-2xl font-bold tracking-tighter">MOTION_</span>
+                <span class="text-2xl font-bold tracking-tighter">PHANTOM</span>
+                <span class="text-2xl font-bold tracking-tighter">LUMINA</span>
+                <span class="text-2xl font-bold tracking-tighter">VORTEX.IO</span>
+                <span class="text-2xl font-bold tracking-tighter">CINEMA+</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="precios" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-extrabold mb-4">Transparent Pricing</h2>
+                <p class="text-gray-400">Escoge el plan que mejor se adapte a tu flujo de trabajo.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+                <!-- Plan 1 -->
+                <div class="pricing-card liquid-card liquid-glass p-8 card-hover flex flex-col h-full">
+                    <h4 class="text-gray-400 text-xs font-bold uppercase mb-4">Inicio</h4>
+                    <div class="text-4xl font-extrabold mb-6">$49<span class="text-sm font-normal text-gray-500">/video</span></div>
+                    <ul class="text-sm text-gray-400 space-y-4 mb-10 flex-grow">
+                        <li class="flex items-center gap-2">✓ Edición Básica</li>
+                        <li class="flex items-center gap-2">✓ Corrección de Color</li>
+                        <li class="flex items-center gap-2">✓ 1 Revisión</li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg border border-white/10 hover:bg-white/5 transition-all text-sm font-bold">Select Plan</button>
+                </div>
+                
+                <!-- Plan 2 (Featured) -->
+                <div class="pricing-card liquid-card liquid-glass p-8 card-hover border-[#00F0FF]/40 bg-[#00F0FF]/5 flex flex-col h-full scale-105 z-10">
+                    <div class="absolute top-0 right-0 bg-[#00F0FF] text-slate-950 text-[10px] font-black px-3 py-1 rounded-bl-lg">POPULAR</div>
+                    <h4 class="text-[#00F0FF] text-xs font-bold uppercase mb-4">Medio</h4>
+                    <div class="text-4xl font-extrabold mb-6">$99<span class="text-sm font-normal text-gray-400">/video</span></div>
+                    <ul class="text-sm text-gray-300 space-y-4 mb-10 flex-grow">
+                        <li class="flex items-center gap-2">✓ Edición Avanzada</li>
+                        <li class="flex items-center gap-2">✓ Color Grading Premium</li>
+                        <li class="flex items-center gap-2">✓ Sound Design</li>
+                        <li class="flex items-center gap-2">✓ 3 Revisiones</li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg bg-[#00F0FF] text-slate-950 transition-all text-sm font-bold shadow-[0_0_15px_rgba(0,240,255,0.3)]">Get Started</button>
+                </div>
+                
+                <!-- Plan 3 -->
+                <div class="pricing-card liquid-card liquid-glass p-8 card-hover flex flex-col h-full">
+                    <h4 class="text-gray-400 text-xs font-bold uppercase mb-4">Profesional</h4>
+                    <div class="text-4xl font-extrabold mb-6">$199<span class="text-sm font-normal text-gray-500">/video</span></div>
+                    <ul class="text-sm text-gray-400 space-y-4 mb-10 flex-grow">
+                        <li class="flex items-center gap-2">✓ Efectos Visuales (VFX)</li>
+                        <li class="flex items-center gap-2">✓ Motion Graphics</li>
+                        <li class="flex items-center gap-2">✓ Revisiones Ilimitadas</li>
+                        <li class="flex items-center gap-2">✓ Entrega Prioritaria</li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg border border-white/10 hover:bg-white/5 transition-all text-sm font-bold">Select Plan</button>
+                </div>
+                
+                <!-- Plan 4 -->
+                <div class="pricing-card liquid-card liquid-glass p-8 card-hover flex flex-col h-full">
+                    <h4 class="text-gray-400 text-xs font-bold uppercase mb-4">Avanzado</h4>
+                    <div class="text-4xl font-extrabold mb-6">Custom</div>
+                    <p class="text-sm text-gray-500 mb-10 flex-grow">Soluciones a medida para largometrajes, series o canales de contenido masivo.</p>
+                    <button class="w-full py-3 rounded-lg border border-white/10 hover:bg-white/5 transition-all text-sm font-bold">Contact Us</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Form Section -->
+    <section id="demo" class="py-32 px-6 bg-gradient-to-b from-transparent to-[#00F0FF]/5">
+        <div class="max-w-xl mx-auto">
+            <div class="liquid-glass p-10 md:p-14 border-t border-white/20">
+                <h2 class="text-3xl font-extrabold mb-2 text-center">Ready to elevate?</h2>
+                <p class="text-gray-400 text-center mb-10 text-sm">Completa tus datos y un especialista se pondrá en contacto contigo.</p>
+                
+                <form id="contactForm" class="space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nombre Completo</label>
+                        <input type="text" name="nombre" required placeholder="Tu nombre" class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[#00F0FF] focus:bg-white/[0.08] transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Empresa</label>
+                        <input type="text" name="empresa" required placeholder="Nombre de tu empresa" class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[#00F0FF] focus:bg-white/[0.08] transition-all">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Email</label>
+                            <input type="email" name="email" required placeholder="hola@ejemplo.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[#00F0FF] focus:bg-white/[0.08] transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Teléfono</label>
+                            <input type="tel" id="phone" name="telefono" required class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[#00F0FF] focus:bg-white/[0.08] transition-all">
+                        </div>
+                    </div>
+                    <button type="submit" id="submitBtn" class="w-full py-5 bg-[#00F0FF] text-slate-950 rounded-xl font-black text-lg btn-glow shadow-xl mt-4">
+                        Schedule My Demo
+                    </button>
+                </form>
+                <div id="successMessage" class="hidden text-center py-10">
+                    <div class="w-16 h-16 bg-[#00F0FF]/20 text-[#00F0FF] rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">¡Mensaje Enviado!</h3>
+                    <p class="text-gray-400 text-sm">Nos pondremos en contacto contigo muy pronto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-[#00F0FF] rounded-md"></div>
+                <span class="text-lg font-extrabold tracking-tighter">EDITAMOS</span>
+            </div>
+            
+            <div class="flex gap-8 text-xs font-medium text-gray-500">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-white transition-colors">Cookies</a>
+            </div>
+            
+            <p class="text-xs text-gray-600 font-medium">
+                © 2024 Editamos Studio. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/intlTelInput.min.js"></script>
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw0pfHMxFy_Qrev79LZdl2CqIf8aMgzjQFwmYVCYMNKIs6Qrc65sKorncF6eYEK79ctnw/exec';
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const phoneInput = document.querySelector("#phone");
+
+        // Inicializar el selector de países
+        const iti = window.intlTelInput(phoneInput, {
+            initialCountry: "auto",
+            geoIpLookup: callback => {
+                fetch("https://ipapi.co/json")
+                    .then(res => res.json())
+                    .then(data => callback(data.country_code))
+                    .catch(() => callback("us"));
+            },
+            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/utils.js",
+        });
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Enviando...';
+
+            const formData = new FormData(form);
+            // Reemplazar el número de teléfono con el formato internacional completo
+            formData.set('telefono', iti.getNumber());
+            
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: formData,
+                mode: 'no-cors'
+            })
+            .then(() => {
+                form.classList.add('hidden');
+                successMessage.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Error. Reintentar';
+            });
+        });
+
+        // Hover to Play Logic for Portfolio Videos
+        const portfolioCards = document.querySelectorAll('.liquid-glass.group');
+        portfolioCards.forEach(card => {
+            const video = card.querySelector('.portfolio-video');
+            if (!video) return;
+
+            card.addEventListener('mouseenter', () => {
+                video.play().catch(e => console.log("Autoplay blocked or error:", e));
+            });
+
+            card.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0; // Vuelve al inicio/carátula
+            });
+        });
+    </script>
+</body>
+</html>
