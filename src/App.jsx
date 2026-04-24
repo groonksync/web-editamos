@@ -203,8 +203,8 @@ const App = () => {
         className="fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-no-repeat" 
         style={{ backgroundImage: "url('/fondo-web.jpg')" }}
       >
-        {/* Capa oscura sutil para garantizar la legibilidad de las letras blancas */}
-        <div className="absolute inset-0 bg-black/20" />
+        {/* Capa oscura removida para máxima visibilidad de la imagen */}
+        <div className="absolute inset-0 bg-black/0" />
       </div>
 
       <div className="relative z-10">
