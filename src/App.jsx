@@ -198,39 +198,39 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-zinc-400/30 overflow-x-hidden relative">
-      {/* 🌊 Fondo de Seda Líquida Animado (Gris + Negro Minimalista) */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-[#050505]">
-        {/* Bloque Gris 1 */}
+      {/* 🌊 Fondo de Seda Líquida Animado (Gris en Costados + Negro) */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-[#020202]">
+        {/* Esquina Superior Izquierda */}
         <motion.div 
           animate={{
-            x: [-80, 80, -40],
-            y: [-40, 40, -40],
-            scale: [1, 1.1, 1],
+            x: [-120, 50, -120],
+            y: [-100, 100, -100],
+            scale: [1, 1.4, 1],
           }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[10%] -left-[10%] w-[110%] h-[110%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.06)_0%,transparent_65%)] blur-[90px]"
+          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-[20%] -left-[15%] w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.12)_0%,transparent_65%)] blur-[100px]"
         />
-        {/* Bloque Gris 2 */}
+        {/* Esquina Inferior Derecha */}
         <motion.div 
           animate={{
-            x: [80, -80, 40],
-            y: [40, -40, 40],
-            scale: [1.1, 1, 1.1],
+            x: [120, -50, 120],
+            y: [100, -100, 100],
+            scale: [1.3, 1, 1.3],
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[15%] -right-[15%] w-[100%] h-[100%] bg-[radial-gradient(circle_at_center,_rgba(113,113,122,0.04)_0%,transparent_65%)] blur-[110px]"
+          transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-[20%] -right-[15%] w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,_rgba(113,113,122,0.08)_0%,transparent_65%)] blur-[120px]"
         />
-        {/* Bloque Gris 3 (Movimiento Vertical Suave) */}
+        {/* Costado Izquierdo Medio */}
         <motion.div 
           animate={{
-            y: [50, -50, 50],
-            opacity: [0.3, 0.5, 0.3],
+            x: [-50, 80, -50],
+            opacity: [0.3, 0.6, 0.3],
           }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-15%] left-[20%] w-[90%] h-[90%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.05)_0%,transparent_65%)] blur-[100px]"
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[30%] -left-[10%] w-[60%] h-[60%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.06)_0%,transparent_65%)] blur-[90px]"
         />
         {/* Textura de grano cinematográfico */}
-        <div className="absolute inset-0 opacity-[0.04] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+        <div className="absolute inset-0 opacity-[0.05] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
       </div>
 
       <div className="relative z-10">
