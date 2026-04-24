@@ -207,7 +207,7 @@ const App = () => {
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/fondo-web.jpg')" }}
+          style={{ backgroundImage: "url('/fondo01.jpg')" }}
         />
         {/* Capa de atmósfera extra */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60" />
