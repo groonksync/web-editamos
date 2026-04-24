@@ -105,13 +105,13 @@ const App = () => {
         { title: "ZAMBRANOS", subtitle: "Auto servicio", color: "from-cyan-500/20", img: "/video02.jpeg" },
         { title: "CHINO BARBER", subtitle: "Barbería", color: "from-blue-600/20", img: "/video03.jpeg" },
         { title: "NOVAFIT", subtitle: "Fitness", color: "from-purple-500/20", img: "/video04.jpeg" },
-        { title: "YOJA HAIR LOUNGE", subtitle: "Belleza", color: "from-red-500/20", img: "/video05.jpeg" }
+        { title: "YOJA HAIR LOUNGE", subtitle: "Belleza", color: "from-zinc-400/20", img: "/video05.jpeg" }
       ],
       services_data: [
-        { title: "Post-Producción", desc: "Edición rítmica en Premiere Pro y VFX avanzados en After Effects.", tag: "AE + PR", color: "from-red-500 to-orange-700", icon: Play },
-        { title: "Identidad Visual", desc: "Sistemas visuales corporativos que proyectan autoridad y confianza absoluta.", tag: "Corporativa", color: "from-red-600 to-red-900", icon: Fingerprint },
-        { title: "Producción y Eventos", desc: "Captura cinematográfica y cobertura de eventos de alto nivel con calidad 4K HDR.", tag: "Eventos", color: "from-red-400 to-red-600", icon: Camera },
-        { title: "Grabación y Modelos", desc: "Dirección de talento y producción de contenido cinematográfico con modelos y actores en cualquier formato.", tag: "Grabación y Modelos", color: "from-red-500 to-red-800", icon: Layout }
+        { title: "Post-Producción", desc: "Edición rítmica en Premiere Pro y VFX avanzados en After Effects.", tag: "AE + PR", color: "from-zinc-400 to-orange-700", icon: Play },
+        { title: "Identidad Visual", desc: "Sistemas visuales corporativos que proyectan autoridad y confianza absoluta.", tag: "Corporativa", color: "from-zinc-500 to-zinc-800", icon: Fingerprint },
+        { title: "Producción y Eventos", desc: "Captura cinematográfica y cobertura de eventos de alto nivel con calidad 4K HDR.", tag: "Eventos", color: "from-zinc-300 to-zinc-500", icon: Camera },
+        { title: "Grabación y Modelos", desc: "Dirección de talento y producción de contenido cinematográfico con modelos y actores en cualquier formato.", tag: "Grabación y Modelos", color: "from-zinc-400 to-zinc-700", icon: Layout }
       ]
     },
     en: {
@@ -169,13 +169,13 @@ const App = () => {
         { title: "ZAMBRANOS", subtitle: "Auto Service", color: "from-cyan-500/20", img: "/video02.jpeg" },
         { title: "CHINO BARBER", subtitle: "Barber Shop", color: "from-blue-600/20", img: "/video03.jpeg" },
         { title: "NOVAFIT", subtitle: "Fitness", color: "from-purple-500/20", img: "/video04.jpeg" },
-        { title: "YOJA HAIR LOUNGE", subtitle: "Beauty", color: "from-red-500/20", img: "/video05.jpeg" }
+        { title: "YOJA HAIR LOUNGE", subtitle: "Beauty", color: "from-zinc-400/20", img: "/video05.jpeg" }
       ],
       services_data: [
-        { title: "Post-Production", desc: "Rhythmic editing in Premiere Pro and advanced VFX in After Effects.", tag: "AE + PR", color: "from-red-500 to-orange-700", icon: Play },
-        { title: "Visual Identity", desc: "Corporate visual systems that project authority and trust.", tag: "Corporate", color: "from-red-600 to-red-900", icon: Fingerprint },
-        { title: "Production & Events", desc: "Cinematic capture of events, products, and corporate content.", tag: "Events", color: "from-red-400 to-red-600", icon: Camera },
-        { title: "Shooting & Models", desc: "Talent direction and cinematic content production with models and actors in any format.", tag: "Shooting & Models", color: "from-red-500 to-red-800", icon: Layout }
+        { title: "Post-Production", desc: "Rhythmic editing in Premiere Pro and advanced VFX in After Effects.", tag: "AE + PR", color: "from-zinc-400 to-orange-700", icon: Play },
+        { title: "Visual Identity", desc: "Corporate visual systems that project authority and trust.", tag: "Corporate", color: "from-zinc-500 to-zinc-800", icon: Fingerprint },
+        { title: "Production & Events", desc: "Cinematic capture of events, products, and corporate content.", tag: "Events", color: "from-zinc-300 to-zinc-500", icon: Camera },
+        { title: "Shooting & Models", desc: "Talent direction and cinematic content production with models and actors in any format.", tag: "Shooting & Models", color: "from-zinc-400 to-zinc-700", icon: Layout }
       ]
     }
   };
@@ -197,7 +197,7 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-500/30 overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-zinc-400/30 overflow-x-hidden relative">
       {/* 🌊 Fondo de Imagen Personalizado (Arco Rojo Cinematográfico) */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-black">
         <motion.div 
@@ -218,31 +218,31 @@ const App = () => {
 
         <nav className="fixed top-0 w-full z-[100] px-4 md:px-10 py-4 md:py-6 flex justify-between items-center backdrop-blur-xl bg-black/40 border-b border-white/5">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-red-600 rounded-lg md:rounded-xl flex items-center justify-center font-black text-white italic shadow-[0_0_20px_rgba(220,38,38,0.4)]">S</div>
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-zinc-500 rounded-lg md:rounded-xl flex items-center justify-center font-black text-white italic shadow-[0_0_20px_rgba(113,113,122,0.4)]">S</div>
             <span className="text-lg md:text-xl font-black tracking-tighter uppercase italic">Sync Pro</span>
           </div>
           <div className="flex items-center gap-3 md:gap-6">
             <div className="hidden lg:flex gap-10 text-[11px] font-bold text-gray-400 tracking-[0.2em] uppercase">
-              {t.nav.map((item, i) => <a key={i} href={`#${item.toLowerCase()}`} className="hover:text-red-500 transition-colors">{item}</a>)}
+              {t.nav.map((item, i) => <a key={i} href={`#${item.toLowerCase()}`} className="hover:text-zinc-400 transition-colors">{item}</a>)}
             </div>
-            <button onClick={() => setLang(lang === 'es' ? 'en' : 'es')} className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-bold uppercase tracking-widest"><Globe className="w-3 h-3 text-red-500" /> {lang.toUpperCase()}</button>
+            <button onClick={() => setLang(lang === 'es' ? 'en' : 'es')} className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-bold uppercase tracking-widest"><Globe className="w-3 h-3 text-zinc-400" /> {lang.toUpperCase()}</button>
             <button className="hidden sm:block bg-white text-black px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-[11px] font-black uppercase tracking-widest">{t.cta_nav}</button>
           </div>
         </nav>
 
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-6 text-center py-20">
-          <div className="absolute inset-0 bg-gradient-to-b from-red-500/5 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-zinc-400/5 to-transparent pointer-events-none" />
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-full max-w-5xl mx-auto">
-            <span className="inline-block border border-red-500/30 px-4 md:px-5 py-1.5 rounded-full text-[8px] md:text-[9px] tracking-[0.3em] md:tracking-[0.4em] uppercase text-red-500 mb-6 md:mb-8 bg-red-500/5 font-bold">{t.hero_tag}</span>
+            <span className="inline-block border border-zinc-400/30 px-4 md:px-5 py-1.5 rounded-full text-[8px] md:text-[9px] tracking-[0.3em] md:tracking-[0.4em] uppercase text-zinc-400 mb-6 md:mb-8 bg-zinc-400/5 font-bold">{t.hero_tag}</span>
             <h1 className="text-5xl sm:text-7xl md:text-9xl lg:text-[145px] font-black mb-6 md:mb-8 leading-[0.9] tracking-tighter italic uppercase px-2">
               {t.hero_h1_1} <br />
-              <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-white to-red-600 pr-4 md:pr-12">
+              <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 pr-4 md:pr-12">
                 {t.hero_h1_2}
               </span>
             </h1>
             <p className="text-gray-400 text-base md:text-xl max-w-2xl mx-auto mb-10 md:mb-12 font-light px-4">{t.hero_p}</p>
             <div className="flex flex-col sm:flex-row gap-4 md:gap-5 justify-center px-6">
-              <button className="bg-red-600 text-white font-black px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 uppercase tracking-tighter shadow-lg text-sm md:text-base w-full sm:w-auto">{t.hero_btn_main} <ArrowRight className="w-5 h-5" /></button>
+              <button className="bg-zinc-500 text-white font-black px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 uppercase tracking-tighter shadow-lg text-sm md:text-base w-full sm:w-auto">{t.hero_btn_main} <ArrowRight className="w-5 h-5" /></button>
               <button className="border border-white/10 bg-white/5 backdrop-blur-md px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-[10px] md:text-xs w-full sm:w-auto"><Play className="w-4 h-4 fill-current" /> {t.hero_btn_sec}</button>
             </div>
           </motion.div>
@@ -251,7 +251,7 @@ const App = () => {
       {/* Galería Proyectos */}
       <section id="proyectos" className="py-16 md:py-24 px-4 md:px-6 max-w-[1600px] mx-auto overflow-hidden">
         <div className="mb-10 md:mb-16 px-2">
-          <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase mb-4">Nuestros <span className="text-red-500">PROYECTOS</span></h2>
+          <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase mb-4">Nuestros <span className="text-zinc-400">PROYECTOS</span></h2>
           <p className="text-gray-500 text-base md:text-lg max-w-xl">{t.projects_p}</p>
         </div>
         <div className="flex overflow-x-auto gap-3 md:gap-5 pb-20 pt-10 no-scrollbar snap-x px-4 md:px-10">
@@ -283,13 +283,13 @@ const App = () => {
                 <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   <h3 className="text-xl md:text-3xl font-black italic tracking-tighter leading-none mb-1 uppercase drop-shadow-2xl">{proj.title}</h3>
                   <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                    <p className="text-[10px] md:text-[12px] font-black text-red-500 tracking-[0.2em] uppercase">{proj.subtitle}</p>
+                    <p className="text-[10px] md:text-[12px] font-black text-zinc-400 tracking-[0.2em] uppercase">{proj.subtitle}</p>
                   </div>
                 </div>
               </div>
 
               {/* Glow sutil */}
-              <div className="absolute inset-0 border-[3px] border-red-500/0 group-hover:border-red-500/30 rounded-xl md:rounded-2xl transition-all duration-500 pointer-events-none z-30" />
+              <div className="absolute inset-0 border-[3px] border-zinc-400/0 group-hover:border-zinc-400/30 rounded-xl md:rounded-2xl transition-all duration-500 pointer-events-none z-30" />
             </motion.div>
           ))}
         </div>
@@ -325,7 +325,7 @@ const App = () => {
       {/* Planes de Edición de Video */}
       <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
         <div className="mb-16 md:mb-20 text-center">
-          <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-red-600 px-2">EDICIÓN DE VIDEO</span></h2>
+          <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 px-2">EDICIÓN DE VIDEO</span></h2>
           <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto">{t.editing_plans_p}</p>
         </div>
         
@@ -377,19 +377,19 @@ const App = () => {
                   {/* Avanzado */}
                   <div className="flex-grow">
                     <div className="flex justify-between items-end mb-4">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-red-500">Bloque B: Avanzado</span>
-                      <span className="text-3xl font-black text-red-600 transition-all group-hover:drop-shadow-[0_0_10px_rgba(220,38,38,0.5)]">{plan.advanced.price}</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Bloque B: Avanzado</span>
+                      <span className="text-3xl font-black text-zinc-500 transition-all group-hover:drop-shadow-[0_0_10px_rgba(113,113,122,0.5)]">{plan.advanced.price}</span>
                     </div>
                     <ul className="space-y-2">
                       {plan.advanced.features.map((f, idx) => (
                         <li key={idx} className="text-[11px] text-white/80 flex items-center gap-2 font-medium">
-                          <CheckCircle2 className="w-3 h-3 text-red-600" /> {f}
+                          <CheckCircle2 className="w-3 h-3 text-zinc-500" /> {f}
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <button className="w-full py-5 bg-white/5 group-hover:bg-red-600 group-hover:text-white font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-2xl mt-10">Seleccionar Plan</button>
+                  <button className="w-full py-5 bg-white/5 group-hover:bg-zinc-500 group-hover:text-white font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-2xl mt-10">Seleccionar Plan</button>
                 </div>
               </div>
             </div>
@@ -401,7 +401,7 @@ const App = () => {
       {false && (
       <section id="planes" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
         <div className="mb-16 md:mb-20 text-center">
-          <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-red-600 px-2">CREACIÓN DE CONTENIDO</span></h2>
+          <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 px-2">CREACIÓN DE CONTENIDO</span></h2>
           <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto">{t.plans_p}</p>
         </div>
         
@@ -434,16 +434,16 @@ const App = () => {
                   <h3 className="text-2xl font-black italic mb-4 uppercase leading-tight">{plan.name}</h3>
                   <div className="mb-8">
                     <div className="text-4xl font-black text-white leading-none mb-1">{plan.priceBs}</div>
-                    <div className="text-2xl font-bold text-red-500/80 transition-all group-hover:text-red-400">{plan.price} <span className="text-[10px] text-gray-500 uppercase tracking-tighter">usd</span></div>
+                    <div className="text-2xl font-bold text-zinc-400/80 transition-all group-hover:text-zinc-300">{plan.price} <span className="text-[10px] text-gray-500 uppercase tracking-tighter">usd</span></div>
                   </div>
                   <ul className="space-y-3 mb-10 flex-grow">
                     {plan.items.map((item, idx) => (
                       <li key={idx} className="flex items-start gap-3 text-xs text-gray-400 font-medium leading-relaxed">
-                        <CheckCircle2 className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" /> {item}
+                        <CheckCircle2 className="w-4 h-4 text-zinc-400 flex-shrink-0 mt-0.5" /> {item}
                       </li>
                     ))}
                   </ul>
-                  <button className="w-full py-5 bg-white/5 group-hover:bg-red-600 group-hover:text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">Seleccionar</button>
+                  <button className="w-full py-5 bg-white/5 group-hover:bg-zinc-500 group-hover:text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">Seleccionar</button>
                 </div>
               </div>
             </div>
@@ -453,7 +453,7 @@ const App = () => {
         {/* Sección Planes Extra */}
         <div className="mt-32">
           <div className="mb-12 text-center">
-            <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 leading-none text-white text-center">Planes <span className="text-red-500">EXTRA</span></h2>
+            <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 leading-none text-white text-center">Planes <span className="text-zinc-400">EXTRA</span></h2>
             <div className="w-20 h-1 bg-white/10 mx-auto rounded-full" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
@@ -476,7 +476,7 @@ const App = () => {
                   style={{ animationDuration: '4s' }}
                 />
 
-                <div className="relative rounded-[39px] h-full flex flex-col overflow-hidden p-8 bg-[#0a0a0a] border border-red-500/10">
+                <div className="relative rounded-[39px] h-full flex flex-col overflow-hidden p-8 bg-[#0a0a0a] border border-zinc-400/10">
                   {/* 💡 Spotlight Tracking Effect - Soft & Wide (Red) */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                        style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(239,68,68,0.07), transparent 40%)" }} />
@@ -518,10 +518,10 @@ const App = () => {
             <div className="py-16 md:py-20"><CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-cyan-400 mx-auto mb-6" /><h3 className="text-2xl md:text-3xl font-black italic uppercase">Synced / Listo</h3></div>
           ) : (
             <form onSubmit={handleFormSubmit} className="space-y-5 md:space-y-6 text-left">
-              <input type="text" name="nombre" required placeholder="Nombre" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-red-500 outline-none transition-all" />
-              <input type="email" name="email" required placeholder="Email" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-red-500 outline-none transition-all" />
-              <textarea name="vision" required placeholder="Tu visión..." rows="4" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-red-500 outline-none transition-all"></textarea>
-              <button type="submit" disabled={formStatus === 'loading'} className="w-full py-5 md:py-6 bg-red-600 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg uppercase transition-all shadow-[0_0_20px_rgba(220,38,38,0.3)]">{formStatus === 'loading' ? '...' : 'INICIAR PROYECTO'}</button>
+              <input type="text" name="nombre" required placeholder="Nombre" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all" />
+              <input type="email" name="email" required placeholder="Email" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all" />
+              <textarea name="vision" required placeholder="Tu visión..." rows="4" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all"></textarea>
+              <button type="submit" disabled={formStatus === 'loading'} className="w-full py-5 md:py-6 bg-zinc-500 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg uppercase transition-all shadow-[0_0_20px_rgba(113,113,122,0.3)]">{formStatus === 'loading' ? '...' : 'INICIAR PROYECTO'}</button>
             </form>
           )}
         </div>
