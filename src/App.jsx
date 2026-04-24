@@ -203,8 +203,8 @@ const App = () => {
         className="fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-no-repeat" 
         style={{ backgroundImage: "url('/fondo-web.jpg')" }}
       >
-        {/* Capa oscura removida para máxima visibilidad de la imagen */}
-        <div className="absolute inset-0 bg-black/0" />
+        {/* Capa oscura ajustada al 50% de opacidad */}
+        <div className="absolute inset-0 bg-black/50" />
       </div>
 
       <div className="relative z-10">
