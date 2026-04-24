@@ -296,6 +296,7 @@ const App = () => {
       </section>
 
       {/* Servicios Bento */}
+      {false && (
       <section id="servicios" className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
           <div className="lg:col-span-7 bg-[#0a0a0a] rounded-[30px] md:rounded-[40px] p-8 md:p-12 min-h-[350px] md:min-h-[450px] flex flex-col justify-end relative overflow-hidden">
@@ -319,6 +320,7 @@ const App = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Planes de Edición de Video */}
       <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
@@ -396,6 +398,7 @@ const App = () => {
       </section>
 
       {/* Planes de Creación de Contenido */}
+      {false && (
       <section id="planes" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
         <div className="mb-16 md:mb-20 text-center">
           <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 px-2">CREACIÓN DE CONTENIDO</span></h2>
@@ -467,16 +470,16 @@ const App = () => {
                 className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.03] hover:z-50 shadow-2xl bg-white/5"
                 style={{ "--x": "0px", "--y": "0px" }}
               >
-                {/* Snake Border - Active only on Hover (Red) */}
+                {/* Snake Border - Active only on Hover (Zinc) */}
                 <div 
-                  className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#ef4444_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{ animationDuration: '4s' }}
                 />
 
                 <div className="relative rounded-[39px] h-full flex flex-col overflow-hidden p-8 bg-[#0a0a0a] border border-zinc-400/10">
-                  {/* 💡 Spotlight Tracking Effect - Soft & Wide (Red) */}
+                  {/* 💡 Spotlight Tracking Effect - Soft & Wide (Zinc) */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                       style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(239,68,68,0.07), transparent 40%)" }} />
+                       style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
                   <div className="relative z-10 flex flex-col h-full">
                     <h3 className="text-2xl font-black italic mb-4 uppercase leading-tight text-white/70">{plan.name}</h3>
                     <div className="mb-8">
@@ -506,13 +509,13 @@ const App = () => {
           <h2 className="text-5xl md:text-7xl lg:text-8xl font-black italic text-center uppercase tracking-tighter leading-none">
             ¿LISTO PARA EL <br /> SIGUIENTE <br /> 
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">NIVEL</span>
-            <span className="text-cyan-500">?</span>
+            <span className="text-zinc-500">?</span>
           </h2>
         </div>
         
         <div className="bg-white/5 p-8 md:p-12 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 text-center max-w-2xl mx-auto">
           {formStatus === 'success' ? (
-            <div className="py-16 md:py-20"><CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-cyan-400 mx-auto mb-6" /><h3 className="text-2xl md:text-3xl font-black italic uppercase">Synced / Listo</h3></div>
+            <div className="py-16 md:py-20"><CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-zinc-400 mx-auto mb-6" /><h3 className="text-2xl md:text-3xl font-black italic uppercase">Synced / Listo</h3></div>
           ) : (
             <form onSubmit={handleFormSubmit} className="space-y-5 md:space-y-6 text-left">
               <input type="text" name="nombre" required placeholder="Nombre" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all" />
