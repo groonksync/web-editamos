@@ -277,7 +277,7 @@ const App = () => {
                 zIndex: 50
               }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="relative min-w-[250px] md:min-w-[360px] aspect-[9/16] rounded-[35px] md:rounded-[50px] overflow-hidden group snap-center border border-white/10 shadow-2xl transform-gpu cursor-pointer"
+              className="relative min-w-[225px] md:min-w-[324px] aspect-[9/16] rounded-[35px] md:rounded-[50px] overflow-hidden group snap-center border border-white/10 shadow-2xl transform-gpu cursor-pointer"
               style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
               onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play(); }}
               onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
