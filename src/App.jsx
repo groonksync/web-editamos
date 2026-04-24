@@ -209,8 +209,8 @@ const App = () => {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-[10px] scale-110"
           style={{ backgroundImage: "url('/fondo01.jpg')" }}
         />
-        {/* Capa oscura al 80% para máxima legibilidad */}
-        <div className="absolute inset-0 bg-black/80" />
+        {/* Capa oscura ajustada al 70% de opacidad */}
+        <div className="absolute inset-0 bg-black/70" />
       </div>
 
       <div className="relative z-10">
