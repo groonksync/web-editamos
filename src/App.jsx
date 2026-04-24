@@ -198,42 +198,19 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-zinc-400/30 overflow-x-hidden relative">
-      {/* 🌊 Fondo de Lámpara de Magma (Gris + Negro) */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-[#020202]">
-        {/* Bloque de Magma 1 */}
-        <motion.div 
-          animate={{
-            x: [-200, 300, -100, 200, -200],
-            y: [-150, 200, 150, -100, -150],
-            scale: [1, 1.5, 1.2, 1.7, 1],
-            borderRadius: ["40% 60% 70% 30% / 40% 40% 60% 60%", "60% 40% 30% 70% / 50% 50% 50% 50%", "40% 60% 70% 30% / 40% 40% 60% 60%"],
-          }}
-          transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[10%] left-[10%] w-[70%] h-[70%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.08)_0%,transparent_65%)] blur-[100px]"
-        />
-        {/* Bloque de Magma 2 */}
-        <motion.div 
-          animate={{
-            x: [300, -200, 200, -300, 300],
-            y: [200, -150, -200, 150, 200],
-            scale: [1.2, 1.6, 1, 1.4, 1.2],
-            borderRadius: ["50% 50% 50% 50%", "30% 70% 40% 60% / 60% 30% 70% 40%", "50% 50% 50% 50%"],
-          }}
-          transition={{ duration: 45, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[10%] right-[10%] w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,_rgba(113,113,122,0.06)_0%,transparent_65%)] blur-[120px]"
-        />
-        {/* Bloque de Magma 3 (Pequeño y errático) */}
-        <motion.div 
-          animate={{
-            x: [0, 400, -400, 0],
-            y: [0, -300, 300, 0],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[40%] left-[40%] w-[50%] h-[50%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.05)_0%,transparent_65%)] blur-[80px]"
-        />
-        {/* Textura de grano cinematográfico */}
-        <div className="absolute inset-0 opacity-[0.05] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+      {/* 🌊 Fondo de Video Personalizado */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-black">
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline 
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+        >
+          <source src="/fondo01.mp4" type="video/mp4" />
+        </video>
+        {/* Capa de atmósfera extra para legibilidad */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
       </div>
 
       <div className="relative z-10">
