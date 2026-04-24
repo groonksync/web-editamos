@@ -295,7 +295,7 @@ const App = () => {
               {/* Contenedor de Imagen / Video con Zoom y Filtro Negro */}
               <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-106">
                 <img src={proj.img} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                <video src={`https://drive.google.com/uc?export=download&id=${videoIds[i]}`} className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity" muted loop playsInline />
+                <video src={`/cuadro-${i + 1}.mp4`} className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity" muted loop playsInline />
                 
                 {/* Black Filter Overlay - Even Lighter (20%) */}
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-700 z-10" />
