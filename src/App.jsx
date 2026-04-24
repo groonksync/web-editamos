@@ -277,7 +277,7 @@ const App = () => {
                 zIndex: 50
               }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="relative min-w-[225px] md:min-w-[324px] aspect-[9/16] rounded-[35px] md:rounded-[50px] overflow-hidden group snap-center border border-white/10 shadow-2xl transform-gpu cursor-pointer"
+              className="relative min-w-[225px] md:min-w-[324px] aspect-[9/16] rounded-xl md:rounded-2xl overflow-hidden group snap-center border-2 border-white/20 shadow-2xl transform-gpu cursor-pointer"
               style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
               onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play(); }}
               onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
@@ -302,7 +302,7 @@ const App = () => {
               </div>
 
               {/* Glow sutil */}
-              <div className="absolute inset-0 border-[2px] border-red-500/0 group-hover:border-red-500/20 rounded-[35px] md:rounded-[50px] transition-all duration-500 pointer-events-none z-30" />
+              <div className="absolute inset-0 border-[3px] border-red-500/0 group-hover:border-red-500/30 rounded-xl md:rounded-2xl transition-all duration-500 pointer-events-none z-30" />
             </motion.div>
           ))}
         </div>
