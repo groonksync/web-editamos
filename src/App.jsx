@@ -204,7 +204,7 @@ const App = () => {
         style={{ backgroundImage: "url('/fondo-web.jpg')" }}
       >
         {/* Capa oscura sutil para garantizar la legibilidad de las letras blancas */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/20" />
       </div>
 
       <div className="relative z-10">
