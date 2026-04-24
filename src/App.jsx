@@ -198,36 +198,39 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-zinc-400/30 overflow-x-hidden relative">
-      {/* 🌊 Fondo de Seda Líquida Animado (Gris en Costados + Negro) */}
+      {/* 🌊 Fondo de Lámpara de Magma (Gris + Negro) */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-[#020202]">
-        {/* Esquina Superior Izquierda */}
+        {/* Bloque de Magma 1 */}
         <motion.div 
           animate={{
-            x: [-120, 50, -120],
-            y: [-100, 100, -100],
-            scale: [1, 1.4, 1],
+            x: [-200, 300, -100, 200, -200],
+            y: [-150, 200, 150, -100, -150],
+            scale: [1, 1.5, 1.2, 1.7, 1],
+            borderRadius: ["40% 60% 70% 30% / 40% 40% 60% 60%", "60% 40% 30% 70% / 50% 50% 50% 50%", "40% 60% 70% 30% / 40% 40% 60% 60%"],
           }}
-          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[20%] -left-[15%] w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.12)_0%,transparent_65%)] blur-[100px]"
+          transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[10%] left-[10%] w-[70%] h-[70%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.08)_0%,transparent_65%)] blur-[100px]"
         />
-        {/* Esquina Inferior Derecha */}
+        {/* Bloque de Magma 2 */}
         <motion.div 
           animate={{
-            x: [120, -50, 120],
-            y: [100, -100, 100],
-            scale: [1.3, 1, 1.3],
+            x: [300, -200, 200, -300, 300],
+            y: [200, -150, -200, 150, 200],
+            scale: [1.2, 1.6, 1, 1.4, 1.2],
+            borderRadius: ["50% 50% 50% 50%", "30% 70% 40% 60% / 60% 30% 70% 40%", "50% 50% 50% 50%"],
           }}
-          transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-[20%] -right-[15%] w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,_rgba(113,113,122,0.08)_0%,transparent_65%)] blur-[120px]"
+          transition={{ duration: 45, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[10%] right-[10%] w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,_rgba(113,113,122,0.06)_0%,transparent_65%)] blur-[120px]"
         />
-        {/* Costado Izquierdo Medio */}
+        {/* Bloque de Magma 3 (Pequeño y errático) */}
         <motion.div 
           animate={{
-            x: [-50, 80, -50],
-            opacity: [0.3, 0.6, 0.3],
+            x: [0, 400, -400, 0],
+            y: [0, -300, 300, 0],
+            opacity: [0.2, 0.5, 0.2],
           }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[30%] -left-[10%] w-[60%] h-[60%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.06)_0%,transparent_65%)] blur-[90px]"
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[40%] left-[40%] w-[50%] h-[50%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.05)_0%,transparent_65%)] blur-[80px]"
         />
         {/* Textura de grano cinematográfico */}
         <div className="absolute inset-0 opacity-[0.05] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
