@@ -309,6 +309,7 @@ const App = () => {
       </section>
 
       {/* Servicios Bento */}
+      {false && (
       <section id="servicios" className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
           <div className="lg:col-span-7 bg-[#0a0a0a] rounded-[30px] md:rounded-[40px] p-8 md:p-12 min-h-[350px] md:min-h-[450px] flex flex-col justify-end relative overflow-hidden">
@@ -332,6 +333,7 @@ const App = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Planes de Edición de Video */}
       <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
@@ -409,6 +411,7 @@ const App = () => {
       </section>
 
       {/* Planes de Creación de Contenido */}
+      {false && (
       <section id="planes" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
         <div className="mb-16 md:mb-20 text-center">
           <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-red-600 px-2">CREACIÓN DE CONTENIDO</span></h2>
@@ -511,6 +514,7 @@ const App = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Contacto */}
       <section id="contacto" className="py-20 md:py-32 px-4 md:px-6 max-w-4xl mx-auto">
