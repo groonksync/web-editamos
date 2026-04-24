@@ -198,19 +198,39 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-zinc-400/30 overflow-x-hidden relative">
-      {/* 🌊 Fondo de Imagen Personalizado (Arco Rojo Cinematográfico) */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-black">
+      {/* 🌊 Fondo de Seda Líquida Animado (Gris + Negro Minimalista) */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-[#050505]">
+        {/* Bloque Gris 1 */}
         <motion.div 
           animate={{
-            scale: [1, 1.08, 1],
-            opacity: [0.8, 1, 0.8]
+            x: [-80, 80, -40],
+            y: [-40, 40, -40],
+            scale: [1, 1.1, 1],
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-[10px] scale-110"
-          style={{ backgroundImage: "url('/fondo04.jpg')" }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-[10%] -left-[10%] w-[110%] h-[110%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.06)_0%,transparent_65%)] blur-[90px]"
         />
-        {/* Capa oscura ajustada al 70% de opacidad */}
-        <div className="absolute inset-0 bg-black/70" />
+        {/* Bloque Gris 2 */}
+        <motion.div 
+          animate={{
+            x: [80, -80, 40],
+            y: [40, -40, 40],
+            scale: [1.1, 1, 1.1],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[15%] -right-[15%] w-[100%] h-[100%] bg-[radial-gradient(circle_at_center,_rgba(113,113,122,0.04)_0%,transparent_65%)] blur-[110px]"
+        />
+        {/* Bloque Gris 3 (Movimiento Vertical Suave) */}
+        <motion.div 
+          animate={{
+            y: [50, -50, 50],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[-15%] left-[20%] w-[90%] h-[90%] bg-[radial-gradient(circle_at_center,_rgba(161,161,170,0.05)_0%,transparent_65%)] blur-[100px]"
+        />
+        {/* Textura de grano cinematográfico */}
+        <div className="absolute inset-0 opacity-[0.04] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
       </div>
 
       <div className="relative z-10">
