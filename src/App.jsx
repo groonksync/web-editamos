@@ -198,39 +198,19 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-500/30 overflow-x-hidden relative">
-      {/* 🌊 Fondo de Seda Líquida Animado (Negro + Rojo Vivo) */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-[#050505]">
-        {/* Bloque Rojo 1 */}
+      {/* 🌊 Fondo de Imagen Personalizado (Arco Rojo Cinematográfico) */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-black">
         <motion.div 
           animate={{
-            x: [-100, 100, -50],
-            y: [-50, 50, -50],
-            scale: [1, 1.2, 1],
+            scale: [1, 1.08, 1],
+            opacity: [0.8, 1, 0.8]
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[10%] -left-[10%] w-[100%] h-[100%] bg-[radial-gradient(circle_at_center,_rgba(220,38,38,0.15)_0%,transparent_70%)] blur-[80px]"
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/fondo-web.jpg')" }}
         />
-        {/* Bloque Rojo 2 */}
-        <motion.div 
-          animate={{
-            x: [100, -100, 50],
-            y: [50, -50, 50],
-            scale: [1.2, 1, 1.2],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[20%] -right-[10%] w-[90%] h-[90%] bg-[radial-gradient(circle_at_center,_rgba(153,27,27,0.12)_0%,transparent_70%)] blur-[100px]"
-        />
-        {/* Bloque Rojo 3 (Centro/Abajo para más vida) */}
-        <motion.div 
-          animate={{
-            y: [100, -100, 100],
-            opacity: [0.4, 0.7, 0.4],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-20%] left-[25%] w-[80%] h-[80%] bg-[radial-gradient(circle_at_center,_rgba(185,28,28,0.1)_0%,transparent_70%)] blur-[90px]"
-        />
-        {/* Textura de ruido sutil */}
-        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+        {/* Capa de atmósfera extra */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60" />
       </div>
 
       <div className="relative z-10">
