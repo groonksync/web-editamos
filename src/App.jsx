@@ -198,13 +198,13 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-500/30 overflow-x-hidden relative">
-      {/* 🌊 Fondo de Imagen Personalizado */}
+      {/* 🌊 Fondo de Imagen Personalizado con Desenfoque */}
       <div 
-        className="fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-no-repeat" 
+        className="fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-no-repeat blur-[40px] scale-110" 
         style={{ backgroundImage: "url('/fondo-web.jpg')" }}
       >
-        {/* Capa oscura ajustada al 80% de opacidad */}
-        <div className="absolute inset-0 bg-black/80" />
+        {/* Capa oscura sutil para garantizar la legibilidad */}
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
       <div className="relative z-10">
