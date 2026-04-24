@@ -205,7 +205,7 @@ const App = () => {
           muted 
           loop 
           playsInline 
-          className="absolute inset-0 w-full h-full object-cover opacity-60 blur-[20px] scale-105"
+          className="absolute inset-0 w-full h-full object-cover opacity-60 blur-[28px] scale-105"
         >
           <source src="/fondo01.mp4" type="video/mp4" />
         </video>
