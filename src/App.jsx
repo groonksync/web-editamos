@@ -296,7 +296,6 @@ const App = () => {
       </section>
 
       {/* Servicios Bento */}
-      {false && (
       <section id="servicios" className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
           <div className="lg:col-span-7 bg-[#0a0a0a] rounded-[30px] md:rounded-[40px] p-8 md:p-12 min-h-[350px] md:min-h-[450px] flex flex-col justify-end relative overflow-hidden">
@@ -311,7 +310,7 @@ const App = () => {
             {t.services_data.map((s, idx) => {
               const Icon = s.icon;
               return (
-                <button key={idx} onClick={() => setActiveService(idx)} className={`flex items-center gap-4 md:gap-6 p-6 md:p-8 rounded-[24px] md:rounded-[32px] border transition-all text-left ${activeService === idx ? 'bg-white/5 border-white/20 ring-1 ring-cyan-500/20' : 'opacity-30'}`}>
+                <button key={idx} onClick={() => setActiveService(idx)} className={`flex items-center gap-4 md:gap-6 p-6 md:p-8 rounded-[24px] md:rounded-[32px] border transition-all text-left ${activeService === idx ? 'bg-white/5 border-white/20 ring-1 ring-zinc-400/20' : 'opacity-30'}`}>
                    <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl bg-gradient-to-br ${s.color} text-black`}><Icon className="w-5 h-5" /></div>
                    <div><h4 className="text-lg md:text-xl font-black italic leading-tight">{s.title}</h4><p className="text-[9px] font-black uppercase text-gray-600">{s.tag}</p></div>
                 </button>
@@ -320,7 +319,6 @@ const App = () => {
           </div>
         </div>
       </section>
-      )}
 
       {/* Planes de Edición de Video */}
       <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
@@ -345,15 +343,15 @@ const App = () => {
             >
               {/* Snake Border - Active only on Hover */}
               <div 
-                className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#ef4444_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{ animationDuration: '4s' }}
               />
 
               {/* Card Container with Persistent Subtle Border */}
-              <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col overflow-hidden border border-blue-500/10">
+              <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col overflow-hidden border border-white/10">
                 {/* 💡 Spotlight Tracking Effect - Soft & Wide */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                     style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(239,68,68,0.07), transparent 40%)" }} />
+                     style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
                 <div className="p-8 md:p-10 relative z-10 flex flex-col h-full">
                   <h3 className="text-xl md:text-2xl font-black italic mb-8 uppercase tracking-tight text-center">{plan.name}</h3>
                   
@@ -398,7 +396,6 @@ const App = () => {
       </section>
 
       {/* Planes de Creación de Contenido */}
-      {false && (
       <section id="planes" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
         <div className="mb-16 md:mb-20 text-center">
           <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 px-2">CREACIÓN DE CONTENIDO</span></h2>
@@ -422,14 +419,14 @@ const App = () => {
             >
               {/* Snake Border - Active only on Hover */}
               <div 
-                className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#ef4444_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{ animationDuration: '4s' }}
               />
 
-              <div className="relative rounded-[39px] h-full flex flex-col overflow-hidden p-8 bg-[#0a0a0a] border border-green-500/10">
+              <div className="relative rounded-[39px] h-full flex flex-col overflow-hidden p-8 bg-[#0a0a0a] border border-zinc-400/10">
                 {/* 💡 Spotlight Tracking Effect - Soft & Wide */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                     style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(34,197,94,0.07), transparent 40%)" }} />
+                     style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
                 <div className="relative z-10 flex flex-col h-full">
                   <h3 className="text-2xl font-black italic mb-4 uppercase leading-tight">{plan.name}</h3>
                   <div className="mb-8">
