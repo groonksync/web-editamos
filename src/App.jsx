@@ -267,7 +267,7 @@ const App = () => {
           <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase mb-4">Nuestros <span className="text-red-500">PROYECTOS</span></h2>
           <p className="text-gray-500 text-base md:text-lg max-w-xl">{t.projects_p}</p>
         </div>
-        <div className="flex overflow-x-auto gap-4 md:gap-8 pb-20 pt-10 no-scrollbar snap-x px-4 md:px-10">
+        <div className="flex overflow-x-auto gap-3 md:gap-5 pb-20 pt-10 no-scrollbar snap-x px-4 md:px-10">
           {t.projects_data.map((proj, i) => (
             <motion.div 
               key={i} 
