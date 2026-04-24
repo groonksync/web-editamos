@@ -198,32 +198,13 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-500/30 overflow-x-hidden relative">
-      {/* 🌊 Fondo de Seda Líquida (Negro + Rojo) */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <motion.div 
-          animate={{
-            x: [-150, 150, -100],
-            y: [-80, 80, -80],
-            rotate: [-20, 10, -20],
-            scale: [1, 1.3, 0.9, 1],
-            borderRadius: ["30% 70% 70% 30% / 30% 30% 70% 70%", "50% 50% 30% 70% / 50% 50% 70% 30%", "30% 70% 70% 30% / 30% 30% 70% 70%"],
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[15%] -left-[10%] w-[140%] h-[140%] bg-[radial-gradient(ellipse_at_center,_rgba(220,38,38,0.08)_0%,transparent_65%)] blur-[100px]"
-        />
-        <motion.div 
-          animate={{
-            x: [150, -150, 100],
-            y: [100, -100, 100],
-            rotate: [20, -10, 20],
-            scale: [1, 0.8, 1.2, 1],
-            borderRadius: ["70% 30% 30% 70% / 70% 70% 30% 30%", "30% 70% 70% 30% / 30% 30% 70% 70%", "70% 30% 30% 70% / 70% 70% 30% 30%"],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[5%] -right-[25%] w-[110%] h-[130%] bg-[radial-gradient(ellipse_at_center,_rgba(153,27,27,0.06)_0%,transparent_65%)] blur-[120px]"
-        />
-        <div className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
-             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3%3C/filter%3%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3%3C/svg%3")` }} />
+      {/* 🌊 Fondo de Imagen Personalizado */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-no-repeat" 
+        style={{ backgroundImage: "url('/fondo-web.jpg')" }}
+      >
+        {/* Capa oscura sutil para garantizar la legibilidad de las letras blancas */}
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
       <div className="relative z-10">
