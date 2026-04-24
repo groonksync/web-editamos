@@ -28,13 +28,13 @@ const App = () => {
         margin-inline: 40px;
       }
       .no-scrollbar::-webkit-scrollbar-thumb {
-        background: #dc2626;
+        background: #71717a;
         border-radius: 20px;
-        box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+        box-shadow: 0 0 10px rgba(113, 113, 122, 0.4);
       }
       .no-scrollbar {
         scrollbar-width: thin;
-        scrollbar-color: #dc2626 rgba(255, 255, 255, 0.05);
+        scrollbar-color: #71717a rgba(255, 255, 255, 0.05);
       }
     `;
     document.head.appendChild(style);
