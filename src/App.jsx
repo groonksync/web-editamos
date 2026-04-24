@@ -207,7 +207,7 @@ const App = () => {
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
           className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-[10px] scale-110"
-          style={{ backgroundImage: "url('/fondo01.jpg')" }}
+          style={{ backgroundImage: "url('/fondo02.jpg')" }}
         />
         {/* Capa oscura ajustada al 70% de opacidad */}
         <div className="absolute inset-0 bg-black/70" />
