@@ -244,17 +244,7 @@ const App = () => {
         </nav>
 
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-6 text-center py-20">
-          {/* 🎬 Zero-Cost Video Injection */}
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
-            src="/hero-loop.mp4"
-          />
-          <div className="absolute inset-0 bg-black/60 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-red-500/10 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-red-500/5 to-transparent pointer-events-none" />
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-full max-w-5xl mx-auto">
             <span className="inline-block border border-red-500/30 px-4 md:px-5 py-1.5 rounded-full text-[8px] md:text-[9px] tracking-[0.3em] md:tracking-[0.4em] uppercase text-red-500 mb-6 md:mb-8 bg-red-500/5 font-bold">{t.hero_tag}</span>
             <h1 className="text-5xl sm:text-7xl md:text-9xl lg:text-[145px] font-black mb-6 md:mb-8 leading-[0.9] tracking-tighter italic uppercase px-2">
