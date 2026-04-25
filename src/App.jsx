@@ -59,7 +59,7 @@ const App = () => {
 
   const translations = {
     es: {
-      nav: ["Proyectos", "Servicios", "Planes", "Contacto"],
+      nav: ["Proyectos", "Herramientas", "Planes", "Contacto"],
       cta_nav: "TRABAJAR CON NOSOTROS",
       hero_tag: "Estudio de Post-Producción & Estrategia 2026",
       hero_h1_1: "SINCRONIZA",
@@ -115,7 +115,7 @@ const App = () => {
       ]
     },
     en: {
-      nav: ["Projects", "Services", "Plans", "Contact"],
+      nav: ["Projects", "Tools", "Plans", "Contact"],
       cta_nav: "WORK WITH US",
       hero_tag: "Post-Production & Strategy Studio 2026",
       hero_h1_1: "SYNC",
@@ -321,6 +321,87 @@ const App = () => {
         </div>
       </section>
       )}
+
+      {/* 🛠️ Sección de Herramientas Premium (Extensión) */}
+      <section id="herramientas" className="py-20 md:py-32 px-4 md:px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="px-4 py-1.5 rounded-full bg-zinc-500/10 border border-zinc-500/20 text-[10px] font-black tracking-widest text-zinc-400 uppercase mb-6 inline-block">
+              Sync Pro Labs / After Effects
+            </span>
+            <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">
+              Guide Master <span className="text-zinc-500">PRO</span>
+            </h2>
+            <p className="text-gray-400 text-lg md:text-xl mb-8 font-light leading-relaxed">
+              La extensión definitiva para After Effects que optimiza tu flujo de trabajo en segundos. Diseñada por editores, para editores que buscan perfección y rapidez.
+            </p>
+            <ul className="space-y-4 mb-10">
+              {["Automatización de guías inteligentes", "Gestión de keyframes avanzada", "Interfaz nativa y ultra-ligera", "Actualizaciones de por vida"].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-zinc-300 font-medium">
+                  <Zap className="w-5 h-5 text-zinc-500" /> {item}
+                </li>
+              ))}
+            </ul>
+            
+            <div className="flex items-center gap-6">
+              <div className="text-4xl font-black text-white">$6.99 <span className="text-sm text-zinc-500 uppercase font-bold tracking-widest">usd</span></div>
+              
+              {/* Formulario de PayPal Oculto */}
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" id="paypal-form">
+                <input type="hidden" name="cmd" value="_s-xclick" />
+                <input type="hidden" name="hosted_button_id" value="HHH8ERQ6ZCJXQ" />
+                <input type="hidden" name="currency_code" value="USD" />
+                <button 
+                  type="submit"
+                  className="bg-white text-black font-black px-10 py-5 rounded-2xl flex items-center gap-3 uppercase tracking-tighter hover:bg-zinc-200 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] active:scale-95"
+                >
+                  Comprar Ahora <ArrowRight className="w-5 h-5" />
+                </button>
+              </form>
+            </div>
+          </motion.div>
+
+          {/* Preview de la Extensión Visual */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-tr from-zinc-500/20 to-transparent blur-3xl rounded-full" />
+            <div className="relative aspect-square bg-[#0a0a0a] border border-white/10 rounded-[40px] overflow-hidden p-1 shadow-2xl group">
+               <div className="absolute inset-0 bg-gradient-to-br from-zinc-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+               <div className="w-full h-full bg-[#050505] rounded-[39px] flex items-center justify-center border border-white/5 relative overflow-hidden">
+                  {/* Animación Abstracta de la Extensión */}
+                  <motion.div 
+                    animate={{ 
+                      rotate: [0, 10, -10, 0],
+                      scale: [1, 1.05, 1]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity }}
+                    className="w-48 h-48 md:w-64 md:h-64 border-4 border-zinc-500/20 rounded-3xl flex items-center justify-center p-8 bg-zinc-500/5"
+                  >
+                    <Layout className="w-full h-full text-zinc-500 opacity-50" />
+                  </motion.div>
+                  <div className="absolute bottom-10 left-10 right-10">
+                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                       <motion.div 
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "100%" }}
+                        transition={{ duration: 2, delay: 1 }}
+                        className="h-full bg-zinc-500" 
+                       />
+                    </div>
+                  </div>
+               </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Planes de Edición de Video */}
       <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
