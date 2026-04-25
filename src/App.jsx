@@ -12,7 +12,8 @@ import {
   Maximize2, 
   Layers, 
   Repeat, 
-  Clock 
+  Clock,
+  Download
 } from 'lucide-react';
 
 const App = () => {
@@ -39,6 +40,30 @@ const App = () => {
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
+  }, []);
+
+  // Integración de PayPal Business
+  useEffect(() => {
+    const containerId = "paypal-container-MQ99WW5GG2UN2";
+    const hostedButtonId = "MQ99WW5GG2UN2";
+    const clientId = "BAAsXBDCHVxt-9cTz_3HQXjl5xfqGd32GXkCiEcl-yZzUjmPBGzvwFo-awTgexUIeKj0LK_zU0VxehbdVk";
+
+    const existingScript = document.querySelector(`script[src*="${clientId}"]`);
+    if (existingScript) return;
+
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&components=hosted-buttons&disable-funding=venmo&currency=USD`;
+    script.async = true;
+    
+    script.onload = () => {
+      if (window.paypal) {
+        window.paypal.HostedButtons({
+          hostedButtonId: hostedButtonId,
+        }).render(`#${containerId}`);
+      }
+    };
+
+    document.body.appendChild(script);
   }, []);
 
   const [lang, setLang] = useState('es'); 
@@ -322,93 +347,6 @@ const App = () => {
       </section>
       )}
 
-      {/* 🛠️ Sección de Herramientas Premium (Extensión) */}
-      <section id="herramientas" className="py-20 md:py-32 px-4 md:px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <span className="px-4 py-1.5 rounded-full bg-zinc-500/10 border border-zinc-500/20 text-[10px] font-black tracking-widest text-zinc-400 uppercase mb-6 inline-block">
-              Sync Pro Labs / After Effects
-            </span>
-            <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">
-              Studio Sync <span className="text-zinc-500">PRO</span>
-            </h2>
-            <p className="text-gray-400 text-lg md:text-xl mb-8 font-light leading-relaxed">
-              La extensión definitiva para After Effects que optimiza tu flujo de trabajo en segundos. Diseñada por editores, para editores que buscan perfección y rapidez.
-            </p>
-            <ul className="space-y-4 mb-12">
-              {["Automatización de guías inteligentes", "Gestión de keyframes avanzada", "Interfaz nativa y ultra-ligera", "Actualizaciones de por vida"].map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-zinc-300 font-medium">
-                  <Zap className="w-5 h-5 text-zinc-500" /> {item}
-                </li>
-              ))}
-            </ul>
-            
-            <div className="bg-zinc-900/50 p-8 rounded-[2rem] border border-white/5 space-y-8">
-              <div className="flex items-center justify-between">
-                <div className="text-4xl font-black text-white">$9.99 <span className="text-sm text-zinc-500 uppercase font-bold tracking-widest">usd</span></div>
-                <a 
-                  href="/Studio_Sync_Pro.zxp" 
-                  download
-                  className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors"
-                >
-                  <Download className="w-4 h-4" /> Descargar Instalador
-                </a>
-              </div>
-
-              {/* Botón de PayPal Business */}
-              <div className="pt-6 border-t border-white/5">
-                <div 
-                  id="paypal-container-MQ99WW5GG2UN2" 
-                  className="min-h-[150px] flex items-center justify-center bg-white/5 rounded-2xl"
-                >
-                  <span className="text-zinc-500 text-xs animate-pulse font-bold tracking-widest uppercase">Cargando Pago Seguro...</span>
-                </div>
-                <p className="text-center text-[9px] text-zinc-600 mt-4 uppercase tracking-[0.2em]">Licencia vitalicia / Activación instantánea</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Preview de la Extensión Visual */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-zinc-500/20 to-transparent blur-3xl rounded-full" />
-            <div className="relative aspect-square bg-[#0a0a0a] border border-white/10 rounded-[40px] overflow-hidden p-1 shadow-2xl group">
-               <div className="absolute inset-0 bg-gradient-to-br from-zinc-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-               <div className="w-full h-full bg-[#050505] rounded-[39px] flex items-center justify-center border border-white/5 relative overflow-hidden">
-                  {/* Animación Abstracta de la Extensión */}
-                  <motion.div 
-                    animate={{ 
-                      rotate: [0, 10, -10, 0],
-                      scale: [1, 1.05, 1]
-                    }}
-                    transition={{ duration: 10, repeat: Infinity }}
-                    className="w-48 h-48 md:w-64 md:h-64 border-4 border-zinc-500/20 rounded-3xl flex items-center justify-center p-8 bg-zinc-500/5"
-                  >
-                    <Layout className="w-full h-full text-zinc-500 opacity-50" />
-                  </motion.div>
-                  <div className="absolute bottom-10 left-10 right-10">
-                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                       <motion.div 
-                        initial={{ width: 0 }}
-                        whileInView={{ width: "100%" }}
-                        transition={{ duration: 2, delay: 1 }}
-                        className="h-full bg-zinc-500" 
-                       />
-                    </div>
-                  </div>
-               </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Planes de Edición de Video */}
       <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
@@ -612,6 +550,94 @@ const App = () => {
               <button type="submit" disabled={formStatus === 'loading'} className="w-full py-5 md:py-6 bg-zinc-500 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg uppercase transition-all shadow-[0_0_20px_rgba(113,113,122,0.3)]">{formStatus === 'loading' ? '...' : 'INICIAR PROYECTO'}</button>
             </form>
           )}
+        </div>
+      </section>
+
+      {/* 🛠️ Sección de Herramientas Premium (Extensión) */}
+      <section id="herramientas" className="py-20 md:py-32 px-4 md:px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="px-4 py-1.5 rounded-full bg-zinc-500/10 border border-zinc-500/20 text-[10px] font-black tracking-widest text-zinc-400 uppercase mb-6 inline-block">
+              Sync Pro Labs / After Effects
+            </span>
+            <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">
+              Studio Sync <span className="text-zinc-500">PRO</span>
+            </h2>
+            <p className="text-gray-400 text-lg md:text-xl mb-8 font-light leading-relaxed">
+              La extensión definitiva para After Effects que optimiza tu flujo de trabajo en segundos. Diseñada por editores, para editores que buscan perfección y rapidez.
+            </p>
+            <ul className="space-y-4 mb-12">
+              {["Automatización de guías inteligentes", "Gestión de keyframes avanzada", "Interfaz nativa y ultra-ligera", "Actualizaciones de por vida"].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-zinc-300 font-medium">
+                  <Zap className="w-5 h-5 text-zinc-500" /> {item}
+                </li>
+              ))}
+            </ul>
+            
+            <div className="bg-zinc-900/50 p-8 rounded-[2rem] border border-white/5 space-y-8">
+              <div className="flex items-center justify-between">
+                <div className="text-4xl font-black text-white">$9.99 <span className="text-sm text-zinc-500 uppercase font-bold tracking-widest">usd</span></div>
+                <a 
+                  href="/Studio_Sync_Pro.zxp" 
+                  download
+                  className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors"
+                >
+                  <Download className="w-4 h-4" /> Descargar Instalador
+                </a>
+              </div>
+
+              {/* Botón de PayPal Business */}
+              <div className="pt-6 border-t border-white/5">
+                <div 
+                  id="paypal-container-MQ99WW5GG2UN2" 
+                  className="min-h-[150px] flex items-center justify-center bg-white/5 rounded-2xl"
+                >
+                  <span className="text-zinc-500 text-xs animate-pulse font-bold tracking-widest uppercase">Cargando Pago Seguro...</span>
+                </div>
+                <p className="text-center text-[9px] text-zinc-600 mt-4 uppercase tracking-[0.2em]">Licencia vitalicia / Activación instantánea</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Preview de la Extensión Visual */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-tr from-zinc-500/20 to-transparent blur-3xl rounded-full" />
+            <div className="relative aspect-square bg-[#0a0a0a] border border-white/10 rounded-[40px] overflow-hidden p-1 shadow-2xl group">
+               <div className="absolute inset-0 bg-gradient-to-br from-zinc-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+               <div className="w-full h-full bg-[#050505] rounded-[39px] flex items-center justify-center border border-white/5 relative overflow-hidden">
+                  {/* Animación Abstracta de la Extensión */}
+                  <motion.div 
+                    animate={{ 
+                      rotate: [0, 10, -10, 0],
+                      scale: [1, 1.05, 1]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity }}
+                    className="w-48 h-48 md:w-64 md:h-64 border-4 border-zinc-500/20 rounded-3xl flex items-center justify-center p-8 bg-zinc-500/5"
+                  >
+                    <Layout className="w-full h-full text-zinc-500 opacity-50" />
+                  </motion.div>
+                  <div className="absolute bottom-10 left-10 right-10">
+                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                       <motion.div 
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "100%" }}
+                        transition={{ duration: 2, delay: 1 }}
+                        className="h-full bg-zinc-500" 
+                       />
+                    </div>
+                  </div>
+               </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
