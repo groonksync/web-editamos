@@ -334,12 +334,12 @@ const App = () => {
               Sync Pro Labs / After Effects
             </span>
             <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">
-              Guide Master <span className="text-zinc-500">PRO</span>
+              Studio Sync <span className="text-zinc-500">PRO</span>
             </h2>
             <p className="text-gray-400 text-lg md:text-xl mb-8 font-light leading-relaxed">
               La extensión definitiva para After Effects que optimiza tu flujo de trabajo en segundos. Diseñada por editores, para editores que buscan perfección y rapidez.
             </p>
-            <ul className="space-y-4 mb-10">
+            <ul className="space-y-4 mb-12">
               {["Automatización de guías inteligentes", "Gestión de keyframes avanzada", "Interfaz nativa y ultra-ligera", "Actualizaciones de por vida"].map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-zinc-300 font-medium">
                   <Zap className="w-5 h-5 text-zinc-500" /> {item}
@@ -347,21 +347,28 @@ const App = () => {
               ))}
             </ul>
             
-            <div className="flex items-center gap-6">
-              <div className="text-4xl font-black text-white">$6.99 <span className="text-sm text-zinc-500 uppercase font-bold tracking-widest">usd</span></div>
-              
-              {/* Formulario de PayPal Oculto */}
-              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" id="paypal-form">
-                <input type="hidden" name="cmd" value="_s-xclick" />
-                <input type="hidden" name="hosted_button_id" value="HHH8ERQ6ZCJXQ" />
-                <input type="hidden" name="currency_code" value="USD" />
-                <button 
-                  type="submit"
-                  className="bg-white text-black font-black px-10 py-5 rounded-2xl flex items-center gap-3 uppercase tracking-tighter hover:bg-zinc-200 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] active:scale-95"
+            <div className="bg-zinc-900/50 p-8 rounded-[2rem] border border-white/5 space-y-8">
+              <div className="flex items-center justify-between">
+                <div className="text-4xl font-black text-white">$9.99 <span className="text-sm text-zinc-500 uppercase font-bold tracking-widest">usd</span></div>
+                <a 
+                  href="#" 
+                  className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors"
+                  onClick={(e) => { e.preventDefault(); alert('Link de descarga próximamente'); }}
                 >
-                  Comprar Ahora <ArrowRight className="w-5 h-5" />
-                </button>
-              </form>
+                  <Download className="w-4 h-4" /> Descargar Instalador
+                </a>
+              </div>
+
+              {/* Botón de PayPal Business */}
+              <div className="pt-6 border-t border-white/5">
+                <div 
+                  id="paypal-container-MQ99WW5GG2UN2" 
+                  className="min-h-[150px] flex items-center justify-center bg-white/5 rounded-2xl"
+                >
+                  <span className="text-zinc-500 text-xs animate-pulse font-bold tracking-widest uppercase">Cargando Pago Seguro...</span>
+                </div>
+                <p className="text-center text-[9px] text-zinc-600 mt-4 uppercase tracking-[0.2em]">Licencia vitalicia / Activación instantánea</p>
+              </div>
             </div>
           </motion.div>
 
