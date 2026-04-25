@@ -1,42 +1,46 @@
 // api/paypal-webhook.js
-// Esta función recibe notificaciones de PayPal cuando se completa un pago.
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
-  }
+  if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
 
-  // PayPal envía los datos del evento en el cuerpo de la petición
-  const event = req.body;
+  const body = req.body;
 
   try {
-    // 1. Verificamos que el pago sea exitoso
-    // Nota: En producción debemos verificar la firma del Webhook de PayPal
-    if (event.event_type === 'PAYMENT.SALE.COMPLETED' || event.resource_type === 'sale') {
+    // Escuchamos el evento de pago completado de PayPal
+    // Nota: En producción Vercel recomienda verificar la firma del webhook con PayPal SDK
+    if (body.event_type === 'PAYMENT.SALE.COMPLETED' || body.resource_type === 'sale') {
       
-      const customerEmail = event.resource?.payer?.email_address || 'cliente@desconocido.com';
+      const email = body.resource?.payer?.email_address || 'comprador@syncpro.com';
       
-      // 2. Generamos una clave única (Ejemplo: SYNC-PRO-XXXX-XXXX)
-      const newLicenseKey = `SYNC-PRO-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+      // Generar llave única: SYNC-PRO-XXXX-XXXX
+      const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+      const licenseKey = `SYNC-PRO-${randomPart}`;
 
-      /* 
-         AQUÍ GUARDAREMOS EN LA BASE DE DATOS:
-         - Key: newLicenseKey
-         - Email: customerEmail
-         - Status: active
-      */
+      // Insertar en Supabase
+      const { error } = await supabase
+        .from('licenses')
+        .insert([
+          { 
+            key: licenseKey, 
+            email: email, 
+            status: 'active' 
+          }
+        ]);
 
-      console.log(`PAGO EXITOSO: Licencia ${newLicenseKey} generada para ${customerEmail}`);
+      if (error) throw error;
+
+      console.log(`[EXITO] Licencia ${licenseKey} creada para ${email}`);
       
-      // 3. Opcional: Enviar email automático con la clave
-      // (Podemos usar un servicio gratuito como Resend o SendGrid)
+      // Aquí podrías añadir un servicio de email (como Resend) para enviar la llave al cliente
     }
 
-    // Siempre responder 200 a PayPal para confirmar recepción
-    return res.status(200).send('Webhook Received');
+    return res.status(200).send('OK');
 
   } catch (error) {
-    console.error('Error en Webhook:', error);
+    console.error('Webhook error:', error);
     return res.status(500).send('Internal Server Error');
   }
 }
