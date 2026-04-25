@@ -37,6 +37,12 @@ const App = () => {
         scrollbar-width: thin;
         scrollbar-color: #71717a rgba(255, 255, 255, 0.05);
       }
+      /* Parche para el texto vertical de PayPal */
+      [id^="paypal-container-"] .paypal-hosted-button-label,
+      [id^="paypal-container-"] .paypal-hosted-button-product-name,
+      [id^="paypal-container-"] .paypal-hosted-button-price {
+        display: none !important;
+      }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
@@ -530,80 +536,91 @@ const App = () => {
       )}
 
       {/* 🛠️ Sección de Herramientas Premium (Extensión) */}
-      <section id="herramientas" className="py-20 md:py-32 px-4 md:px-6 max-w-7xl mx-auto border-t border-white/5">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section id="herramientas" className="py-20 px-4 max-w-6xl mx-auto border-t border-white/5">
+        <div className="flex flex-col lg:flex-row gap-12 items-center">
+          {/* Columna Texto */}
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="w-full lg:w-1/2"
           >
             <span className="px-4 py-1.5 rounded-full bg-zinc-500/10 border border-zinc-500/20 text-[10px] font-black tracking-widest text-zinc-400 uppercase mb-6 inline-block">
               Sync Pro Labs / After Effects
             </span>
-            <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">
-              Studio Sync <span className="text-zinc-500">PRO</span>
+            <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 text-white leading-[0.9]">
+              Studio Sync <br /> <span className="text-zinc-500">PRO</span>
             </h2>
-            <p className="text-gray-400 text-lg md:text-xl mb-8 font-light leading-relaxed">
-              La extensión definitiva para After Effects que optimiza tu flujo de trabajo en segundos. Diseñada por editores, para editores que buscan perfección y rapidez.
+            <p className="text-gray-400 text-lg mb-8 font-light leading-relaxed">
+              La extensión definitiva para After Effects que optimiza tu flujo de trabajo en segundos.
             </p>
-            <ul className="space-y-4 mb-12">
-              {["Automatización de guías inteligentes", "Gestión de keyframes avanzada", "Interfaz nativa y ultra-ligera", "Actualizaciones de por vida"].map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-zinc-300 font-medium">
-                  <Zap className="w-5 h-5 text-zinc-500" /> {item}
-                </li>
-              ))}
-            </ul>
             
-            <div className="bg-zinc-900/50 p-6 md:p-8 rounded-[2rem] border border-white/5 space-y-8">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div className="text-4xl font-black text-white">$9.99 <span className="text-sm text-zinc-500 uppercase font-bold tracking-widest">usd</span></div>
-                <a 
-                  href="/Studio_Sync_Pro.zxp" 
-                  download
-                  className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-xl border border-white/10"
-                >
-                  <Download className="w-4 h-4" /> Descargar Instalador
-                </a>
+            <div className="bg-zinc-900/80 p-6 md:p-10 rounded-[2.5rem] border border-white/10 w-full shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <Fingerprint className="w-20 h-20 text-white" />
               </div>
 
-              {/* Botón de PayPal Business */}
-              <div className="pt-6 border-t border-white/5">
-                <div 
-                  id="paypal-container-MQ99WW5GG2UN2" 
-                  className="min-h-[150px] flex items-center justify-center bg-white/5 rounded-2xl"
-                >
-                  <span className="text-zinc-500 text-xs animate-pulse font-bold tracking-widest uppercase text-center px-4">Cargando Pago Seguro...</span>
+              {/* Encabezado de Compra */}
+              <div className="space-y-8 relative z-10">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="flex items-center gap-4 text-zinc-500">
+                    <span className="h-[1px] w-8 bg-zinc-800"></span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em]">Software Original</span>
+                    <span className="h-[1px] w-8 bg-zinc-800"></span>
+                  </div>
+                  <div className="text-6xl font-black text-white">$9.99</div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="flex gap-3 items-center opacity-70">
+                       <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" className="h-4" alt="PayPal" />
+                       <div className="h-3 w-[1px] bg-zinc-700"></div>
+                       <div className="flex gap-1.5">
+                          <div className="w-6 h-4 bg-zinc-800 rounded-sm border border-white/5 flex items-center justify-center text-[6px] font-bold">VISA</div>
+                          <div className="w-6 h-4 bg-zinc-800 rounded-sm border border-white/5 flex items-center justify-center text-[6px] font-bold">MC</div>
+                       </div>
+                    </div>
+                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-2">PayPal & Tarjetas de Crédito/Débito</p>
+                  </div>
                 </div>
-                <p className="text-center text-[9px] text-zinc-600 mt-4 uppercase tracking-[0.2em]">Licencia vitalicia / Activación instantánea</p>
+
+                {/* Botón de Acción Principal (Ahora lleva al pago) */}
+                <button 
+                  onClick={() => document.getElementById('paypal-section').scrollIntoView({ behavior: 'smooth' })}
+                  className="w-full flex items-center justify-center gap-3 text-xs font-black uppercase tracking-widest text-black bg-white hover:bg-zinc-200 transition-all py-6 rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                >
+                  <Zap className="w-5 h-5 fill-current" /> Obtener Licencia de por Vida
+                </button>
+
+                <div id="paypal-section" className="pt-10 border-t border-white/5 flex flex-col items-center">
+                  <p className="text-[10px] text-zinc-400 font-black tracking-[0.2em] mb-8 uppercase text-center">Completa tu pago seguro abajo:</p>
+                  
+                  {/* Contenedor PayPal */}
+                  <div className="w-full flex justify-center overflow-hidden min-h-[100px]">
+                    <div className="min-w-[450px] flex justify-center scale-[0.7] md:scale-100 origin-center">
+                      <div id="paypal-container-MQ99WW5GG2UN2" className="w-full" />
+                    </div>
+                  </div>
+                  
+                  <div className="mt-12 p-6 bg-white/5 rounded-2xl border border-white/5 w-full text-center">
+                     <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mb-4">¿Ya tienes tu licencia?</p>
+                     <a 
+                      href="/Studio_Sync_Pro.zxp" 
+                      download
+                      className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
+                     >
+                      <Download className="w-4 h-4" /> Descargar Instalador
+                     </a>
+                     <p className="text-[8px] text-zinc-600 mt-3 uppercase font-bold tracking-widest">Requiere activación tras la instalación</p>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Preview de la Extensión Visual */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-zinc-500/20 to-transparent blur-3xl rounded-full" />
-            <div className="relative aspect-square bg-[#0a0a0a] border border-white/10 rounded-[40px] overflow-hidden p-1 shadow-2xl group">
-               <div className="absolute inset-0 bg-gradient-to-br from-zinc-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-               <div className="w-full h-full bg-[#050505] rounded-[39px] flex items-center justify-center border border-white/5 relative overflow-hidden">
-                  {/* Animación Abstracta de la Extensión */}
-                  <motion.div 
-                    animate={{ 
-                      rotate: [0, 10, -10, 0],
-                      scale: [1, 1.05, 1]
-                    }}
-                    transition={{ duration: 10, repeat: Infinity }}
-                    className="w-48 h-48 md:w-64 md:h-64 border-4 border-zinc-500/20 rounded-3xl flex items-center justify-center p-8 bg-zinc-500/5"
-                  >
-                    <Layout className="w-full h-full text-zinc-500 opacity-50" />
-                  </motion.div>
-               </div>
-            </div>
-          </motion.div>
+          {/* Columna Visual */}
+          <div className="hidden lg:block w-1/2 relative aspect-square bg-white/5 rounded-[40px] border border-white/10 p-1">
+             <div className="w-full h-full bg-black rounded-[39px] flex items-center justify-center">
+                <Layout className="w-32 h-32 text-zinc-800" />
+             </div>
+          </div>
         </div>
       </section>
 
