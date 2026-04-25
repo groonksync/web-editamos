@@ -351,9 +351,9 @@ const App = () => {
               <div className="flex items-center justify-between">
                 <div className="text-4xl font-black text-white">$9.99 <span className="text-sm text-zinc-500 uppercase font-bold tracking-widest">usd</span></div>
                 <a 
-                  href="#" 
+                  href="/Studio_Sync_Pro.zxp" 
+                  download
                   className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors"
-                  onClick={(e) => { e.preventDefault(); alert('Link de descarga próximamente'); }}
                 >
                   <Download className="w-4 h-4" /> Descargar Instalador
                 </a>
