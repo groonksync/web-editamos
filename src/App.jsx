@@ -529,32 +529,8 @@ const App = () => {
       </section>
       )}
 
-      {/* Contacto */}
-      <section id="contacto" className="py-20 md:py-32 px-4 md:px-6 max-w-4xl mx-auto">
-        <div className="mb-16">
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black italic text-center uppercase tracking-tighter leading-none">
-            ¿LISTO PARA EL <br /> SIGUIENTE <br /> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">NIVEL</span>
-            <span className="text-zinc-500">?</span>
-          </h2>
-        </div>
-        
-        <div className="bg-white/5 p-8 md:p-12 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 text-center max-w-2xl mx-auto">
-          {formStatus === 'success' ? (
-            <div className="py-16 md:py-20"><CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-zinc-400 mx-auto mb-6" /><h3 className="text-2xl md:text-3xl font-black italic uppercase">Synced / Listo</h3></div>
-          ) : (
-            <form onSubmit={handleFormSubmit} className="space-y-5 md:space-y-6 text-left">
-              <input type="text" name="nombre" required placeholder="Nombre" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all" />
-              <input type="email" name="email" required placeholder="Email" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all" />
-              <textarea name="vision" required placeholder="Tu visión..." rows="4" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all"></textarea>
-              <button type="submit" disabled={formStatus === 'loading'} className="w-full py-5 md:py-6 bg-zinc-500 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg uppercase transition-all shadow-[0_0_20px_rgba(113,113,122,0.3)]">{formStatus === 'loading' ? '...' : 'INICIAR PROYECTO'}</button>
-            </form>
-          )}
-        </div>
-      </section>
-
       {/* 🛠️ Sección de Herramientas Premium (Extensión) */}
-      <section id="herramientas" className="py-20 md:py-32 px-4 md:px-6 max-w-7xl mx-auto">
+      <section id="herramientas" className="py-20 md:py-32 px-4 md:px-6 max-w-7xl mx-auto border-t border-white/5">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
@@ -578,13 +554,13 @@ const App = () => {
               ))}
             </ul>
             
-            <div className="bg-zinc-900/50 p-8 rounded-[2rem] border border-white/5 space-y-8">
-              <div className="flex items-center justify-between">
+            <div className="bg-zinc-900/50 p-6 md:p-8 rounded-[2rem] border border-white/5 space-y-8">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div className="text-4xl font-black text-white">$9.99 <span className="text-sm text-zinc-500 uppercase font-bold tracking-widest">usd</span></div>
                 <a 
                   href="/Studio_Sync_Pro.zxp" 
                   download
-                  className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors"
+                  className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-xl border border-white/10"
                 >
                   <Download className="w-4 h-4" /> Descargar Instalador
                 </a>
@@ -596,7 +572,7 @@ const App = () => {
                   id="paypal-container-MQ99WW5GG2UN2" 
                   className="min-h-[150px] flex items-center justify-center bg-white/5 rounded-2xl"
                 >
-                  <span className="text-zinc-500 text-xs animate-pulse font-bold tracking-widest uppercase">Cargando Pago Seguro...</span>
+                  <span className="text-zinc-500 text-xs animate-pulse font-bold tracking-widest uppercase text-center px-4">Cargando Pago Seguro...</span>
                 </div>
                 <p className="text-center text-[9px] text-zinc-600 mt-4 uppercase tracking-[0.2em]">Licencia vitalicia / Activación instantánea</p>
               </div>
@@ -625,21 +601,36 @@ const App = () => {
                   >
                     <Layout className="w-full h-full text-zinc-500 opacity-50" />
                   </motion.div>
-                  <div className="absolute bottom-10 left-10 right-10">
-                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                       <motion.div 
-                        initial={{ width: 0 }}
-                        whileInView={{ width: "100%" }}
-                        transition={{ duration: 2, delay: 1 }}
-                        className="h-full bg-zinc-500" 
-                       />
-                    </div>
-                  </div>
                </div>
             </div>
           </motion.div>
         </div>
       </section>
+
+      {/* Contacto */}
+      <section id="contacto" className="py-20 md:py-32 px-4 md:px-6 max-w-4xl mx-auto">
+        <div className="mb-16">
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black italic text-center uppercase tracking-tighter leading-none">
+            ¿LISTO PARA EL <br /> SIGUIENTE <br /> 
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">NIVEL</span>
+            <span className="text-zinc-500">?</span>
+          </h2>
+        </div>
+        
+        <div className="bg-white/5 p-8 md:p-12 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 text-center max-w-2xl mx-auto">
+          {formStatus === 'success' ? (
+            <div className="py-16 md:py-20"><CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-zinc-400 mx-auto mb-6" /><h3 className="text-2xl md:text-3xl font-black italic uppercase">Synced / Listo</h3></div>
+          ) : (
+            <form onSubmit={handleFormSubmit} className="space-y-5 md:space-y-6 text-left">
+              <input type="text" name="nombre" required placeholder="Nombre" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all" />
+              <input type="email" name="email" required placeholder="Email" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all" />
+              <textarea name="vision" required placeholder="Tu visión..." rows="4" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all"></textarea>
+              <button type="submit" disabled={formStatus === 'loading'} className="w-full py-5 md:py-6 bg-zinc-500 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg uppercase transition-all shadow-[0_0_20px_rgba(113,113,122,0.3)]">{formStatus === 'loading' ? '...' : 'INICIAR PROYECTO'}</button>
+            </form>
+          )}
+        </div>
+      </section>
+
 
       <footer className="py-16 md:py-20 border-t border-white/5 text-center text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-gray-800 uppercase px-6">
         © 2026 Sync Pro Studio // Bolivia // Global Reach
