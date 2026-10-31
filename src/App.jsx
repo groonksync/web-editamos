@@ -1,85 +1,556 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Play, 
-  Camera, 
-  Fingerprint, 
-  Layout, 
-  ArrowRight, 
-  CheckCircle2, 
-  Globe, 
-  Zap, 
-  Maximize2, 
-  Layers, 
-  Repeat, 
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
+import {
+  Play,
+  Check,
+  X,
+  ChevronDown,
+  ArrowRight,
+  ArrowUp,
+  Star,
+  Menu,
+  Sparkles,
+  Upload,
+  Video,
+  Send,
+  Heart,
+  Users,
+  Eye,
+  Phone,
+  Mail,
+  MessageCircle,
+  Sliders,
+  Layers,
   Clock,
-  Download
+  ShieldCheck,
+  FolderUp
 } from 'lucide-react';
 
+/* -------------------------------------------------------------------------- */
+/*  1. TARJETA DE VIDEO DE PORTAFOLIO (Idéntica a `fd` de 85thAgency)         */
+/* -------------------------------------------------------------------------- */
+const PortfolioVideoCard = ({ item, index, onOpenModal }) => {
+  const videoRef = useRef(null);
+  const cardRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const isHorizontal = item.aspect === '16/9';
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+        if (videoRef.current) {
+          if (entry.isIntersecting) {
+            videoRef.current.play().catch(() => {});
+          } else {
+            videoRef.current.pause();
+          }
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      style={{ transitionDelay: `${(index % 3) * 100}ms` }}
+      className={`space-y-3 transition-all duration-500 hover:-translate-y-2 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
+      <div
+        onClick={() => onOpenModal(item)}
+        className={`relative bg-gradient-to-br from-[#029854]/10 to-[#029854]/5 rounded-2xl overflow-hidden ${
+          isHorizontal ? 'aspect-video' : 'aspect-[9/16]'
+        } shadow-lg border border-black/10 hover:shadow-2xl hover:border-[#029854]/40 transition-all duration-300 group cursor-pointer`}
+      >
+        <video
+          ref={videoRef}
+          src={item.video}
+          poster={item.poster}
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className="w-full h-full object-cover pointer-events-none"
+        />
+
+        {/* Etiqueta superior opcional */}
+        {item.badge && (
+          <div className="absolute top-3 left-3 z-20 px-3 py-1 rounded-full bg-[#111111]/85 backdrop-blur-md text-white text-[11px] font-semibold tracking-wide border border-white/15">
+            {item.badge}
+          </div>
+        )}
+
+        {/* Overlay de Trazado Inmobiliario si aplica */}
+        {item.hasLandOverlay && (
+          <svg
+            viewBox="0 0 200 300"
+            className="absolute inset-0 w-full h-full pointer-events-none z-10 opacity-85"
+          >
+            <polygon
+              points="35,185 95,145 168,170 135,235"
+              fill="rgba(2, 152, 84, 0.18)"
+              stroke="#029854"
+              strokeWidth="2"
+              strokeDasharray="5 3"
+            />
+            <circle cx="95" cy="145" r="3.5" fill="#ffffff" />
+            <circle cx="168" cy="170" r="3.5" fill="#ffffff" />
+            <line x1="95" y1="145" x2="95" y2="112" stroke="#ffffff" strokeWidth="1.5" />
+            <rect x="52" y="92" width="86" height="20" rx="6" fill="#111111" stroke="#029854" strokeWidth="1" />
+            <text x="95" y="105" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">
+              TERRENO DELIMITADO
+            </text>
+          </svg>
+        )}
+
+        {/* Botón Play Central Verde 85thAgency */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-auto bg-black/10 group-hover:bg-black/20 transition-colors">
+          <div className="w-16 h-16 bg-[#029854]/90 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-all duration-300 shadow-lg">
+            <svg className="w-8 h-8 text-white fill-white ml-1" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-center space-y-0.5">
+        <p className="text-sm font-semibold text-[#111111]">{item.title}</p>
+        <p className="text-xs text-[#666666]">{item.subtitle}</p>
+      </div>
+    </div>
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*  2. BADGE "STEP 1..4" (Idéntico a `iX` de 85thAgency)                      */
+/* -------------------------------------------------------------------------- */
+const StepBadge = ({ currentStep }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    className="inline-flex items-center gap-0 rounded-2xl overflow-hidden shadow-lg"
+    style={{ backgroundColor: '#111111', border: '2px solid #807f7c' }}
+  >
+    <div className="px-6 py-3 flex items-center justify-center" style={{ backgroundColor: '#111111' }}>
+      <span className="text-2xl md:text-3xl font-bold" style={{ color: '#807f7c' }}>
+        Paso
+      </span>
+    </div>
+    <div
+      className="px-5 py-3 flex items-center justify-center font-bold text-2xl md:text-3xl text-white rounded-xl m-1"
+      style={{ backgroundColor: '#029854' }}
+    >
+      {currentStep}
+    </div>
+  </motion.div>
+);
+
+/* -------------------------------------------------------------------------- */
+/*  3. PASO 2: ANIMACIÓN DE SUBIDA DE ARCHIVOS (`nX` de 85thAgency)           */
+/* -------------------------------------------------------------------------- */
+const AnimatedUploadBox = () => {
+  return (
+    <div className="relative w-full aspect-[16/10] max-w-2xl mx-auto rounded-3xl overflow-visible flex items-center justify-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="relative w-full h-full rounded-3xl flex items-center justify-center overflow-hidden"
+        style={{
+          border: '3px dashed rgba(2, 152, 84, 0.35)',
+          backgroundColor: 'rgba(255, 252, 245, 0.7)'
+        }}
+      >
+        <div className="text-center space-y-3 z-10 px-4">
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#029854]/10 flex items-center justify-center text-[#029854]">
+              <FolderUp className="w-7 h-7" />
+            </div>
+            <Upload className="w-10 h-10 opacity-30 text-[#029854]" />
+          </div>
+          <p className="text-sm md:text-base font-semibold text-[#111111]/70">
+            Suelta aquí tus tomas crudas (Drive o WhatsApp)
+          </p>
+          <p className="text-xs text-[#666666]">
+            Tomas de dron, celular, cámara o locución
+          </p>
+        </div>
+
+        {/* Tarjetas apiladas animadas */}
+        <motion.div
+          animate={{
+            x: [0, 110, 110, 0],
+            y: [0, -35, -35, 0],
+            scale: [1, 1.06, 0.9, 1]
+          }}
+          transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute left-6 md:left-10 bottom-6 md:bottom-8 z-20"
+        >
+          <div
+            className="w-16 h-24 md:w-20 md:h-28 rounded-xl shadow-lg flex items-center justify-center"
+            style={{
+              backgroundColor: '#029854',
+              border: '2px solid rgba(255,255,255,0.6)',
+              transform: 'rotate(-8deg) translate(0px, 8px)'
+            }}
+          >
+            <Video className="w-7 h-7 text-white" />
+          </div>
+          <div
+            className="absolute inset-0 w-16 h-24 md:w-20 md:h-28 rounded-xl shadow-lg flex items-center justify-center"
+            style={{
+              backgroundColor: '#03a960',
+              border: '2px solid rgba(255,255,255,0.7)',
+              transform: 'rotate(-2deg) translate(6px, 4px)'
+            }}
+          >
+            <Video className="w-7 h-7 text-white" />
+          </div>
+          <div
+            className="absolute inset-0 w-16 h-24 md:w-20 md:h-28 rounded-xl shadow-xl flex items-center justify-center"
+            style={{
+              backgroundColor: '#04bd6b',
+              border: '2px solid white',
+              transform: 'rotate(6deg) translate(12px, 0px)'
+            }}
+          >
+            <Play className="w-7 h-7 text-white fill-white" />
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*  4. PASO 3: CHAT EN VIVO ANIMADO (`sX` de 85thAgency)                      */
+/* -------------------------------------------------------------------------- */
+const AnimatedChatCard = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const [visibleMessages, setVisibleMessages] = useState([]);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const timers = [400, 1400, 2400].map((delay, idx) =>
+      setTimeout(() => {
+        setVisibleMessages((prev) => (prev.includes(idx) ? prev : [...prev, idx]));
+      }, delay)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [isInView]);
+
+  const messages = [
+    {
+      from: 'team',
+      text: '¡Hola! Ya subimos tu video editado con trazado de terreno, señaladores 3D, IA y color en DaVinci.',
+      sender: 'Equipo Sync Pro'
+    },
+    {
+      from: 'client',
+      text: '¡Quedó brutal! El marcado del lote y la voz se ven súper profesionales.',
+      sender: 'Tú (Cliente)'
+    },
+    {
+      from: 'team',
+      text: '¡Genial! Ya te enviamos el archivo final en máxima calidad listo para publicar hoy mismo.',
+      sender: 'Equipo Sync Pro'
+    }
+  ];
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={isInView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.6 }}
+      className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border-2"
+      style={{ borderColor: 'rgba(2, 152, 84, 0.15)' }}
+    >
+      <div className="space-y-4">
+        {messages.map((msg, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: msg.from === 'team' ? -30 : 30, y: 10 }}
+            animate={visibleMessages.includes(idx) ? { opacity: 1, x: 0, y: 0 } : {}}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className={`flex gap-3 ${msg.from === 'client' ? 'flex-row-reverse' : ''}`}
+          >
+            {msg.from === 'team' ? (
+              <div className="w-10 h-10 rounded-full bg-[#111111] text-white font-black italic flex items-center justify-center flex-shrink-0 shadow-md">
+                S
+              </div>
+            ) : (
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: '#e5e7eb' }}
+              >
+                <span className="text-lg">👤</span>
+              </div>
+            )}
+            <div className={`flex-1 ${msg.from === 'client' ? 'text-right' : ''}`}>
+              <motion.div
+                className={`rounded-2xl p-4 ${
+                  msg.from === 'team' ? 'rounded-tl-sm' : 'rounded-tr-sm inline-block'
+                }`}
+                style={{
+                  backgroundColor: msg.from === 'team' ? '#f5f5f5' : '#029854'
+                }}
+                initial={{ scale: 0.8 }}
+                animate={visibleMessages.includes(idx) ? { scale: 1 } : {}}
+                transition={{ duration: 0.3, delay: 0.15 }}
+              >
+                <p
+                  className={`text-sm lg:text-base font-medium ${
+                    msg.from === 'client' ? 'text-white' : 'text-[#111111]'
+                  }`}
+                >
+                  {msg.text}
+                </p>
+              </motion.div>
+              <span className="text-xs mt-1 block text-[#999999]">{msg.sender}</span>
+            </div>
+          </motion.div>
+        ))}
+
+        {isInView && visibleMessages.length < 3 && (
+          <div className="flex gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#111111] text-white font-black italic flex items-center justify-center flex-shrink-0">
+              S
+            </div>
+            <div className="rounded-2xl rounded-tl-sm p-4 bg-[#f5f5f5]">
+              <div className="flex gap-1">
+                {[0, 1, 2].map((dot) => (
+                  <motion.div
+                    key={dot}
+                    className="w-2 h-2 rounded-full bg-[#999999]"
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{ duration: 0.6, repeat: Infinity, delay: dot * 0.1 }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*  5. PASO 4: CONTADORES ANIMADOS + REDES (`tX` & `Xy` de 85thAgency)        */
+/* -------------------------------------------------------------------------- */
+const AnimatedMetricBox = ({ icon: Icon, label, endValue, isInView }) => {
+  const [val, setVal] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    let step = 0;
+    const totalSteps = 50;
+    const increment = endValue / totalSteps;
+    const interval = setInterval(() => {
+      step++;
+      setVal(Math.floor(increment * step));
+      if (step >= totalSteps) {
+        setVal(endValue);
+        clearInterval(interval);
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [isInView, endValue]);
+
+  const formatNum = (num) => {
+    if (num >= 1000) return `${(num / 1000).toFixed(0)}K+`;
+    return `${num}+`;
+  };
+
+  return (
+    <div className="bg-white rounded-2xl p-4 shadow-lg border border-black/5 flex flex-col items-center justify-center min-w-[95px] sm:min-w-[115px]">
+      <div className="w-9 h-9 rounded-full bg-[#029854]/10 text-[#029854] flex items-center justify-center mb-2">
+        <Icon className="w-4 h-4" />
+      </div>
+      <span className="text-lg sm:text-xl font-extrabold text-[#111111]">{formatNum(val)}</span>
+      <span className="text-xs text-[#666666] font-medium">{label}</span>
+    </div>
+  );
+};
+
+const AnimatedDeliveryBox = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  const floatingBadges = [
+    { label: 'Instagram Reels', pos: { top: '8%', left: '8%' }, delay: 0.2 },
+    { label: 'TikTok 9:16', pos: { top: '12%', right: '8%' }, delay: 0.4 },
+    { label: 'YouTube 16:9', pos: { bottom: '32%', left: '6%' }, delay: 0.6 },
+    { label: 'Master Plan HD', pos: { bottom: '34%', right: '8%' }, delay: 0.8 }
+  ];
+
+  return (
+    <div ref={ref} className="relative w-full aspect-square max-w-md mx-auto">
+      <div
+        className="absolute inset-0 rounded-3xl overflow-hidden border-2 border-[#029854]/20 shadow-xl flex flex-col items-center justify-center gap-6 p-6"
+        style={{ backgroundColor: '#FFFCF5' }}
+      >
+        {/* Badges flotantes */}
+        {floatingBadges.map((b, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={
+              isInView
+                ? {
+                    opacity: 1,
+                    scale: 1,
+                    y: [0, -8, 0],
+                    rotate: [-3, 3, -3]
+                  }
+                : {}
+            }
+            transition={{
+              delay: b.delay,
+              duration: 0.5,
+              y: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' },
+              rotate: { duration: 4, repeat: Infinity, ease: 'easeInOut' }
+            }}
+            style={b.pos}
+            className="absolute px-3 py-1.5 rounded-full bg-[#111111] text-white text-xs font-bold shadow-md border border-[#029854]/40 z-20"
+          >
+            {b.label}
+          </motion.div>
+        ))}
+
+        {/* Ícono central */}
+        <motion.div
+          animate={{ scale: [1, 1.06, 1] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          className="w-24 h-24 rounded-3xl bg-[#029854] text-white flex items-center justify-center shadow-2xl shadow-[#029854]/30 z-10"
+        >
+          <Sparkles className="w-12 h-12" />
+        </motion.div>
+
+        {/* Contadores */}
+        <div className="flex gap-3 justify-center items-center flex-wrap z-10 mt-2">
+          <AnimatedMetricBox icon={Heart} label="Interacciones" endValue={45000} isInView={isInView} />
+          <AnimatedMetricBox icon={Users} label="Alcance" endValue={120000} isInView={isInView} />
+          <AnimatedMetricBox icon={Eye} label="Reproducciones" endValue={250000} isInView={isInView} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*  6. TARJETA DE TESTIMONIO MARQUEE (Idéntica a `yX` & `iR` de 85thAgency)   */
+/* -------------------------------------------------------------------------- */
+const TestimonialCard = ({ testimonial, isHovered, onHover, onLeave }) => (
+  <div
+    onMouseEnter={onHover}
+    onMouseLeave={onLeave}
+    onTouchStart={onHover}
+    onTouchEnd={onLeave}
+    className={`flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] rounded-2xl md:rounded-3xl p-5 sm:p-6 md:p-8 border-2 relative overflow-hidden cursor-pointer transition-all duration-150 ease-out ${
+      isHovered
+        ? 'bg-[#029854] text-white border-[#029854] shadow-2xl shadow-[#029854]/30 scale-[1.02] -translate-y-1'
+        : 'bg-white border-black/10 shadow-lg hover:border-[#029854]/30 scale-100 translate-y-0'
+    }`}
+  >
+    <div
+      className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl transition-opacity duration-150 ${
+        isHovered ? 'bg-white/20 opacity-100' : 'bg-[#029854]/10 opacity-0'
+      }`}
+    />
+    <div className="relative z-10">
+      <div className="flex gap-0.5 md:gap-1 mb-3">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            className={`w-4 h-4 md:w-5 md:h-5 transition-colors duration-150 ${
+              isHovered ? 'fill-white text-white' : 'fill-[#029854] text-[#029854]'
+            }`}
+          />
+        ))}
+      </div>
+      <div className="mb-3 sm:mb-4">
+        <span
+          className={`inline-block text-xs sm:text-sm font-semibold rounded-full px-3 py-1.5 transition-colors duration-150 ${
+            isHovered ? 'bg-white/20 text-white' : 'bg-[#029854]/10 text-[#029854]'
+          }`}
+        >
+          {testimonial.highlight}
+        </span>
+      </div>
+      <blockquote
+        className={`text-sm md:text-base font-medium leading-relaxed mb-4 sm:mb-6 md:mb-8 transition-colors duration-150 ${
+          isHovered ? 'text-white' : 'text-[#111111]/90'
+        }`}
+      >
+        “{testimonial.quote}”
+      </blockquote>
+      <div
+        className={`flex items-center gap-3 pt-3 sm:pt-4 border-t transition-colors duration-150 ${
+          isHovered ? 'border-white/20' : 'border-black/10'
+        }`}
+      >
+        <div
+          className={`w-11 h-11 md:w-12 md:h-12 rounded-full overflow-hidden flex items-center justify-center text-base font-bold transition-all duration-150 ${
+            isHovered
+              ? 'bg-white/20 text-white'
+              : 'bg-gradient-to-br from-[#029854]/30 to-[#029854]/10 text-[#029854]'
+          }`}
+        >
+          {testimonial.initial}
+        </div>
+        <div>
+          <p
+            className={`font-bold text-sm sm:text-base transition-colors duration-150 ${
+              isHovered ? 'text-white' : 'text-[#111111]'
+            }`}
+          >
+            {testimonial.name}
+          </p>
+          <p
+            className={`text-xs md:text-sm transition-colors duration-150 ${
+              isHovered ? 'text-white/80' : 'text-[#666666]'
+            }`}
+          >
+            {testimonial.role}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+/* -------------------------------------------------------------------------- */
+/*  COMPONENTE PRINCIPAL APP (Diseño idéntico a 85thAgency.com en Español)    */
+/* -------------------------------------------------------------------------- */
 const App = () => {
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      .no-scrollbar::-webkit-scrollbar {
-        height: 4px;
-      }
-      .no-scrollbar::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 20px;
-        margin-inline: 40px;
-      }
-      .no-scrollbar::-webkit-scrollbar-thumb {
-        background: #71717a;
-        border-radius: 20px;
-        box-shadow: 0 0 10px rgba(113, 113, 122, 0.4);
-      }
-      .no-scrollbar {
-        scrollbar-width: thin;
-        scrollbar-color: #71717a rgba(255, 255, 255, 0.05);
-      }
-      /* Parche para el texto vertical de PayPal */
-      [id^="paypal-container-"] .paypal-hosted-button-label,
-      [id^="paypal-container-"] .paypal-hosted-button-product-name,
-      [id^="paypal-container-"] .paypal-hosted-button-price {
-        display: none !important;
-      }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
-
-  // Integración de PayPal Business
-  useEffect(() => {
-    const containerId = "paypal-container-MQ99WW5GG2UN2";
-    const hostedButtonId = "MQ99WW5GG2UN2";
-    const clientId = "BAAsXBDCHVxt-9cTz_3HQXjl5xfqGd32GXkCiEcl-yZzUjmPBGzvwFo-awTgexUIeKj0LK_zU0VxehbdVk";
-
-    const existingScript = document.querySelector(`script[src*="${clientId}"]`);
-    if (existingScript) return;
-
-    const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&components=hosted-buttons&disable-funding=venmo&currency=USD`;
-    script.async = true;
-    
-    script.onload = () => {
-      if (window.paypal) {
-        window.paypal.HostedButtons({
-          hostedButtonId: hostedButtonId,
-        }).render(`#${containerId}`);
-      }
-    };
-
-    document.body.appendChild(script);
-  }, []);
-
-  const [lang, setLang] = useState('es'); 
-  const [activeService, setActiveService] = useState(0);
-  const [activeDuration, setActiveDuration] = useState(1);
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [compareSlider, setCompareSlider] = useState(50);
-  const [orderPlanType, setOrderPlanType] = useState('advanced');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activePortfolioTab, setActivePortfolioTab] = useState('all');
+  const [showAllPortfolio, setShowAllPortfolio] = useState(false);
+  const [selectedVideoModal, setSelectedVideoModal] = useState(null);
+  const [activeDuration, setActiveDuration] = useState(1); // 0: 30s, 1: 31-60s, 2: 61-90s, 3: 91-120s
+  const [customPlanType, setCustomPlanType] = useState('advanced');
   const [extraAiVideo, setExtraAiVideo] = useState(true);
   const [extraTerrain, setExtraTerrain] = useState(false);
+  const [compareSlider, setCompareSlider] = useState(50);
+  const [openFaq, setOpenFaq] = useState(0);
+  const [hoveredTestimonial, setHoveredTestimonial] = useState(null);
+  const [marqueeDir, setMarqueeDir] = useState(null);
+  const [levelUpTriggered, setLevelUpTriggered] = useState(false);
+  const [levelUpSolved, setLevelUpSolved] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [formStatus, setFormStatus] = useState('idle');
 
   // ID de Videos de Google Drive (Sincronizado con actualizar_videos.py)
@@ -92,456 +563,385 @@ const App = () => {
     "1ij8AwE_XWKfSL0Ssw7RFjWeBDaaAD_11"  // Cuadro 5
   ]);
 
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzunzhVeJQtXsSpOV7G1jgQt2UwAnD7SUf-mWr2grocF7tJ_Hrtf26b86g8CxQZb67nUQ/exec";
+  const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzunzhVeJQtXsSpOV7G1jgQt2UwAnD7SUf-mWr2grocF7tJ_Hrtf26b86g8CxQZb67nUQ/exec";
 
-  const translations = {
-    es: {
-      nav: ["Proyectos", "Herramientas", "Planes", "Contacto"],
-      cta_nav: "TRABAJAR CON NOSOTROS",
-      hero_tag: "Estudio de Post-Producción & Estrategia 2026",
-      hero_h1_1: "SINCRONIZA",
-      hero_h1_2: "TU VISIÓN",
-      hero_p: "No solo editamos video. Diseñamos la frecuencia en la que tu marca resuena con el mundo. Edición avanzada en AE/PR, identidad visual y captura cinematográfica en cualquier formato.",
-      hero_btn_main: "INICIAR PROYECTO",
-      hero_btn_sec: "VER SHOWREEL",
-      projects_h2: "NUESTROS PROYECTOS",
-      projects_p: "Ediciones de alto impacto optimizadas para la retención máxima. Dominamos el formato vertical y horizontal para todas las plataformas sociales.",
-      plans_h2: "PLANES DE CREACIÓN DE CONTENIDO",
-      plans_p: "Suscripciones mensuales diseñadas para un crecimiento constante y presencia profesional.",
-      extra_plans_h2: "PLANES EXTRA",
-      editing_plans_h2: "PLANES DE EDICIÓN DE VIDEO",
-      editing_plans_p: "Selecciona la duración de tu video y compara nuestras opciones de edición inmobiliaria y comercial.",
-      editing_plans_data: [
-        {
-          duration: "Hasta 30 seg",
-          tag: "Micro-Reel",
-          basic: {
-            name: "Edición Básica",
-            subtitle: "Ágil, directo y comercial para venta rápida",
-            price: "Bs. 120",
-            features: [
-              "Marcado de terreno: Línea perimetral sobre la toma de dron",
-              "Voz con IA: Locutor profesional leyendo tu guion",
-              "Contenido con IA: Hasta 5 imágenes + 1 video animado corto",
-              "Textos clave: Precio, tamaño en m², zona y contacto",
-              "1 cambio o ajuste incluido"
-            ]
-          },
-          advanced: {
-            name: "Edición Avanzada",
-            badge: "Alto Impacto / Recomendado",
-            subtitle: "Alta gama para preventas, urbanizaciones y proyección a futuro",
-            price: "Bs. 220",
-            features: [
-              "Marcado de precisión: Trazado del terreno con seguimiento del dron",
-              "Señaladores flotantes en el mapa para ubicar accesos clave",
-              "Títulos con relieve y estilo 3D (fáciles de leer en celulares)",
-              "Voz de locutor con IA con entonación comercial prémium",
-              "Contenido con IA: Hasta 3 videos animados + imágenes conceptuales",
-              "Color de cine: Áreas verdes vivas y cielo azul nítido",
-              "Hasta 2 cambios o ajustes incluidos"
-            ]
-          }
-        },
-        {
-          duration: "31 a 60 seg",
-          tag: "Estándar",
-          basic: {
-            name: "Edición Básica",
-            subtitle: "Ágil, directo y comercial para venta rápida",
-            price: "Bs. 180",
-            features: [
-              "Marcado de terreno con seguimiento de la toma",
-              "Voz con IA completa para explicar la oportunidad",
-              "Contenido con IA: Hasta 5 imágenes + 1 video animado corto",
-              "Textos informativos: Servicios básicos, accesos y cuotas",
-              "1 cambio o ajuste incluido"
-            ]
-          },
-          advanced: {
-            name: "Edición Avanzada",
-            badge: "Alto Impacto / Recomendado",
-            subtitle: "Alta gama para preventas, urbanizaciones y proyección a futuro",
-            price: "Bs. 320",
-            features: [
-              "Marcado de precisión y seguimiento dinámico en movimiento",
-              "Señaladores flotantes de puntos estratégicos de la zona",
-              "Títulos con relieve y estilo 3D con efectos de impacto",
-              "Voz de locutor con IA comercial y persuasiva",
-              "Contenido con IA: Hasta 3 videos animados + imágenes del proyecto a futuro",
-              "Color de cine y sonido profesional",
-              "Hasta 2 cambios o ajustes incluidos"
-            ]
-          }
-        },
-        {
-          duration: "61 a 90 seg",
-          tag: "Recorrido",
-          basic: {
-            name: "Edición Básica",
-            subtitle: "Ágil, directo y comercial para venta rápida",
-            price: "Bs. 250",
-            features: [
-              "Marcado de terreno + tomas del entorno cercano",
-              "Voz con IA adaptada a guiones más largos",
-              "Contenido con IA: Hasta 5 imágenes + 1 video animado corto",
-              "Textos detallados de ventajas y vías de transporte",
-              "1 cambio o ajuste incluido"
-            ]
-          },
-          advanced: {
-            name: "Edición Avanzada",
-            badge: "Alto Impacto / Recomendado",
-            subtitle: "Alta gama para preventas, urbanizaciones y proyección a futuro",
-            price: "Bs. 430",
-            features: [
-              "Marcado de precisión completo del lote y avenidas",
-              "Señaladores flotantes urbanos (escuelas, comercios, transporte)",
-              "Títulos con relieve y estilo 3D para cuotas y plusvalía",
-              "Voz de locutor con IA publicitaria de alto nivel",
-              "Contenido con IA: Hasta 3 videos animados + imágenes conceptuales",
-              "Acabado cinematográfico de lujo en tomas de dron y tierra",
-              "Hasta 2 cambios o ajustes incluidos"
-            ]
-          }
-        },
-        {
-          duration: "91 a 120 seg",
-          tag: "Master Plan",
-          basic: {
-            name: "Edición Básica",
-            subtitle: "Ágil, directo y comercial para venta rápida",
-            price: "Bs. 320",
-            features: [
-              "Recorrido completo del lote y accesos principales",
-              "Voz con IA para proyectos con información amplia",
-              "Contenido con IA: Hasta 5 imágenes + 1 video animado corto",
-              "Pantalla final de contacto con todos los datos de tu empresa",
-              "1 cambio o ajuste incluido"
-            ]
-          },
-          advanced: {
-            name: "Edición Avanzada",
-            badge: "Alto Impacto / Recomendado",
-            subtitle: "Alta gama para preventas, urbanizaciones y proyección a futuro",
-            price: "Bs. 550",
-            features: [
-              "Presentación integral de proyecto o urbanización (Master Plan)",
-              "Marcado de precisión y señaladores de todo el entorno",
-              "Títulos con relieve y estilo 3D de alta gama",
-              "Voz de locutor con IA prémium para narración comercial",
-              "Contenido con IA: Hasta 3 videos animados + imágenes de áreas sociales y casas",
-              "Color y sonido de máxima fidelidad",
-              "Hasta 2 cambios o ajustes incluidos"
-            ]
-          }
-        }
-      ],
-      editing_extras: [
-        { price: "+Bs. 50", label: "Video IA extra" },
-        { price: "+Bs. 80", label: "Terreno adicional" },
-        { price: "+Bs. 30 / 60", label: "Ajuste extra" },
-        { price: "+Bs. 60 / 100", label: "Cada +30 seg extras" }
-      ],
-      select_basic_btn: "Seleccionar Básica",
-      select_advanced_btn: "Seleccionar Avanzada",
-      plans_data: [
-        { name: "Plan Impacto", price: "$150", priceBs: "Bs. 1.400", items: ["Foco: Redes (Básico)", "4 Reels / TikToks", "Guion Estándar", "1 Jornada (4h)", "Recursos: Luces + Micro", "Edición Básica"] },
-        { name: "Plan Crecimiento", price: "$210", priceBs: "Bs. 2.000", items: ["Foco: Redes (Ventas)", "8 Reels + 1 Corp.", "Viral Ingenioso", "2 Jornadas (8h)", "Luces + Mic + Modelo", "Edición Avanzada"] },
-        { name: "Plan Dominio", price: "$300", priceBs: "Bs. 2.800", items: ["Foco: Redes (Elite)", "12 Reels + 2 Ads", "Estrategia Total", "Jornadas Flexibles", "Set + 2 Modelos", "Color + VFX"] }
-      ],
-      extra_plans_data: [
-        { name: "Plan Foto Pro", price: "$220", priceBs: "Bs. 1.500", items: ["Marca y Producto", "20 Fotos Editadas", "Dirección de Arte", "1 Sesión (3-4h)", "Luces + Fondo", "Retoque Digital"] },
-        { name: "Plan Eventos Pro", price: "$360", priceBs: "Bs. 2.500", items: ["Social y Ceremonial", "Video Cine + Recap", "Guion Narrativo", "Cobertura (Hasta 6h)", "Cámara Pro + Audio", "Edición Highlights"] }
-      ],
-      projects_categories: [
-        { id: 'all', label: 'TODOS' },
-        { id: 'inmobiliaria', label: 'INMOBILIARIA & TERRENOS' },
-        { id: 'comercial', label: 'COMERCIAL & NEGOCIOS' },
-        { id: 'fitness', label: 'FITNESS & MARCAS' }
-      ],
-      projects_data: [
-        { title: "URBANIZACIÓN URUBÓ", subtitle: "Inmobiliaria & Terrenos", category: "inmobiliaria", color: "from-zinc-400/20", img: "/video02.jpeg", videoSrc: "/cuadro-2.mp4", hasLandOverlay: true, badge: "Trazado + IA" },
-        { title: "CONDOMINIO SUR", subtitle: "Inmobiliaria & Terrenos", category: "inmobiliaria", color: "from-zinc-500/20", img: "/video05.jpeg", videoSrc: "/cuadro-5.mp4", hasLandOverlay: true, badge: "Señaladores + Voz IA" },
-        { title: "SPORT FIT", subtitle: "Fitness", category: "fitness", color: "from-blue-500/20", img: "/video01.jpeg", videoSrc: "/cuadro-1.mp4" },
-        { title: "ZAMBRANOS", subtitle: "Auto servicio", category: "comercial", color: "from-cyan-500/20", img: "/video02.jpeg", videoSrc: "/cuadro-2.mp4" },
-        { title: "CHINO BARBER", subtitle: "Barbería", category: "comercial", color: "from-blue-600/20", img: "/video03.jpeg", videoSrc: "/cuadro-3.mp4" },
-        { title: "NOVAFIT", subtitle: "Fitness", category: "fitness", color: "from-purple-500/20", img: "/video04.jpeg", videoSrc: "/cuadro-4.mp4" },
-        { title: "YOJA HAIR LOUNGE", subtitle: "Belleza", category: "comercial", color: "from-zinc-400/20", img: "/video05.jpeg", videoSrc: "/cuadro-5.mp4" }
-      ],
-      horizontal_section_title: "PROYECTOS HORIZONTALES / MASTER PLAN (16:9)",
-      horizontal_projects_data: [
-        {
-          title: "MASTER PLAN · URBANIZACIÓN URUBÓ",
-          subtitle: "Trazado de Precisión + Señaladores Flotantes + Color DaVinci",
-          category: "inmobiliaria",
-          img: "/video02.jpeg",
-          videoSrc: "/cuadro-2.mp4",
-          pin1: "Av. Principal 2 min",
-          pin2: "500 m²",
-          polygon: "22,68 48,42 82,52 64,84"
-        },
-        {
-          title: "PROYECTO · CONDOMINIO & LOTES COMERCIALES",
-          subtitle: "Delimitación de Terreno + Proyección IA + Voz Comercial",
-          category: "inmobiliaria",
-          img: "/video05.jpeg",
-          videoSrc: "/cuadro-5.mp4",
-          pin1: "Zona de Alta Plusvalía",
-          pin2: "360 m²",
-          polygon: "18,64 52,38 85,48 58,82"
-        }
-      ],
-      bento_before_after_title: "ANTES VS. DESPUÉS (DAVINCI STUDIO)",
-      bento_before_label: "TOMA CRUDA DE DRON",
-      bento_after_label: "EDICIÓN AVANZADA SYNC PRO",
-      bento_customizer_title: "PERSONALIZA TU PEDIDO",
-      bento_extra_ai_label: "+1 Video IA extra",
-      bento_extra_terrain_label: "+1 Terreno adicional",
-      bento_total_label: "TOTAL ESTIMADO:",
-      bento_whatsapp_btn: "ENVIAR PEDIDO A WHATSAPP (69109766)",
-      bento_how_title: "¿CÓMO TRABAJAMOS?",
-      bento_how_steps: [
-        { num: "01.", text: "ENVÍA TUS TOMAS Y GUION" },
-        { num: "02.", text: "EDICIÓN, TRAZADO E IA" },
-        { num: "03.", text: "REVISIÓN Y ENTREGA FINAL" }
-      ],
-      services_data: [
-        { title: "Post-Producción", desc: "Edición rítmica en Premiere Pro y VFX avanzados en After Effects.", tag: "AE + PR", color: "from-zinc-400 to-orange-700", icon: Play },
-        { title: "Identidad Visual", desc: "Sistemas visuales corporativos que proyectan autoridad y confianza absoluta.", tag: "Corporativa", color: "from-zinc-500 to-zinc-800", icon: Fingerprint },
-        { title: "Producción y Eventos", desc: "Captura cinematográfica y cobertura de eventos de alto nivel con calidad 4K HDR.", tag: "Eventos", color: "from-zinc-300 to-zinc-500", icon: Camera },
-        { title: "Grabación y Modelos", desc: "Dirección de talento y producción de contenido cinematográfico con modelos y actores en cualquier formato.", tag: "Grabación y Modelos", color: "from-zinc-400 to-zinc-700", icon: Layout }
-      ]
-    },
-    en: {
-      nav: ["Projects", "Tools", "Plans", "Contact"],
-      cta_nav: "WORK WITH US",
-      hero_tag: "Post-Production & Strategy Studio 2026",
-      hero_h1_1: "SYNC",
-      hero_h1_2: "YOUR VISION",
-      hero_p: "We don't just edit video. We design the frequency where your brand resonates with the world. Advanced AE/PR editing, visual identity, and cinematic capture in any format.",
-      hero_btn_main: "START PROJECT",
-      hero_btn_sec: "WATCH REEL",
-      projects_h2: "OUR PROJECTS",
-      projects_p: "High-impact edits optimized for maximum retention. We master vertical and horizontal formats for all social platforms.",
-      plans_h2: "CONTENT CREATION PLANS",
-      plans_p: "Monthly subscriptions designed for consistent growth and professional presence.",
-      extra_plans_h2: "EXTRA PLANS",
-      editing_plans_h2: "VIDEO EDITING PLANS",
-      editing_plans_p: "Select your video duration and compare our real estate and commercial editing options.",
-      editing_plans_data: [
-        {
-          duration: "Up to 30 sec",
-          tag: "Micro-Reel",
-          basic: {
-            name: "Basic Editing",
-            subtitle: "Agile, direct and commercial for fast sales",
-            price: "Bs. 120",
-            features: [
-              "Land marking: Perimeter line over drone shot",
-              "AI Voice: Professional voiceover reading your script",
-              "AI Content: Up to 5 images + 1 short animated video",
-              "Key texts: Price, size in m², area and contact",
-              "1 revision or adjustment included"
-            ]
-          },
-          advanced: {
-            name: "Advanced Editing",
-            badge: "High Impact / Recommended",
-            subtitle: "High-end for pre-sales, developments and future projection",
-            price: "Bs. 220",
-            features: [
-              "Precision marking: Land tracing with drone tracking",
-              "Floating map callouts to locate key access points",
-              "Embossed & 3D-style titles (easy to read on mobile)",
-              "AI Voiceover with premium commercial tone",
-              "AI Content: Up to 3 animated videos + conceptual images",
-              "Cinema color: Vivid green areas and crisp blue sky",
-              "Up to 2 revisions or adjustments included"
-            ]
-          }
-        },
-        {
-          duration: "31 to 60 sec",
-          tag: "Standard",
-          basic: {
-            name: "Basic Editing",
-            subtitle: "Agile, direct and commercial for fast sales",
-            price: "Bs. 180",
-            features: [
-              "Land marking with shot tracking",
-              "Full AI Voice to explain the opportunity",
-              "AI Content: Up to 5 images + 1 short animated video",
-              "Informative texts: Basic utilities, access and installments",
-              "1 revision or adjustment included"
-            ]
-          },
-          advanced: {
-            name: "Advanced Editing",
-            badge: "High Impact / Recommended",
-            subtitle: "High-end for pre-sales, developments and future projection",
-            price: "Bs. 320",
-            features: [
-              "Precision marking and dynamic motion tracking",
-              "Floating callouts for strategic area points",
-              "Embossed & 3D-style titles with impact effects",
-              "Commercial and persuasive AI Voiceover",
-              "AI Content: Up to 3 animated videos + future project images",
-              "Cinema color and professional sound design",
-              "Up to 2 revisions or adjustments included"
-            ]
-          }
-        },
-        {
-          duration: "61 to 90 sec",
-          tag: "Tour",
-          basic: {
-            name: "Basic Editing",
-            subtitle: "Agile, direct and commercial for fast sales",
-            price: "Bs. 250",
-            features: [
-              "Land marking + surrounding area shots",
-              "AI Voice adapted for longer scripts",
-              "AI Content: Up to 5 images + 1 short animated video",
-              "Detailed texts of advantages and transport routes",
-              "1 revision or adjustment included"
-            ]
-          },
-          advanced: {
-            name: "Advanced Editing",
-            badge: "High Impact / Recommended",
-            subtitle: "High-end for pre-sales, developments and future projection",
-            price: "Bs. 430",
-            features: [
-              "Complete precision marking of lot and avenues",
-              "Urban floating callouts (schools, shops, transit)",
-              "Embossed & 3D-style titles for installments and value",
-              "High-level advertising AI Voiceover",
-              "AI Content: Up to 3 animated videos + conceptual images",
-              "Luxury cinematic finish on drone and ground shots",
-              "Up to 2 revisions or adjustments included"
-            ]
-          }
-        },
-        {
-          duration: "91 to 120 sec",
-          tag: "Master Plan",
-          basic: {
-            name: "Basic Editing",
-            subtitle: "Agile, direct and commercial for fast sales",
-            price: "Bs. 320",
-            features: [
-              "Complete tour of lot and main access roads",
-              "AI Voice for projects with extensive information",
-              "AI Content: Up to 5 images + 1 short animated video",
-              "Final contact screen with all your company details",
-              "1 revision or adjustment included"
-            ]
-          },
-          advanced: {
-            name: "Advanced Editing",
-            badge: "High Impact / Recommended",
-            subtitle: "High-end for pre-sales, developments and future projection",
-            price: "Bs. 550",
-            features: [
-              "Comprehensive project or development presentation (Master Plan)",
-              "Precision marking and callouts of the entire environment",
-              "High-end embossed & 3D-style titles",
-              "Premium AI Voiceover for commercial narration",
-              "AI Content: Up to 3 animated videos + social area & home images",
-              "Maximum fidelity color and sound",
-              "Up to 2 revisions or adjustments included"
-            ]
-          }
-        }
-      ],
-      editing_extras: [
-        { price: "+Bs. 50", label: "Extra AI Video" },
-        { price: "+Bs. 80", label: "Additional Land Lot" },
-        { price: "+Bs. 30 / 60", label: "Extra Revision" },
-        { price: "+Bs. 60 / 100", label: "Each +30 sec extra" }
-      ],
-      select_basic_btn: "Select Basic",
-      select_advanced_btn: "Select Advanced",
-      workflow_h2: "THE SYNC METHOD",
-      workflow_p: "Technical mastery of After Effects and Premiere Pro. From idea to high-end final render.",
-      trust_h2: "Why Sync Pro?",
-      trust_items: [
-        { t: "After Effects Workflow", d: "Custom motion graphics, no generic stock templates." },
-        { t: "Optimized Delivery", d: "2026 codecs (AVIF/HEVC) for instant loading with zero quality loss." },
-        { t: "Retention Strategy", d: "Videos psychologically designed to keep interest at its peak." }
-      ],
-      plans_data: [
-        { name: "Impact Plan", price: "$150", priceBs: "Bs. 1,400", items: ["Focus: Social (Basic)", "4 Reels / TikToks", "Standard Scripting", "1 Session (4h)", "Lights + Mic", "Basic Editing"] },
-        { name: "Growth Plan", price: "$210", priceBs: "Bs. 2,000", items: ["Focus: Social (Sales)", "8 Reels + 1 Corp.", "Viral Scripting", "2 Sessions (8h)", "Lights + Mic + Model", "Advanced Editing"] },
-        { name: "Dominion Plan", price: "$300", priceBs: "Bs. 2,800", items: ["Focus: Social (Elite)", "12 Reels + 2 Ads", "Total Strategy", "Flexible Sessions", "Set + 2 Models", "Color + VFX"] }
-      ],
-      extra_plans_data: [
-        { name: "Photo Pro Plan", price: "$220", priceBs: "Bs. 1,500", items: ["Brand & Product", "20 Edited Photos", "Art Direction", "1 Session (3-4h)", "Lights + Backdrop", "Digital Retouching"] },
-        { name: "Events Pro Plan", price: "$360", priceBs: "Bs. 2,500", items: ["Social & Ceremonial", "Cine Video + Recap", "Narrative Script", "Coverage (Up to 6h)", "Pro Camera + Audio", "Highlights Editing"] }
-      ],
-      projects_categories: [
-        { id: 'all', label: 'ALL' },
-        { id: 'inmobiliaria', label: 'REAL ESTATE & LAND' },
-        { id: 'comercial', label: 'COMMERCIAL & BUSINESS' },
-        { id: 'fitness', label: 'FITNESS & BRANDS' }
-      ],
-      projects_data: [
-        { title: "URBANIZACIÓN URUBÓ", subtitle: "Real Estate & Land", category: "inmobiliaria", color: "from-zinc-400/20", img: "/video02.jpeg", videoSrc: "/cuadro-2.mp4", hasLandOverlay: true, badge: "Land Tracing + AI" },
-        { title: "CONDOMINIO SUR", subtitle: "Real Estate & Land", category: "inmobiliaria", color: "from-zinc-500/20", img: "/video05.jpeg", videoSrc: "/cuadro-5.mp4", hasLandOverlay: true, badge: "Callouts + AI Voice" },
-        { title: "SPORT FIT", subtitle: "Fitness", category: "fitness", color: "from-blue-500/20", img: "/video01.jpeg", videoSrc: "/cuadro-1.mp4" },
-        { title: "ZAMBRANOS", subtitle: "Auto Service", category: "comercial", color: "from-cyan-500/20", img: "/video02.jpeg", videoSrc: "/cuadro-2.mp4" },
-        { title: "CHINO BARBER", subtitle: "Barber Shop", category: "comercial", color: "from-blue-600/20", img: "/video03.jpeg", videoSrc: "/cuadro-3.mp4" },
-        { title: "NOVAFIT", subtitle: "Fitness", category: "fitness", color: "from-purple-500/20", img: "/video04.jpeg", videoSrc: "/cuadro-4.mp4" },
-        { title: "YOJA HAIR LOUNGE", subtitle: "Beauty", category: "comercial", color: "from-zinc-400/20", img: "/video05.jpeg", videoSrc: "/cuadro-5.mp4" }
-      ],
-      horizontal_section_title: "HORIZONTAL PROJECTS / MASTER PLAN (16:9)",
-      horizontal_projects_data: [
-        {
-          title: "MASTER PLAN · URBANIZACIÓN URUBÓ",
-          subtitle: "Precision Tracing + Floating Callouts + DaVinci Color",
-          category: "inmobiliaria",
-          img: "/video02.jpeg",
-          videoSrc: "/cuadro-2.mp4",
-          pin1: "Main Ave 2 min",
-          pin2: "500 m²",
-          polygon: "22,68 48,42 82,52 64,84"
-        },
-        {
-          title: "PROJECT · CONDO & COMMERCIAL LOTS",
-          subtitle: "Land Marking + AI Projection + Commercial Voiceover",
-          category: "inmobiliaria",
-          img: "/video05.jpeg",
-          videoSrc: "/cuadro-5.mp4",
-          pin1: "High Value Area",
-          pin2: "360 m²",
-          polygon: "18,64 52,38 85,48 58,82"
-        }
-      ],
-      bento_before_after_title: "BEFORE VS. AFTER (DAVINCI STUDIO)",
-      bento_before_label: "RAW DRONE FOOTAGE",
-      bento_after_label: "SYNC PRO ADVANCED EDIT",
-      bento_customizer_title: "CUSTOMIZE YOUR ORDER",
-      bento_extra_ai_label: "+1 Extra AI Video",
-      bento_extra_terrain_label: "+1 Additional Land Lot",
-      bento_total_label: "ESTIMATED TOTAL:",
-      bento_whatsapp_btn: "SEND ORDER TO WHATSAPP (69109766)",
-      bento_how_title: "HOW DO WE WORK?",
-      bento_how_steps: [
-        { num: "01.", text: "SEND FOOTAGE & SCRIPT" },
-        { num: "02.", text: "EDITING, TRACING & AI" },
-        { num: "03.", text: "REVISION & FINAL DELIVERY" }
-      ],
-      services_data: [
-        { title: "Post-Production", desc: "Rhythmic editing in Premiere Pro and advanced VFX in After Effects.", tag: "AE + PR", color: "from-zinc-400 to-orange-700", icon: Play },
-        { title: "Visual Identity", desc: "Corporate visual systems that project authority and trust.", tag: "Corporate", color: "from-zinc-500 to-zinc-800", icon: Fingerprint },
-        { title: "Production & Events", desc: "Cinematic capture of events, products, and corporate content.", tag: "Events", color: "from-zinc-300 to-zinc-500", icon: Camera },
-        { title: "Shooting & Models", desc: "Talent direction and cinematic content production with models and actors in any format.", tag: "Shooting & Models", color: "from-zinc-400 to-zinc-700", icon: Layout }
-      ]
+  // Parallax del Hero (idéntico a 85thAgency)
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start']
+  });
+  const leftBlobX = useTransform(scrollYProgress, [0, 0.5], ['0%', '30%']);
+  const rightBlobX = useTransform(scrollYProgress, [0, 0.5], ['0%', '-30%']);
+  const blobsY = useTransform(scrollYProgress, [0, 0.5], ['0%', '60%']);
+  const blobsOpacity = useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 0.8, 0.6]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 500);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id) => {
+    setMobileMenuOpen(false);
+    const el = document.getElementById(id);
+    if (el) {
+      const top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - 85);
+      window.scrollTo({ top, behavior: 'smooth' });
     }
   };
 
-  const t = translations[lang];
+  // Datos de Portafolio (integrando los proyectos reales de Sync Pro)
+  const portfolioItems = [
+    {
+      title: 'Videos de Terrenos e Inmobiliaria',
+      subtitle: 'Trazado de Lotes + Señaladores 3D + IA (9:16)',
+      category: 'inmobiliaria',
+      video: '/cuadro-2.mp4',
+      poster: '/video02.jpeg',
+      aspect: '9/16',
+      hasLandOverlay: true,
+      badge: 'Inmobiliaria · Trazado + IA'
+    },
+    {
+      title: 'Reels Comerciales para Marcas y Negocios',
+      subtitle: 'Chino Barber · Edición Dinámica & SFX (9:16)',
+      category: 'comercial',
+      video: '/cuadro-3.mp4',
+      poster: '/video03.jpeg',
+      aspect: '9/16',
+      badge: 'Comercial · Alta Retención'
+    },
+    {
+      title: 'Videos para Creadores, Gyms y Fitness',
+      subtitle: 'Sport Fit · Ritmo, Cortes Rápidos y Color (9:16)',
+      category: 'fitness',
+      video: '/cuadro-1.mp4',
+      poster: '/video01.jpeg',
+      aspect: '9/16',
+      badge: 'Fitness · Dinámico'
+    },
+    {
+      title: 'NovaFit · Entrenamiento & Marca Personal',
+      subtitle: 'Subtítulos Dinámicos + Efectos Visuales (9:16)',
+      category: 'fitness',
+      video: '/cuadro-4.mp4',
+      poster: '/video04.jpeg',
+      aspect: '9/16',
+      badge: 'Reels 9:16'
+    },
+    {
+      title: 'Yoja Hair Lounge · Estética & Belleza',
+      subtitle: 'Colorización DaVinci Resolve + Ritmo Comercial (9:16)',
+      category: 'comercial',
+      video: '/cuadro-5.mp4',
+      poster: '/video05.jpeg',
+      aspect: '9/16',
+      badge: 'Color DaVinci'
+    },
+    {
+      title: 'Zambranos · Auto Servicio & Promoción',
+      subtitle: 'Edición Comercial para Ventas en Redes (9:16)',
+      category: 'comercial',
+      video: '/cuadro-2.mp4',
+      poster: '/video02.jpeg',
+      aspect: '9/16',
+      badge: 'Ventas & Ads'
+    },
+    {
+      title: 'Master Plan Inmobiliario · Vista Panorámica (16:9)',
+      subtitle: 'Delimitación de Terrenos + Señaladores Flotantes + Voz Locutor',
+      category: 'horizontal',
+      video: '/cuadro-2.mp4',
+      poster: '/video02.jpeg',
+      aspect: '16/9',
+      hasLandOverlay: true,
+      badge: 'Horizontal 16:9 · Master Plan'
+    },
+    {
+      title: 'Presentación Comercial & YouTube (16:9)',
+      subtitle: 'Edición de 1 a 10 min con Contenido IA y Colorización Pro',
+      category: 'horizontal',
+      video: '/cuadro-5.mp4',
+      poster: '/video05.jpeg',
+      aspect: '16/9',
+      badge: 'Horizontal 16:9 · YouTube'
+    }
+  ];
+
+  const filteredPortfolio =
+    activePortfolioTab === 'all'
+      ? showAllPortfolio
+        ? portfolioItems
+        : portfolioItems.slice(0, 3)
+      : portfolioItems.filter((item) => item.category === activePortfolioTab);
+
+  // Planes por Duración de Sync Pro (Precios exactos en Bs. acordados con el usuario)
+  const editingPlansByDuration = [
+    {
+      duration: 'Hasta 30 seg',
+      tag: 'Micro-Reel / TikTok',
+      basic: {
+        name: 'Edición Básica',
+        subtitle: 'Ágil, directo y comercial para venta rápida',
+        price: 'Bs. 150',
+        delivery: 'Entrega en 24 a 48 horas',
+        items: [
+          'Marcado simple del terreno (líneas limpias)',
+          'Títulos limpios de ubicación y precio',
+          'Voz con IA (narración clara y comercial)',
+          'Hasta 5 imágenes generadas con IA',
+          '1 video generado con IA (familia o entorno)',
+          'Música de fondo + efectos de sonido',
+          '1 cambio incluido'
+        ]
+      },
+      advanced: {
+        name: 'Edición Avanzada',
+        subtitle: 'Máximo impacto visual, relieve y acabado DaVinci',
+        price: 'Bs. 250',
+        delivery: 'Prioridad de entrega y acabado Pro',
+        items: [
+          'Trazado de precisión y relieves del terreno',
+          'Señaladores flotantes y textos 3D en escena',
+          'Voz de locutor profesional',
+          'Creación de imágenes con IA para el proyecto',
+          'Hasta 3 videos generados con IA integrados',
+          'Colorización profesional en DaVinci Resolve',
+          'Hasta 2 cambios incluidos'
+        ]
+      }
+    },
+    {
+      duration: '31 a 60 seg',
+      tag: 'Estándar Más Pedido',
+      basic: {
+        name: 'Edición Básica',
+        subtitle: 'Ideal para Reels, TikToks y Shorts completos',
+        price: 'Bs. 190',
+        delivery: 'Entrega en 24 a 48 horas',
+        items: [
+          'Marcado simple del terreno (líneas limpias)',
+          'Títulos limpios de ubicación y precio',
+          'Voz con IA (narración clara y comercial)',
+          'Hasta 5 imágenes generadas con IA',
+          '1 video generado con IA (familia o entorno)',
+          'Música de fondo + efectos de sonido',
+          '1 cambio incluido'
+        ]
+      },
+      advanced: {
+        name: 'Edición Avanzada',
+        subtitle: 'El favorito para inmobiliarias, marcas y creadores',
+        price: 'Bs. 290',
+        delivery: 'Prioridad de entrega y acabado Pro',
+        items: [
+          'Trazado de precisión y relieves del terreno',
+          'Señaladores flotantes y textos 3D en escena',
+          'Voz de locutor profesional',
+          'Creación de imágenes con IA para el proyecto',
+          'Hasta 3 videos generados con IA integrados',
+          'Colorización profesional en DaVinci Resolve',
+          'Hasta 2 cambios incluidos'
+        ]
+      }
+    },
+    {
+      duration: '61 a 90 seg',
+      tag: 'Recorrido Completo',
+      basic: {
+        name: 'Edición Básica',
+        subtitle: 'Para mostrar más tomas, accesos y beneficios',
+        price: 'Bs. 250',
+        delivery: 'Entrega en 24 a 48 horas',
+        items: [
+          'Marcado simple del terreno (líneas limpias)',
+          'Títulos limpios de ubicación y precio',
+          'Voz con IA (narración clara y comercial)',
+          'Hasta 5 imágenes generadas con IA',
+          '1 video generado con IA (familia o entorno)',
+          'Música de fondo + efectos de sonido',
+          '1 cambio incluido'
+        ]
+      },
+      advanced: {
+        name: 'Edición Avanzada',
+        subtitle: 'Producción visual completa con señaladores e IA',
+        price: 'Bs. 390',
+        delivery: 'Prioridad de entrega y acabado Pro',
+        items: [
+          'Trazado de precisión y relieves del terreno',
+          'Señaladores flotantes y textos 3D en escena',
+          'Voz de locutor profesional',
+          'Creación de imágenes con IA para el proyecto',
+          'Hasta 3 videos generados con IA integrados',
+          'Colorización profesional en DaVinci Resolve',
+          'Hasta 2 cambios incluidos'
+        ]
+      }
+    },
+    {
+      duration: '91 a 120 seg',
+      tag: 'Presentación / Master Plan',
+      basic: {
+        name: 'Edición Básica',
+        subtitle: 'Presentación extensa vertical u horizontal',
+        price: 'Bs. 320',
+        delivery: 'Entrega en 24 a 48 horas',
+        items: [
+          'Marcado simple del terreno (líneas limpias)',
+          'Títulos limpios de ubicación y precio',
+          'Voz con IA (narración clara y comercial)',
+          'Hasta 5 imágenes generadas con IA',
+          '1 video generado con IA (familia o entorno)',
+          'Música de fondo + efectos de sonido',
+          '1 cambio incluido'
+        ]
+      },
+      advanced: {
+        name: 'Edición Avanzada',
+        subtitle: 'Presentación de alto valor para urbanizaciones y marcas',
+        price: 'Bs. 490',
+        delivery: 'Prioridad de entrega y acabado Pro',
+        items: [
+          'Trazado de precisión y relieves del terreno',
+          'Señaladores flotantes y textos 3D en escena',
+          'Voz de locutor profesional',
+          'Creación de imágenes con IA para el proyecto',
+          'Hasta 3 videos generados con IA integrados',
+          'Colorización profesional en DaVinci Resolve',
+          'Hasta 2 cambios incluidos'
+        ]
+      }
+    }
+  ];
+
+  // Casos de Éxito (Estructura asimétrica idéntica a `lX` de 85thAgency)
+  const caseStudies = [
+    {
+      client: 'Urbanizaciones & Lotes en Venta',
+      tags: ['Inmobiliaria', 'Trazado + IA', 'DaVinci Resolve'],
+      image: '/video02.jpeg',
+      headline: 'Cómo Transformamos Tomas Crudas de Dron en Videos de Terrenos con Señaladores 3D que Cierran Ventas',
+      label: 'Cotizar un Video Inmobiliario Similar'
+    },
+    {
+      client: 'Sport Fit · Chino Barber · NovaFit',
+      tags: ['Reels 9:16', 'Alta Retención'],
+      image: '/video01.jpeg',
+      headline: 'Edición Dinámica de Reels y TikToks con Efectos de Sonido, Ritmo y Color para Marcas Locales',
+      label: 'Ver Detalles del Servicio'
+    },
+    {
+      client: 'Zambranos · Yoja Hair Lounge',
+      tags: ['Comercial & Redes', 'Contenido IA'],
+      image: '/video05.jpeg',
+      headline: 'Videos Comerciales de 30 a 120 Segundos con Locución, Imágenes/Videos IA y Entrega en 24–48h',
+      label: 'Solicitar Propuesta por WhatsApp'
+    }
+  ];
+
+  // Testimonios para el Marquee infinito (`S5` de 85thAgency adaptado a Sync Pro)
+  const testimonials = [
+    {
+      quote:
+        'Increíblemente rápidos y detallistas. Les enviamos las tomas de dron del terreno un viernes y nos entregaron el video con el lote trazado, señaladores flotantes y voz lista para pautar. ¡Vendimos mucho más rápido!',
+      name: 'Carlos Méndez',
+      role: 'Asesor & Desarrollador Inmobiliario',
+      initial: 'CM',
+      highlight: 'Trazado de terrenos impecable y rápido'
+    },
+    {
+      quote:
+        'Trabajar con Sync Pro para las redes de nuestro gimnasio cambió por completo la imagen de la marca. Los cortes, la música, los efectos de sonido y el color en DaVinci hacen que cada Reel destaque.',
+      name: 'Equipo Sport Fit',
+      role: 'Centro de Entrenamiento & Fitness',
+      initial: 'SF',
+      highlight: 'Nuestros Reels ahora retienen a la audiencia'
+    },
+    {
+      quote:
+        'Antes perdía días tratando de editar mis propios videos. Ahora solo grabo las tomas con mi celular o dron, las subo al Drive y ellos se encargan de los títulos 3D, las imágenes con IA y la locución.',
+      name: 'Rodrigo Vargas',
+      role: 'Creador de Contenido & Comercializador',
+      initial: 'RV',
+      highlight: 'Me ahorran horas de trabajo cada semana'
+    },
+    {
+      quote:
+        'La diferencia entre una toma cruda apagada y el resultado final que entregan con colorización profesional y videos generados con IA es brutal. 100% recomendados.',
+      name: 'Chino Barber Studio',
+      role: 'Marca Comercial',
+      initial: 'CB',
+      highlight: 'Calidad visual de otro nivel'
+    },
+    {
+      quote:
+        'El trato directo por WhatsApp es súper ágil. Entendieron a la primera lo que necesitábamos mostrar en el proyecto inmobiliario y cumplieron los tiempos al pie de la letra.',
+      name: 'Valeria Suárez',
+      role: 'Gerente de Ventas Inmobiliarias',
+      initial: 'VS',
+      highlight: 'Comunicación rápida y cero complicaciones'
+    }
+  ];
+
+  // Preguntas Frecuentes (`#faq` de 85thAgency adaptado a Sync Pro)
+  const faqs = [
+    {
+      q: '¿En cuánto tiempo entregan los videos editados?',
+      a: 'Entregamos la mayoría de los videos en un plazo de 24 a 48 horas según la duración y el plan elegido (Básica o Avanzada). Si tienes un lanzamiento urgente, escríbenos por WhatsApp para darle prioridad en la fila.'
+    },
+    {
+      q: '¿Qué formatos y duraciones de video editan?',
+      a: 'Editamos tanto videos verticales (9:16) para TikTok, Instagram Reels y YouTube Shorts, como videos horizontales (16:9) para YouTube, presentaciones inmobiliarias y anuncios. Nuestros planes cubren desde 30 segundos hasta 120 segundos, y puedes adicionar bloques extra de +30 segundos (+Bs. 60 en Básica / +Bs. 100 en Avanzada) para videos de 3, 5 o 10 minutos.'
+    },
+    {
+      q: '¿Cuál es la diferencia principal entre Edición Básica y Edición Avanzada?',
+      a: 'La Edición Básica incluye marcado simple del terreno, títulos limpios, voz con IA, hasta 5 imágenes con IA, 1 video con IA y 1 revisión. La Edición Avanzada eleva tu video al máximo nivel con trazado de precisión y relieves, señaladores flotantes y textos 3D, voz de locutor profesional, hasta 3 videos generados con IA, colorización en DaVinci Resolve y hasta 2 revisiones.'
+    },
+    {
+      q: '¿Puedo agregar más videos con IA o marcar terrenos adicionales?',
+      a: '¡Sí! Puedes personalizar tu pedido fácilmente: cada video extra generado con IA tiene un valor adicional de +Bs. 50, y cada terreno adicional marcado dentro del mismo video suma +Bs. 80.'
+    },
+    {
+      q: '¿Cuántos cambios o revisiones incluye cada plan?',
+      a: 'El plan de Edición Básica incluye 1 ronda de cambios y el plan de Edición Avanzada incluye hasta 2 rondas de cambios sin costo. Si necesitas un ajuste adicional fuera del plan, tiene un valor de +Bs. 30 (Básica) o +Bs. 60 (Avanzada).'
+    },
+    {
+      q: '¿Cómo empezamos a trabajar hoy mismo?',
+      a: 'Muy simple: elige la duración de tu video en la sección de Planes, personaliza si deseas algún extra y haz clic en el botón para enviarnos tu pedido directo a nuestro WhatsApp (+591 69109766). Compartes tus tomas por Google Drive o WhatsApp y comenzamos a editar.'
+    }
+  ];
+
+  const problemPills = [
+    'Editar me toma días',
+    'Mis tomas se ven apagadas',
+    'No sé hacer trazados 3D',
+    'Baja retención en Reels',
+    'Sin tiempo para editar'
+  ];
+
+  const solutionPills = [
+    'Listo en 24–48 horas',
+    'Color DaVinci Resolve',
+    'Trazado y Señaladores 3D',
+    'Contenido con IA incluido',
+    'Tú grabas, nosotros editamos'
+  ];
+
+  const handleTriggerLevelUp = () => {
+    setLevelUpTriggered(true);
+    setTimeout(() => {
+      setLevelUpSolved(true);
+    }, 400);
+    setTimeout(() => {
+      setLevelUpTriggered(false);
+      scrollToSection('book-call');
+    }, 2200);
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -551,930 +951,1648 @@ const App = () => {
       await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' });
       setFormStatus('success');
       e.target.reset();
-    } catch (err) {
+    } catch {
       setFormStatus('idle');
-      alert("Error");
     }
   };
 
+  const currentTier = editingPlansByDuration[activeDuration] || editingPlansByDuration[1];
+  const selectedCustomPlan = customPlanType === 'advanced' ? currentTier.advanced : currentTier.basic;
+  const baseCustomPrice = parseInt(selectedCustomPlan.price.replace(/[^0-9]/g, ''), 10) || 0;
+  const totalCustomPrice = baseCustomPrice + (extraAiVideo ? 50 : 0) + (extraTerrain ? 80 : 0);
+
+  const navItems = [
+    { label: 'Portafolio', id: 'portfolio' },
+    { label: 'Solución', id: 'solution' },
+    { label: 'Proceso', id: 'process' },
+    { label: 'Casos de Éxito', id: 'work' },
+    { label: 'Planes', id: 'pricing' },
+    { label: 'Preguntas', id: 'faq' }
+  ];
+
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-zinc-400/30 overflow-x-hidden relative">
-      {/* 🌊 Fondo de Video Personalizado */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-black">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          className="absolute inset-0 w-full h-full object-cover opacity-60 blur-[28px] scale-105"
-        >
-          <source src="/fondo01.mp4" type="video/mp4" />
-        </video>
-        {/* Capa de atmósfera extra para legibilidad */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-      </div>
-
-      <div className="relative z-10">
-        <div className="fixed inset-0 pointer-events-none z-[60] opacity-5 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-
-        <nav className="fixed top-0 w-full z-[100] px-4 md:px-10 py-4 md:py-6 flex justify-between items-center backdrop-blur-xl bg-black/40 border-b border-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-zinc-500 rounded-lg md:rounded-xl flex items-center justify-center font-black text-white italic shadow-[0_0_20px_rgba(113,113,122,0.4)]">S</div>
-            <span className="text-lg md:text-xl font-black tracking-tighter uppercase italic">Sync Pro</span>
-          </div>
-          <div className="flex items-center gap-3 md:gap-6">
-            <div className="hidden lg:flex gap-10 text-[11px] font-bold text-gray-400 tracking-[0.2em] uppercase">
-              <a href="#proyectos" className="hover:text-zinc-400 transition-colors">{t.nav[0]}</a>
-              <a href="#planes-edicion" className="hover:text-zinc-400 transition-colors">{t.nav[2]}</a>
-              <a href="#herramientas-cliente" className="hover:text-zinc-400 transition-colors">{t.nav[1]}</a>
-              <a href="#contacto" className="hover:text-zinc-400 transition-colors">{t.nav[3]}</a>
+    <div className="min-h-screen bg-[#FFFCF5] text-[#111111] selection:bg-[#029854]/20 selection:text-[#029854] overflow-x-hidden">
+      {/* ==================================================================== */}
+      {/* 1. NAVBAR FLOTANTE EN CÁPSULA (Idéntica a `We` de 85thAgency)        */}
+      {/* ==================================================================== */}
+      <motion.nav
+        aria-label="Navegación principal"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="fixed top-0 left-0 right-0 z-50 py-3 md:py-5 px-4 md:px-6"
+      >
+        <div className="max-w-[1200px] mx-auto bg-[#FFFCF5]/85 backdrop-blur-lg border border-black/10 rounded-full shadow-lg px-4 md:px-8 py-3 md:py-3.5 flex items-center justify-between">
+          {/* Logo Sync Pro al estilo 85thAgency */}
+          <a
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex items-center gap-2.5 group"
+          >
+            <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#111111] flex items-center justify-center font-black text-white italic shadow-md group-hover:bg-[#029854] transition-colors">
+              S
             </div>
-            <button onClick={() => setLang(lang === 'es' ? 'en' : 'es')} className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-bold uppercase tracking-widest"><Globe className="w-3 h-3 text-zinc-400" /> {lang.toUpperCase()}</button>
-            <a href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20quiero%20cotizar%20un%20proyecto%20de%20edici%C3%B3n%20de%20video." target="_blank" rel="noopener noreferrer" className="hidden sm:block bg-white text-black px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-[11px] font-black uppercase tracking-widest">{t.cta_nav}</a>
-          </div>
-        </nav>
-
-        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-6 text-center py-20">
-          <div className="absolute inset-0 bg-gradient-to-b from-zinc-400/5 to-transparent pointer-events-none" />
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-full max-w-5xl mx-auto">
-            <span className="inline-block border border-zinc-400/30 px-4 md:px-5 py-1.5 rounded-full text-[8px] md:text-[9px] tracking-[0.3em] md:tracking-[0.4em] uppercase text-zinc-400 mb-6 md:mb-8 bg-zinc-400/5 font-bold">{t.hero_tag}</span>
-            <h1 className="text-5xl sm:text-7xl md:text-9xl lg:text-[145px] font-black mb-6 md:mb-8 leading-[0.9] tracking-tighter italic uppercase px-2">
-              {t.hero_h1_1} <br />
-              <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 pr-4 md:pr-12">
-                {t.hero_h1_2}
+            <div className="flex flex-col">
+              <span className="text-lg md:text-xl font-extrabold tracking-tight text-[#111111] leading-none">
+                Sync<span className="text-[#029854]">Pro</span>
               </span>
-            </h1>
-            <p className="text-gray-400 text-base md:text-xl max-w-2xl mx-auto mb-10 md:mb-12 font-light px-4">{t.hero_p}</p>
-            <div className="flex flex-col sm:flex-row gap-4 md:gap-5 justify-center px-6">
-              <a href="#planes-edicion" className="bg-zinc-500 text-white font-black px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 uppercase tracking-tighter shadow-lg text-sm md:text-base w-full sm:w-auto">{t.hero_btn_main} <ArrowRight className="w-5 h-5" /></a>
-              <a href="#proyectos" className="border border-white/10 bg-white/5 backdrop-blur-md px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-[10px] md:text-xs w-full sm:w-auto"><Play className="w-4 h-4 fill-current" /> {t.hero_btn_sec}</a>
+              <span className="text-[9px] font-semibold uppercase tracking-widest text-[#666666]">
+                Post-Production
+              </span>
             </div>
-          </motion.div>
-        </section>
+          </a>
 
-      {/* Galería Proyectos Sectorizada (Verticales 9:16 + Horizontales 16:9) */}
-      <section id="proyectos" className="py-16 md:py-24 px-4 md:px-6 max-w-[1600px] mx-auto overflow-hidden">
-        <div className="mb-10 md:mb-12 px-2 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <div>
-            <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase mb-4">Nuestros <span className="text-zinc-400">PROYECTOS</span></h2>
-            <p className="text-gray-500 text-base md:text-lg max-w-xl">{t.projects_p}</p>
+          {/* Links Desktop */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="text-sm md:text-base text-[#111111]/80 hover:text-[#029854] transition-colors duration-300 font-medium"
+              >
+                {item.label}
+              </button>
+            ))}
           </div>
 
-          {/* Paneles de Categorías (Estilo Limpio Mate Sync Pro) */}
-          <div className="bg-[#0a0a0a] border border-white/10 rounded-[24px] p-1.5 flex flex-wrap gap-1.5 self-start lg:self-auto">
-            {t.projects_categories.map((cat) => {
-              const isActive = activeCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-4 md:px-5 py-2.5 rounded-[18px] text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${
-                    isActive
-                      ? 'bg-zinc-800/90 border border-white/15 text-white'
-                      : 'text-gray-500 hover:text-gray-300 border border-transparent'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              );
-            })}
+          {/* Botón CTA Desktop */}
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20quiero%20cotizar%20la%20edici%C3%B3n%20de%20un%20video."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#029854] text-white hover:bg-[#029854]/90 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 px-5 md:px-6 py-2.5 text-xs md:text-sm font-semibold flex items-center gap-2"
+            >
+              Cotizar por WhatsApp
+            </a>
+          </div>
+
+          {/* Botón Menú Móvil */}
+          <div className="flex lg:hidden items-center gap-2">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Abrir menú"
+              className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center text-[#111111]"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
 
-        {/* Fila 1: Proyectos Verticales (9:16) */}
-        <div className="flex overflow-x-auto gap-4 md:gap-5 pb-12 pt-6 no-scrollbar snap-x px-4 md:px-10">
-          {t.projects_data
-            .filter((proj) => activeCategory === 'all' || proj.category === activeCategory)
-            .map((proj, i) => (
-              <motion.div 
-                key={`${proj.title}-${i}`} 
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                whileHover={{ 
-                  y: -12,
-                  scale: 1.02,
-                  zIndex: 50
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="relative min-w-[235px] md:min-w-[310px] aspect-[9/16] rounded-xl md:rounded-2xl overflow-hidden group snap-center border border-white/15 shadow-2xl transform-gpu cursor-pointer bg-[#0a0a0a]"
-                style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
-                onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play(); }}
-                onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
+        {/* Drawer Móvil */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              className="lg:hidden max-w-[1200px] mx-auto mt-2 bg-[#FFFCF5] border border-black/10 rounded-3xl shadow-2xl p-6 flex flex-col gap-4"
+            >
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="text-left py-2 text-base font-semibold text-[#111111]/85 hover:text-[#029854] border-b border-black/5"
+                >
+                  {item.label}
+                </button>
+              ))}
+              <a
+                href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20quiero%20cotizar%20la%20edici%C3%B3n%20de%20un%20video."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center bg-[#029854] text-white rounded-full py-3.5 font-bold text-sm shadow-md mt-2"
               >
-                {/* Contenedor de Imagen / Video con Zoom y Filtro Negro */}
-                <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
-                  <img src={proj.img} alt={proj.title} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                  <video src={proj.videoSrc} className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity" muted loop playsInline />
-                  
-                  {/* Overlay de Trazado de Terreno para proyectos de Inmobiliaria */}
-                  {proj.hasLandOverlay && (
-                    <svg viewBox="0 0 100 160" className="absolute inset-0 w-full h-full pointer-events-none z-10 opacity-80 group-hover:opacity-100 transition-opacity">
-                      <polygon
-                        points="20,95 55,70 85,82 58,118"
-                        fill="rgba(255,255,255,0.06)"
-                        stroke="#ffffff"
-                        strokeWidth="1.2"
-                        strokeDasharray="3,1.5"
-                      />
-                      <line x1="20" y1="95" x2="55" y2="70" stroke="#ffffff" strokeWidth="1.4" />
-                      <line x1="55" y1="70" x2="85" y2="82" stroke="#ffffff" strokeWidth="1.4" />
-                      <line x1="85" y1="82" x2="58" y2="118" stroke="#ffffff" strokeWidth="1.4" />
-                      <line x1="58" y1="118" x2="20" y2="95" stroke="#ffffff" strokeWidth="1.4" />
-                    </svg>
-                  )}
+                Hablar por WhatsApp (69109766)
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
 
-                  {/* Black Filter Overlay */}
-                  <div className="absolute inset-0 bg-black/25 group-hover:bg-black/5 transition-colors duration-700 z-10" />
+      {/* ==================================================================== */}
+      {/* 2. HERO SECTION CON PARALLAX VERDE Y SHOWREEL (`UX` de 85thAgency)   */}
+      {/* ==================================================================== */}
+      <section
+        id="top"
+        ref={heroRef}
+        className="pt-28 md:pt-36 pb-12 md:pb-20 px-4 md:px-6 relative overflow-hidden bg-[#FFFCF5]"
+      >
+        {/* Gradientes Radiales Verdes con Parallax idénticos a 85thAgency */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          style={{ y: blobsY, opacity: blobsOpacity, willChange: 'transform, opacity' }}
+          transition={{ duration: 1, ease: [0.25, 0.4, 0.25, 1] }}
+          className="md:hidden pointer-events-none absolute inset-x-0 top-0 h-full bg-[radial-gradient(circle_at_center,rgba(2,152,84,0.45),transparent_70%)]"
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          style={{ x: leftBlobX, y: blobsY, opacity: blobsOpacity, willChange: 'transform, opacity' }}
+          transition={{ duration: 1, ease: [0.25, 0.4, 0.25, 1] }}
+          className="hidden md:block pointer-events-none absolute inset-y-0 -left-1/3 w-2/3 bg-[radial-gradient(circle_at_center,rgba(2,152,84,0.55),transparent_60%)]"
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          style={{ x: rightBlobX, y: blobsY, opacity: blobsOpacity, willChange: 'transform, opacity' }}
+          transition={{ duration: 1, ease: [0.25, 0.4, 0.25, 1] }}
+          className="hidden md:block pointer-events-none absolute inset-y-0 -right-1/3 w-2/3 bg-[radial-gradient(circle_at_center,rgba(2,152,84,0.55),transparent_60%)]"
+        />
+
+        <div className="max-w-[1120px] mx-auto relative z-10">
+          <div className="hero-stagger text-center space-y-3 md:space-y-5 mb-8 md:mb-12">
+            {/* 1. Section Badge */}
+            <div className="inline-block">
+              <span className="section-badge">Edición de video profesional hecha para ti</span>
+            </div>
+
+            {/* 2. Social Proof Avatares + 5 Estrellas */}
+            <div className="flex items-center justify-center gap-2 md:gap-3 py-1.5 flex-wrap">
+              <div className="flex items-center -space-x-2 md:-space-x-3">
+                {['/video01.jpeg', '/video02.jpeg', '/video03.jpeg', '/video05.jpeg'].map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt="Cliente Sync Pro"
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-[#FFFCF5] object-cover shadow-sm"
+                  />
+                ))}
+              </div>
+              <div className="flex items-center gap-0.5 md:gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star key={star} className="w-3.5 h-3.5 md:w-4 md:h-4 fill-[#029854] text-[#029854]" />
+                ))}
+              </div>
+              <span className="text-xs md:text-sm font-medium text-[#111111]/70">
+                Elegido por Inmobiliarias, Creadores y Marcas
+              </span>
+            </div>
+
+            {/* 3. Título Principal H1 */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight max-w-4xl mx-auto px-2 tracking-tight text-[#111111]">
+              Edición de video profesional para inmobiliarias, creadores y marcas.{' '}
+              <span className="text-[#029854]">Sin complicaciones.</span>
+            </h1>
+
+            {/* 4. Subtítulo con enlaces destacados */}
+            <p className="text-sm sm:text-base md:text-lg text-[#111111]/70 leading-relaxed max-w-2xl mx-auto px-2">
+              Transformamos tus tomas crudas en videos listos para publicar y vender — desde{' '}
+              <button
+                onClick={() => scrollToSection('portfolio')}
+                className="text-[#029854] font-bold hover:underline"
+              >
+                Reels y TikToks de alta retención
+              </button>{' '}
+              hasta{' '}
+              <button
+                onClick={() => scrollToSection('pricing')}
+                className="text-[#029854] font-bold hover:underline"
+              >
+                videos inmobiliarios con trazado 3D, IA y DaVinci Resolve
+              </button>{' '}
+              — sin que pierdas horas frente a la computadora.
+            </p>
+
+            {/* 5. Botones Principales */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-2 justify-center items-center px-2">
+              <button
+                onClick={() => scrollToSection('pricing')}
+                className="w-full sm:w-auto bg-[#029854] text-white hover:bg-[#029854]/90 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 px-7 md:px-9 py-4 text-sm md:text-base font-semibold"
+              >
+                Ver Planes y Cotizar
+              </button>
+              <button
+                onClick={() => scrollToSection('portfolio')}
+                className="w-full sm:w-auto border-2 border-[#111111]/20 hover:border-[#029854] hover:text-[#029854] hover:bg-[#029854]/5 rounded-full px-7 md:px-9 py-4 text-sm md:text-base font-semibold transition-all duration-300"
+              >
+                Ver nuestros videos
+              </button>
+            </div>
+
+            {/* 6. Puntos de Confianza con Círculos Verdes */}
+            <div className="flex items-center justify-center gap-4 md:gap-6 pt-3 flex-wrap px-2">
+              {['Trazado Preciso + IA', 'Entrega rápida 24–48h', 'Color en DaVinci Resolve'].map((item, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <span className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-[#029854] flex items-center justify-center flex-shrink-0 shadow-md shadow-[#029854]/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FFFCF5]" />
+                  </span>
+                  <span className="text-xs md:text-sm font-medium text-[#111111]/75">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 7. Reproductor Principal 16:9 en el Hero (Idéntico al contenedor Wistia de 85thAgency) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
+            className="relative max-w-5xl mx-auto"
+          >
+            <div className="relative rounded-3xl shadow-2xl overflow-hidden border-4 border-[#029854]/25 hover:border-[#029854]/50 transition-all duration-500 aspect-video bg-[#111111] group">
+              <video
+                src="/cuadro-2.mp4"
+                poster="/video02.jpeg"
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-4 left-4 pointer-events-none flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111111]/80 backdrop-blur-md text-white text-xs font-semibold border border-white/15">
+                <span className="w-2 h-2 rounded-full bg-[#029854] animate-pulse" />
+                Showreel Sync Pro · Edición Dinámica, Terrenos & IA
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* 3. PORTAFOLIO DE VIDEOS (`#portfolio` de 85thAgency)                 */}
+      {/* ==================================================================== */}
+      <section id="portfolio" className="py-12 md:py-24 px-4 md:px-6" style={{ backgroundColor: '#FFFCF5' }}>
+        <div className="max-w-[1120px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center space-y-3 md:space-y-4 mb-8 md:mb-12"
+          >
+            <span className="section-badge">Portafolio</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 px-2 text-[#111111]">
+              Mira el Tipo de Videos que Creamos
+            </h2>
+
+            {/* Filtros interactivos estilo enlaces 85thAgency */}
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+              {[
+                { id: 'all', label: 'Destacados' },
+                { id: 'inmobiliaria', label: 'Inmobiliaria & Terrenos' },
+                { id: 'comercial', label: 'Comercial & Negocios' },
+                { id: 'fitness', label: 'Fitness & Creadores' },
+                { id: 'horizontal', label: 'Videos Horizontales (16:9)' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setActivePortfolioTab(tab.id);
+                    if (tab.id !== 'all') setShowAllPortfolio(true);
+                  }}
+                  className={`px-4 py-2 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 ${
+                    activePortfolioTab === tab.id
+                      ? 'bg-[#029854] text-white shadow-md shadow-[#029854]/20'
+                      : 'bg-black/5 text-[#111111]/70 hover:text-[#029854] hover:bg-[#029854]/10'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Grid de Videos (3 columnas para 9:16 o 2 columnas para 16:9) */}
+          <div
+            className={`grid gap-6 md:gap-8 ${
+              activePortfolioTab === 'horizontal'
+                ? 'grid-cols-1 md:grid-cols-2'
+                : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3'
+            }`}
+          >
+            {filteredPortfolio.map((item, idx) => (
+              <PortfolioVideoCard
+                key={`${item.title}-${idx}`}
+                item={item}
+                index={idx}
+                onOpenModal={(videoItem) => setSelectedVideoModal(videoItem)}
+              />
+            ))}
+          </div>
+
+          {/* Enlace y botón "Ver más" idéntico a `WQ` de 85thAgency */}
+          <div className="text-center mt-8 md:mt-12 space-y-5">
+            {activePortfolioTab === 'all' && (
+              <div>
+                <button
+                  onClick={() => setShowAllPortfolio(!showAllPortfolio)}
+                  className="rounded-full px-8 py-4 text-sm md:text-base font-semibold bg-[#111111] text-[#FFFCF5] hover:bg-[#111111]/90 transition-all duration-300 inline-flex items-center gap-2 group shadow-lg"
+                >
+                  {showAllPortfolio ? 'Ver Menos Videos' : 'Ver Todos los Videos (9:16 y 16:9)'}
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            )}
+            <div>
+              <a
+                href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20vi%20su%20portafolio%20y%20quiero%20cotizar%20un%20video."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#029854] hover:underline text-xs md:text-sm font-medium transition-all duration-300 hover:text-[#029854]/80 px-2 inline-block"
+              >
+                ¿Quieres ver ejemplos específicos para tu rubro? Escríbenos por WhatsApp y te asesoramos.
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* 4. TU PROBLEMA VS. NUESTRA SOLUCIÓN (Idéntico a 85thAgency)          */}
+      {/* ==================================================================== */}
+      <section id="solution" className="py-12 md:py-24 px-4 md:px-6" style={{ backgroundColor: '#FFFCF5' }}>
+        <div className="max-w-6xl mx-auto px-2 md:px-6">
+          <div className="text-center mb-8 md:mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="section-badge mb-4 md:mb-6">Nuestra Solución</span>
+              <h2
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 px-2"
+                style={{ color: '#111111' }}
+              >
+                Por Qué Editar Tus Propios Videos Te Frena
+              </h2>
+              <p
+                className="text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl mx-auto px-2"
+                style={{ color: '#666666' }}
+              >
+                Una comparativa directa entre los dolores de cabeza al editar por tu cuenta y cómo lo resolvemos en Sync Pro.
+              </p>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-10 items-start"
+          >
+            {/* Columna Izquierda: Tu Problema (Blanca con bordes rojos suaves) */}
+            <motion.div
+              className="space-y-4 md:space-y-6 bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-10 shadow-lg border-2 border-red-100"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex items-center gap-3 mb-4 md:mb-8">
+                <div
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)' }}
+                >
+                  <X className="w-5 h-5 md:w-6 md:h-6 text-[#ef4444]" />
+                </div>
+                <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-[#111111]">
+                  Tu Problema
+                </h3>
+              </div>
+
+              <div className="space-y-3 md:space-y-5">
+                {[
+                  'Editar un video de 1 minuto me toma horas o días.',
+                  'Mis tomas de dron o celular no llaman la atención.',
+                  'No tengo tiempo para editar; solo quiero grabar y vender.',
+                  'Hacer el marcado de terrenos, textos 3D y subtítulos es complicado.',
+                  'Mis videos no tienen la calidad visual ni el color de las grandes marcas.'
+                ].map((problem, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="flex items-start gap-3 md:gap-4 p-3 md:p-4 rounded-lg md:rounded-xl bg-red-50/50 border border-red-100/50"
+                  >
+                    <div
+                      className="flex-shrink-0 w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center mt-0.5"
+                      style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)' }}
+                    >
+                      <X className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#ef4444]" strokeWidth={2.5} />
+                    </div>
+                    <p className="text-sm md:text-base lg:text-lg font-medium text-[#111111]">
+                      {problem}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Columna Derecha: Nuestra Solución (Negra #111111 con borde verde #029854) */}
+            <motion.div
+              className="space-y-4 md:space-y-6 rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-10 shadow-lg border-2"
+              style={{ backgroundColor: '#111111', borderColor: '#029854' }}
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex items-center gap-3 mb-4 md:mb-8">
+                <div
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: 'rgba(2, 152, 84, 0.2)' }}
+                >
+                  <Check className="w-5 h-5 md:w-6 md:h-6 text-[#029854]" strokeWidth={3} />
+                </div>
+                <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white">
+                  Nuestra Solución
+                </h3>
+              </div>
+
+              <div className="space-y-3 md:space-y-5">
+                {[
+                  'Edición lista para publicar, entregada en 24 a 48 horas.',
+                  'Trazado preciso de terrenos, señaladores flotantes y textos 3D.',
+                  'Tú solo grabas las tomas; nosotros nos encargamos de todo el resto.',
+                  'Imágenes y videos generados con IA + locución profesional incluidos.',
+                  'Colorización en DaVinci Resolve para formatos 9:16 y 16:9.'
+                ].map((sol, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="flex items-start gap-3 md:gap-4 p-3 md:p-4 rounded-lg md:rounded-xl border"
+                    style={{
+                      backgroundColor: 'rgba(2, 152, 84, 0.1)',
+                      borderColor: 'rgba(2, 152, 84, 0.2)'
+                    }}
+                  >
+                    <div
+                      className="flex-shrink-0 w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center mt-0.5"
+                      style={{ backgroundColor: '#029854' }}
+                    >
+                      <Check className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" strokeWidth={2.5} />
+                    </div>
+                    <p className="text-sm md:text-base lg:text-lg font-medium text-white">{sol}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* 5. PROCESO EN 4 PASOS ANIMADOS (`#process` y `rX` de 85thAgency)     */}
+      {/* ==================================================================== */}
+      <section id="process" className="py-12 md:py-24 px-4 md:px-6" style={{ backgroundColor: '#FFFCF5' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10 md:mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="section-badge mb-4 md:mb-6">Proceso</span>
+              <h2
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 px-2"
+                style={{ color: '#111111' }}
+              >
+                Cómo Convertimos Tus Tomas Crudas en Videos que Venden
+              </h2>
+              <p
+                className="text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl mx-auto px-2"
+                style={{ color: '#666666' }}
+              >
+                Desde el primer mensaje hasta la entrega final, nos encargamos de toda la postproducción para que tú solo te enfoques en tu negocio.
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="space-y-16 lg:space-y-24">
+            {/* PASO 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.7 }}
+              className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center"
+            >
+              <div className="flex-1 space-y-6">
+                <StepBadge currentStep={1} />
+                <h3 className="text-3xl lg:text-4xl font-bold text-[#111111]">
+                  Elige tu Plan y Duración
+                </h3>
+                <p className="text-lg lg:text-xl leading-relaxed text-[#666666]">
+                  Definimos por WhatsApp el estilo de tu video (Edición Básica o Edición Avanzada), la duración (30s a 120s o más) y los puntos clave que quieres destacar de tu terreno, marca o canal.
+                </p>
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '100%' }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="h-1 rounded-full"
+                  style={{
+                    background: 'linear-gradient(90deg, #029854 0%, rgba(2, 152, 84, 0.2) 100%)',
+                    maxWidth: '200px'
+                  }}
+                />
+              </div>
+
+              <div className="flex-1 w-full">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.85, rotate: -6 }}
+                  whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, type: 'spring', stiffness: 80 }}
+                  whileHover={{ scale: 1.04, rotate: 3 }}
+                  className="w-full aspect-square max-w-md mx-auto rounded-3xl flex items-center justify-center relative overflow-hidden shadow-2xl"
+                  style={{ backgroundColor: '#111111' }}
+                >
+                  <div
+                    className="absolute inset-0 opacity-25"
+                    style={{
+                      background: 'radial-gradient(circle at center, rgba(2, 152, 84, 0.5), transparent 70%)'
+                    }}
+                  />
+                  <motion.video
+                    animate={{ scale: [1, 1.03, 1] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                    src="/cuadro-1.mp4"
+                    poster="/video01.jpeg"
+                    muted
+                    loop
+                    autoPlay
+                    playsInline
+                    className="w-full h-full object-cover rounded-3xl opacity-90"
+                  />
+                  {/* Ventana Picture-in-Picture idéntica al Paso 1 de 85thAgency */}
+                  <div
+                    className="absolute bottom-4 right-4 w-32 lg:w-40 rounded-xl overflow-hidden shadow-2xl border-2 border-white/70"
+                    style={{ aspectRatio: '16/9' }}
+                  >
+                    <video
+                      src="/cuadro-3.mp4"
+                      poster="/video03.jpeg"
+                      muted
+                      loop
+                      autoPlay
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* PASO 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.7 }}
+              className="flex flex-col lg:flex-row-reverse gap-8 lg:gap-12 items-center"
+            >
+              <div className="flex-1 space-y-6">
+                <StepBadge currentStep={2} />
+                <h3 className="text-3xl lg:text-4xl font-bold text-[#111111]">
+                  Envía tus Tomas y Guion
+                </h3>
+                <p className="text-lg lg:text-xl leading-relaxed text-[#666666]">
+                  Graba con tu dron, celular o cámara profesional. Solo sube tus clips a nuestra carpeta compartida de Google Drive o envíalos por WhatsApp junto con los datos del proyecto.
+                </p>
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '100%' }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="h-1 rounded-full"
+                  style={{
+                    background: 'linear-gradient(90deg, #029854 0%, rgba(2, 152, 84, 0.2) 100%)',
+                    maxWidth: '200px'
+                  }}
+                />
+              </div>
+
+              <div className="flex-1 w-full">
+                <AnimatedUploadBox />
+              </div>
+            </motion.div>
+
+            {/* PASO 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.7 }}
+              className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center"
+            >
+              <div className="flex-1 space-y-6">
+                <StepBadge currentStep={3} />
+                <h3 className="text-3xl lg:text-4xl font-bold text-[#111111]">
+                  Editamos, Trazamos y Pulimos con IA
+                </h3>
+                <p className="text-lg lg:text-xl leading-relaxed text-[#666666]">
+                  Realizamos el marcado del terreno, agregamos señaladores flotantes, textos 3D, imágenes/videos generados con IA, locución, música y colorización en DaVinci Resolve.
+                </p>
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '100%' }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="h-1 rounded-full"
+                  style={{
+                    background: 'linear-gradient(90deg, #029854 0%, rgba(2, 152, 84, 0.2) 100%)',
+                    maxWidth: '200px'
+                  }}
+                />
+              </div>
+
+              <div className="flex-1 w-full">
+                <AnimatedChatCard />
+              </div>
+            </motion.div>
+
+            {/* PASO 4 */}
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.7 }}
+              className="flex flex-col lg:flex-row-reverse gap-8 lg:gap-12 items-center"
+            >
+              <div className="flex-1 space-y-6">
+                <StepBadge currentStep={4} />
+                <h3 className="text-3xl lg:text-4xl font-bold text-[#111111]">
+                  Recibe y Publica con Confianza
+                </h3>
+                <p className="text-lg lg:text-xl leading-relaxed text-[#666666]">
+                  Tu video terminado se entrega a tiempo, optimizado en máxima calidad para TikTok, Instagram Reels, YouTube o anuncios publicitarios, listo para captar clientes.
+                </p>
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '100%' }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="h-1 rounded-full"
+                  style={{
+                    background: 'linear-gradient(90deg, #029854 0%, rgba(2, 152, 84, 0.2) 100%)',
+                    maxWidth: '200px'
+                  }}
+                />
+              </div>
+
+              <div className="flex-1 w-full">
+                <AnimatedDeliveryBox />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* 6. CASOS DE ÉXITO DESTACADOS + ANTES/DESPUÉS (`#work` de 85thAgency) */}
+      {/* ==================================================================== */}
+      <section id="work" className="py-12 md:py-24 px-4 md:px-6" style={{ backgroundColor: '#FFFCF5' }}>
+        <div className="max-w-[1120px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center space-y-3 md:space-y-4 mb-8 md:mb-12"
+          >
+            <span className="section-badge">Casos de Éxito y Acabado Visual</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 px-2 text-[#111111]">
+              Así Luce una Edición que Destaca
+            </h2>
+          </motion.div>
+
+          {/* Grid Asimétrico idéntico a `lX` de 85thAgency */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 mb-14">
+            {/* Tarjeta Grande Izquierda: Con Comparador Interactivo Antes/Después */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="group text-left block"
+            >
+              <div className="relative overflow-hidden rounded-3xl mb-5 aspect-[4/3] select-none shadow-xl border-2 border-[#029854]/20">
+                {/* DESPUÉS: Color DaVinci + Trazado */}
+                <img
+                  src="/video02.jpeg"
+                  alt="Después - Edición Avanzada Sync Pro"
+                  className="absolute inset-0 w-full h-full object-cover saturate-125 contrast-110"
+                />
+                <svg viewBox="0 0 400 300" className="absolute inset-0 w-full h-full pointer-events-none">
+                  <polygon
+                    points="80,210 175,145 315,170 250,255"
+                    fill="rgba(2, 152, 84, 0.22)"
+                    stroke="#029854"
+                    strokeWidth="2.5"
+                    strokeDasharray="6 4"
+                  />
+                  <line x1="175" y1="145" x2="175" y2="98" stroke="#ffffff" strokeWidth="2" />
+                  <rect x="115" y="72" width="120" height="26" rx="8" fill="#111111" stroke="#029854" strokeWidth="1.5" />
+                  <text x="175" y="89" textAnchor="middle" fill="#ffffff" fontSize="10" fontWeight="bold">
+                    LOTE 500 m² · TRAZADO
+                  </text>
+                </svg>
+
+                {/* ANTES: Toma Cruda sin editar */}
+                <div
+                  className="absolute inset-0 overflow-hidden"
+                  style={{ clipPath: `inset(0 ${100 - compareSlider}% 0 0)` }}
+                >
+                  <img
+                    src="/video02.jpeg"
+                    alt="Antes - Toma Cruda"
+                    className="absolute inset-0 w-full h-full object-cover grayscale-[70%] contrast-75 brightness-90"
+                  />
                 </div>
 
-                {proj.badge && (
-                  <div className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/15 text-[9px] font-black uppercase tracking-widest text-zinc-300">
-                    {proj.badge}
+                {/* Línea divisoria del Slider */}
+                <div
+                  className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_12px_rgba(0,0,0,0.6)] pointer-events-none"
+                  style={{ left: `${compareSlider}%` }}
+                >
+                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[#029854] border-2 border-white flex items-center justify-center shadow-lg text-white">
+                    <Sliders className="w-4 h-4" />
                   </div>
-                )}
+                </div>
 
-                {/* Overlay Gradient for Text */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-6 md:p-8 flex flex-col justify-end z-20">
-                  <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <h3 className="text-lg md:text-2xl font-black italic tracking-tighter leading-none mb-2 uppercase drop-shadow-2xl">{proj.title}</h3>
-                    <span className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-black text-zinc-300 tracking-[0.15em] uppercase">
-                      {proj.subtitle}
+                <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/75 text-white text-[11px] font-semibold">
+                  Antes: Toma Cruda
+                </div>
+                <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-[#029854] text-white text-[11px] font-semibold">
+                  Después: Sync Pro + DaVinci
+                </div>
+
+                <input
+                  type="range"
+                  min="5"
+                  max="95"
+                  value={compareSlider}
+                  onChange={(e) => setCompareSlider(Number(e.target.value))}
+                  aria-label="Comparar antes y después"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20"
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-2 mb-3">
+                {caseStudies[0].tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[11px] md:text-xs font-medium px-2.5 py-1 rounded-md bg-black/5 text-[#111111]/75"
+                  >
+                    {tag}
+                  </span>
+                ))}
+                <span className="text-[11px] md:text-xs font-semibold px-2.5 py-1 rounded-md bg-[#029854]/10 text-[#029854]">
+                  ↔ Desliza la imagen para comparar
+                </span>
+              </div>
+
+              <h3 className="text-2xl md:text-3xl font-bold leading-tight mb-4 text-[#111111]">
+                {caseStudies[0].headline}
+              </h3>
+
+              <button
+                onClick={() => scrollToSection('pricing')}
+                className="text-sm md:text-base font-semibold underline underline-offset-4 hover:text-[#029854] transition-colors"
+              >
+                {caseStudies[0].label}
+              </button>
+            </motion.div>
+
+            {/* Columna Derecha: 2 Tarjetas Horizontales Apiladas */}
+            <div className="flex flex-col gap-8 justify-center">
+              {caseStudies.slice(1).map((study, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  onClick={() => scrollToSection('pricing')}
+                  className="group grid grid-cols-1 sm:grid-cols-2 gap-5 text-left items-start cursor-pointer"
+                >
+                  <div className="overflow-hidden rounded-2xl shadow-md border border-black/5">
+                    <img
+                      src={study.image}
+                      alt={study.client}
+                      loading="lazy"
+                      className="w-full h-auto aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                  </div>
+                  <div>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {study.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[11px] md:text-xs font-medium px-2.5 py-1 rounded-md bg-black/5 text-[#111111]/75"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <h3 className="text-lg md:text-xl font-bold leading-snug mb-3 text-[#111111]">
+                      {study.headline}
+                    </h3>
+                    <span className="text-sm font-semibold underline underline-offset-4 group-hover:text-[#029854] transition-colors">
+                      {study.label}
                     </span>
                   </div>
-                </div>
-
-                {/* Borde sutil en hover */}
-                <div className="absolute inset-0 border-2 border-zinc-400/0 group-hover:border-zinc-400/30 rounded-xl md:rounded-2xl transition-all duration-500 pointer-events-none z-30" />
-              </motion.div>
-            ))}
-        </div>
-
-        {/* Fila 2: Proyectos Horizontales / Master Plan (16:9) */}
-        {(activeCategory === 'all' || activeCategory === 'inmobiliaria') && (
-          <div className="mt-8 px-2 md:px-10">
-            <div className="flex items-center justify-between mb-6">
-              <span className="text-xs md:text-sm font-black uppercase tracking-[0.2em] text-zinc-400">
-                {t.horizontal_section_title}
-              </span>
-              <div className="hidden sm:block h-px flex-grow bg-white/10 ml-6" />
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-              {t.horizontal_projects_data.map((hProj, idx) => (
-                <div
-                  key={idx}
-                  onMouseMove={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    e.currentTarget.style.setProperty("--x", `${x}px`);
-                    e.currentTarget.style.setProperty("--y", `${y}px`);
-                  }}
-                  onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play(); }}
-                  onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
-                  className="relative rounded-[32px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.01] shadow-2xl bg-white/5 cursor-pointer"
-                  style={{ "--x": "0px", "--y": "0px" }}
-                >
-                  {/* Snake Border - Active only on Hover */}
-                  <div 
-                    className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ animationDuration: '4s' }}
-                  />
-
-                  <div className="relative bg-[#0a0a0a] rounded-[31px] overflow-hidden border border-white/10 aspect-video">
-                    <img src={hProj.img} alt={hProj.title} className="absolute inset-0 w-full h-full object-cover grayscale-[35%] group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" />
-                    <video src={hProj.videoSrc} className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500" muted loop playsInline />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/10 z-10" />
-
-                    {/* Demostración de Trazado Perimetral y Señaladores Flotantes (16:9) */}
-                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full pointer-events-none z-20">
-                      <polygon
-                        points={hProj.polygon}
-                        fill="rgba(255, 255, 255, 0.07)"
-                        stroke="#ffffff"
-                        strokeWidth="0.7"
-                      />
-                      <line x1="25" y1="60" x2="65" y2="48" stroke="rgba(255,255,255,0.45)" strokeWidth="0.4" strokeDasharray="1.5,1.5" />
-                      <line x1="40" y1="74" x2="74" y2="62" stroke="rgba(255,255,255,0.45)" strokeWidth="0.4" strokeDasharray="1.5,1.5" />
-                    </svg>
-
-                    {/* Señaladores Flotantes (Callouts Limpios) */}
-                    <div className="absolute top-[22%] right-[16%] z-20 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/15 flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                      <span className="text-[10px] font-bold text-white tracking-tight">{hProj.pin1}</span>
-                    </div>
-                    <div className="absolute bottom-[32%] left-[38%] z-20 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/15 flex items-center gap-2">
-                      <Layers className="w-3 h-3 text-zinc-400" />
-                      <span className="text-[10px] font-bold text-white tracking-tight">{hProj.pin2}</span>
-                    </div>
-
-                    {/* Textos Inferiores */}
-                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 z-20 flex items-end justify-between gap-4">
-                      <div>
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 block mb-1">
-                          Formato Horizontal 16:9
-                        </span>
-                        <h3 className="text-lg md:text-2xl font-black italic uppercase tracking-tight text-white">
-                          {hProj.title}
-                        </h3>
-                        <p className="text-xs text-gray-400 mt-1">{hProj.subtitle}</p>
-                      </div>
-                      <div className="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center flex-shrink-0 group-hover:bg-white group-hover:text-black transition-colors">
-                        <Play className="w-4 h-4 fill-current" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
-        )}
-      </section>
-
-      {/* Servicios Bento */}
-      {false && (
-      <section id="servicios" className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
-          <div className="lg:col-span-7 bg-[#0a0a0a] rounded-[30px] md:rounded-[40px] p-8 md:p-12 min-h-[350px] md:min-h-[450px] flex flex-col justify-end relative overflow-hidden">
-             <div className={`absolute inset-0 bg-gradient-to-br ${t.services_data[activeService].color} opacity-10`} />
-             <div className="relative z-10">
-                <span className="px-3 py-1 md:px-4 md:py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-black tracking-widest mb-4 md:mb-6 inline-block">{t.services_data[activeService].tag}</span>
-                <h3 className="text-3xl md:text-5xl font-black italic tracking-tighter mb-4 md:mb-6">{t.services_data[activeService].title}</h3>
-                <p className="text-base md:text-xl text-gray-500 max-w-xl">{t.services_data[activeService].desc}</p>
-             </div>
-          </div>
-          <div className="lg:col-span-5 flex flex-col gap-3 md:gap-4">
-            {t.services_data.map((s, idx) => {
-              const Icon = s.icon;
-              return (
-                <button key={idx} onClick={() => setActiveService(idx)} className={`flex items-center gap-4 md:gap-6 p-6 md:p-8 rounded-[24px] md:rounded-[32px] border transition-all text-left ${activeService === idx ? 'bg-white/5 border-white/20 ring-1 ring-zinc-400/20' : 'opacity-30'}`}>
-                   <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl bg-gradient-to-br ${s.color} text-black`}><Icon className="w-5 h-5" /></div>
-                   <div><h4 className="text-lg md:text-xl font-black italic leading-tight">{s.title}</h4><p className="text-[9px] font-black uppercase text-gray-600">{s.tag}</p></div>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-      )}
-
-
-      {/* Planes de Edición de Video */}
-      <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-6xl mx-auto">
-        <div className="mb-12 md:mb-16 text-center">
-          <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 px-2">EDICIÓN DE VIDEO</span></h2>
-          <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto">{t.editing_plans_p}</p>
-        </div>
-
-        {/* Selector de Duración Limpio (Estilo Sync Pro, Sin Brillos Excesivos) */}
-        <div className="max-w-3xl mx-auto mb-12 md:mb-16">
-          <div className="bg-[#0a0a0a] border border-white/10 rounded-[28px] p-1.5 grid grid-cols-2 md:grid-cols-4 gap-1.5">
-            {t.editing_plans_data.map((item, idx) => {
-              const isActive = activeDuration === idx;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => setActiveDuration(idx)}
-                  className={`relative py-3.5 px-4 rounded-[22px] transition-all duration-300 flex flex-col items-center justify-center text-center ${
-                    isActive
-                      ? 'bg-zinc-800/90 border border-white/15 text-white'
-                      : 'text-gray-500 hover:text-gray-300 border border-transparent'
-                  }`}
-                >
-                  <span className="text-xs md:text-sm font-black italic uppercase tracking-tight leading-none mb-1">
-                    {item.duration}
-                  </span>
-                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] ${isActive ? 'text-zinc-400' : 'text-gray-600'}`}>
-                    {item.tag}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-        
-        {/* Tarjetas Comparativas Lado a Lado con el Cuadro y Animación Original de Sync Pro */}
-        {(() => {
-          const currentTier = t.editing_plans_data[activeDuration] || t.editing_plans_data[0];
-          const cards = [
-            { key: 'basic', data: currentTier.basic, isAdvanced: false },
-            { key: 'advanced', data: currentTier.advanced, isAdvanced: true }
-          ];
-
-          return (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {cards.map(({ key, data, isAdvanced }) => (
-                <div 
-                  key={key} 
-                  onMouseMove={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    e.currentTarget.style.setProperty("--x", `${x}px`);
-                    e.currentTarget.style.setProperty("--y", `${y}px`);
-                  }}
-                  className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.02] hover:z-50 shadow-2xl bg-white/5"
-                  style={{ "--x": "0px", "--y": "0px" }}
-                >
-                  {/* Snake Border - Active only on Hover */}
-                  <div 
-                    className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ animationDuration: '4s' }}
-                  />
-
-                  {/* Card Container with Persistent Subtle Border */}
-                  <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col overflow-hidden border border-white/10">
-                    {/* 💡 Spotlight Tracking Effect - Soft & Wide */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                         style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
-                    
-                    <div className="p-8 md:p-10 relative z-10 flex flex-col h-full">
-                      {/* Cabecera de la Tarjeta */}
-                      <div className="flex items-center justify-between gap-3 mb-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
-                          {currentTier.duration} · {currentTier.tag}
-                        </span>
-                        {isAdvanced && data.badge && (
-                          <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-300">
-                            {data.badge}
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 className="text-2xl md:text-3xl font-black italic uppercase tracking-tight text-white mb-2">
-                        {data.name}
-                      </h3>
-                      <p className="text-xs text-gray-500 mb-8">
-                        {data.subtitle}
-                      </p>
-
-                      {/* Precio con transición limpia */}
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={`${key}-${activeDuration}`}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.2 }}
-                          className="flex flex-col flex-grow"
-                        >
-                          <div className="mb-8 pb-8 border-b border-white/10 flex items-baseline gap-3">
-                            <span className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                              {data.price}
-                            </span>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-                              / video ({currentTier.duration})
-                            </span>
-                          </div>
-
-                          <ul className="space-y-3.5 flex-grow">
-                            {data.features.map((f, idx) => (
-                              <li key={idx} className="text-xs md:text-[13px] text-gray-300 flex items-start gap-3 leading-relaxed">
-                                <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isAdvanced ? 'text-zinc-300' : 'text-zinc-500'}`} />
-                                <span>{f}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </motion.div>
-                      </AnimatePresence>
-
-                      <a
-                        href={`https://wa.me/59169109766?text=${encodeURIComponent(`Hola Sync Pro, me interesa contratar la ${data.name} de ${currentTier.duration} (${data.price}).`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-5 bg-white/5 group-hover:bg-zinc-500 group-hover:text-white font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-2xl mt-10 text-center block"
-                      >
-                        {isAdvanced ? t.select_advanced_btn : t.select_basic_btn}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          );
-        })()}
-
-        {/* Barra Inferior de Adicionales */}
-        <div className="mt-8 bg-[#0a0a0a] border border-white/10 rounded-[28px] p-5 md:p-6">
-          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6">
-            {t.editing_extras.map((extra, idx) => (
-              <div key={idx} className="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/[0.03] border border-white/5">
-                <span className="text-xs font-black text-white tracking-tight">{extra.price}</span>
-                <span className="text-[11px] text-gray-400 font-medium">{extra.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Bento Grid: Antes vs. Después + Personaliza tu Pedido + ¿Cómo Trabajamos? */}
-      <section id="herramientas-cliente" className="pb-20 md:pb-32 px-4 md:px-6 max-w-6xl mx-auto">
-        {(() => {
-          const currentTier = t.editing_plans_data[activeDuration] || t.editing_plans_data[0];
-          const selectedPlanData = orderPlanType === 'advanced' ? currentTier.advanced : currentTier.basic;
-          const basePrice = parseInt(selectedPlanData.price.replace(/[^0-9]/g, ''), 10) || 0;
-          const totalEstimated = basePrice + (extraAiVideo ? 50 : 0) + (extraTerrain ? 80 : 0);
-
-          const extrasList = [
-            extraAiVideo ? '+1 Video IA extra (+Bs. 50)' : null,
-            extraTerrain ? '+1 Terreno adicional (+Bs. 80)' : null
-          ].filter(Boolean);
-
-          const whatsappOrderText = `Hola Sync Pro, quiero cotizar mi pedido:\n• Plan: ${selectedPlanData.name}\n• Duración: ${currentTier.duration} (${selectedPlanData.price})\n${extrasList.length > 0 ? `• Extras: ${extrasList.join(', ')}\n` : ''}• Total Estimado: Bs. ${totalEstimated}`;
-
-          return (
-            <div className="space-y-6 md:space-y-8">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
-                {/* Tarjeta Izquierda: Antes vs. Después (DaVinci Studio) */}
-                <div className="lg:col-span-7 relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 shadow-2xl bg-white/5">
-                  <div 
-                    className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ animationDuration: '4s' }}
-                  />
-                  <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col p-6 md:p-10 border border-white/10">
-                    <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tight text-white mb-6">
-                      {t.bento_before_after_title}
-                    </h3>
-
-                    {/* Visor Comparativo Interactivo */}
-                    <div
-                      className="relative w-full aspect-video rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 select-none cursor-ew-resize bg-black"
-                      onMouseMove={(e) => {
-                        if (e.buttons === 1) {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          const pos = Math.max(5, Math.min(95, ((e.clientX - rect.left) / rect.width) * 100));
-                          setCompareSlider(pos);
-                        }
-                      }}
-                      onClick={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const pos = Math.max(5, Math.min(95, ((e.clientX - rect.left) / rect.width) * 100));
-                        setCompareSlider(pos);
-                      }}
-                    >
-                      {/* Capa Derecha (Fondo Completo): Después - Edición Avanzada Sync Pro */}
-                      <div className="absolute inset-0">
-                        <img
-                          src="/video02.jpeg"
-                          alt="Edición Avanzada Sync Pro"
-                          className="w-full h-full object-cover saturate-[1.25] contrast-[1.12] brightness-105"
-                        />
-                        {/* Trazado de Terreno y Señaladores Flotantes en el lado Editado */}
-                        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full pointer-events-none">
-                          <polygon
-                            points="32,68 58,34 88,48 66,85"
-                            fill="rgba(255, 255, 255, 0.08)"
-                            stroke="#ffffff"
-                            strokeWidth="0.8"
-                          />
-                          <line x1="45" y1="51" x2="73" y2="66" stroke="rgba(255,255,255,0.65)" strokeWidth="0.5" />
-                        </svg>
-                        <div className="absolute top-[24%] left-[56%] px-2.5 py-1 rounded-md bg-white text-black text-[9px] font-black uppercase tracking-wider shadow-lg pointer-events-none">
-                          LOT: 500 m²
-                        </div>
-                        <div className="absolute top-[42%] left-[64%] px-2.5 py-1 rounded-md bg-black/85 border border-white/20 text-white text-[9px] font-black uppercase tracking-wider shadow-lg pointer-events-none">
-                          AV. PRINCIPAL · 2 MIN
-                        </div>
-                      </div>
-
-                      {/* Capa Izquierda (Recortada por el Slider): Antes - Toma Cruda de Dron */}
-                      <div
-                        className="absolute inset-0 overflow-hidden"
-                        style={{ clipPath: `inset(0 ${100 - compareSlider}% 0 0)` }}
-                      >
-                        <img
-                          src="/video02.jpeg"
-                          alt="Toma Cruda de Dron"
-                          className="w-full h-full object-cover grayscale-[75%] contrast-75 brightness-90"
-                        />
-                        <div className="absolute inset-0 bg-zinc-900/25" />
-                      </div>
-
-                      {/* Línea Divisoria y Control Deslizante */}
-                      <div
-                        className="absolute inset-y-0 w-0.5 bg-white/80 z-20 pointer-events-none"
-                        style={{ left: `${compareSlider}%` }}
-                      >
-                        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-12 rounded-full bg-[#0a0a0a] border border-white/30 flex items-center justify-center shadow-xl">
-                          <div className="flex gap-1">
-                            <span className="w-0.5 h-3.5 bg-white/80 rounded-full" />
-                            <span className="w-0.5 h-3.5 bg-white/80 rounded-full" />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Control Input Range Transparente para soporte táctil y arrastre fluido */}
-                      <input
-                        type="range"
-                        min="5"
-                        max="95"
-                        value={compareSlider}
-                        onChange={(e) => setCompareSlider(Number(e.target.value))}
-                        aria-label="Comparador Antes y Después"
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30"
-                      />
-
-                      {/* Etiquetas Inferiores */}
-                      <div className="absolute bottom-3 left-3 z-20 px-3 py-1.5 rounded-lg bg-black/75 backdrop-blur-md border border-white/10 text-[9px] md:text-[10px] font-black uppercase tracking-wider text-gray-300 pointer-events-none">
-                        {t.bento_before_label}
-                      </div>
-                      <div className="absolute bottom-3 right-3 z-20 px-3 py-1.5 rounded-lg bg-black/75 backdrop-blur-md border border-white/10 text-[9px] md:text-[10px] font-black uppercase tracking-wider text-white pointer-events-none">
-                        {t.bento_after_label}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Tarjeta Derecha: Personaliza tu Pedido (Conectado a WhatsApp 69109766) */}
-                <div className="lg:col-span-5 relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 shadow-2xl bg-white/5">
-                  <div 
-                    className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ animationDuration: '4s' }}
-                  />
-                  <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col justify-between p-6 md:p-10 border border-white/10">
-                    <div>
-                      <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tight text-white mb-6">
-                        {t.bento_customizer_title}
-                      </h3>
-
-                      {/* Selector de Plan y Duración */}
-                      <div className="space-y-3 mb-6">
-                        <div className="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-black border border-white/10">
-                          <button
-                            type="button"
-                            onClick={() => setOrderPlanType('basic')}
-                            className={`py-2.5 px-3 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${
-                              orderPlanType === 'basic'
-                                ? 'bg-zinc-800 text-white border border-white/15'
-                                : 'text-gray-500 hover:text-gray-300'
-                            }`}
-                          >
-                            {currentTier.basic.name}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setOrderPlanType('advanced')}
-                            className={`py-2.5 px-3 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${
-                              orderPlanType === 'advanced'
-                                ? 'bg-zinc-800 text-white border border-white/15'
-                                : 'text-gray-500 hover:text-gray-300'
-                            }`}
-                          >
-                            {currentTier.advanced.name}
-                          </button>
-                        </div>
-
-                        <select
-                          value={activeDuration}
-                          onChange={(e) => setActiveDuration(Number(e.target.value))}
-                          className="w-full bg-black border border-white/10 rounded-2xl px-4 py-3.5 text-xs md:text-sm font-bold text-white focus:border-zinc-400 outline-none cursor-pointer"
-                        >
-                          {t.editing_plans_data.map((tier, idx) => {
-                            const tierPlan = orderPlanType === 'advanced' ? tier.advanced : tier.basic;
-                            return (
-                              <option key={idx} value={idx} className="bg-[#0a0a0a] text-white">
-                                {tierPlan.name} · {tier.duration} ({tierPlan.price})
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </div>
-
-                      {/* Casillas de Adicionales */}
-                      <div className="space-y-3 mb-6">
-                        <button
-                          type="button"
-                          onClick={() => setExtraAiVideo(!extraAiVideo)}
-                          className="w-full flex items-center gap-3.5 p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 transition-all text-left"
-                        >
-                          <div className={`w-6 h-6 rounded-lg border flex items-center justify-center text-xs font-black transition-all ${
-                            extraAiVideo ? 'border-white bg-white/10 text-white' : 'border-white/20 text-transparent'
-                          }`}>
-                            ✕
-                          </div>
-                          <span className="text-xs md:text-sm font-bold text-white">
-                            {t.bento_extra_ai_label} <span className="text-gray-400 font-normal">(+Bs. 50)</span>
-                          </span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setExtraTerrain(!extraTerrain)}
-                          className="w-full flex items-center gap-3.5 p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 transition-all text-left"
-                        >
-                          <div className={`w-6 h-6 rounded-lg border flex items-center justify-center text-xs font-black transition-all ${
-                            extraTerrain ? 'border-white bg-white/10 text-white' : 'border-white/20 text-transparent'
-                          }`}>
-                            ✕
-                          </div>
-                          <span className="text-xs md:text-sm font-bold text-white">
-                            {t.bento_extra_terrain_label} <span className="text-gray-400 font-normal">(+Bs. 80)</span>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Total y Botón a WhatsApp 69109766 */}
-                    <div className="pt-6 border-t border-white/10">
-                      <div className="flex items-baseline justify-between mb-5">
-                        <span className="text-sm md:text-base font-black italic uppercase tracking-tight text-gray-300">
-                          {t.bento_total_label}
-                        </span>
-                        <span className="text-2xl md:text-3xl font-black italic text-white">
-                          Bs. {totalEstimated}
-                        </span>
-                      </div>
-
-                      <a
-                        href={`https://wa.me/59169109766?text=${encodeURIComponent(whatsappOrderText)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-4 md:py-5 bg-zinc-800/90 hover:bg-zinc-700 border border-white/15 text-white font-black italic text-[11px] md:text-xs uppercase tracking-widest transition-all rounded-2xl text-center block"
-                      >
-                        {t.bento_whatsapp_btn}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tarjeta Inferior (Ancho Completo): ¿Cómo Trabajamos? */}
-              <div className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 shadow-2xl bg-white/5">
-                <div className="relative bg-[#0a0a0a] rounded-[39px] p-6 md:p-10 border border-white/10">
-                  <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tight text-white mb-6">
-                    {t.bento_how_title}
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {t.bento_how_steps.map((step, idx) => (
-                      <div
-                        key={idx}
-                        className="px-5 py-4 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center gap-3"
-                      >
-                        <span className="text-sm md:text-base font-black italic text-zinc-500">{step.num}</span>
-                        <span className="text-xs md:text-sm font-black italic uppercase tracking-tight text-white">
-                          {step.text}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })()}
-      </section>
-
-      {/* Planes de Creación de Contenido */}
-      {false && (
-      <section id="planes" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
-        <div className="mb-16 md:mb-20 text-center">
-          <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 px-2">CREACIÓN DE CONTENIDO</span></h2>
-          <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto">{t.plans_p}</p>
-        </div>
-        
-        {/* Planes Principales */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-20">
-          {t.plans_data.map((plan, i) => (
-            <div 
-              key={i} 
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                e.currentTarget.style.setProperty("--x", `${x}px`);
-                e.currentTarget.style.setProperty("--y", `${y}px`);
-              }}
-              className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.03] hover:z-50 shadow-2xl bg-white/5"
-              style={{ "--x": "0px", "--y": "0px" }}
-            >
-              {/* Snake Border - Active only on Hover */}
-              <div 
-                className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ animationDuration: '4s' }}
-              />
-
-              <div className="relative rounded-[39px] h-full flex flex-col overflow-hidden p-8 bg-[#0a0a0a] border border-zinc-400/10">
-                {/* 💡 Spotlight Tracking Effect - Soft & Wide */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                     style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
-                <div className="relative z-10 flex flex-col h-full">
-                  <h3 className="text-2xl font-black italic mb-4 uppercase leading-tight">{plan.name}</h3>
-                  <div className="mb-8">
-                    <div className="text-4xl font-black text-white leading-none mb-1">{plan.priceBs}</div>
-                    <div className="text-2xl font-bold text-zinc-400/80 transition-all group-hover:text-zinc-300">{plan.price} <span className="text-[10px] text-gray-500 uppercase tracking-tighter">usd</span></div>
-                  </div>
-                  <ul className="space-y-3 mb-10 flex-grow">
-                    {plan.items.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3 text-xs text-gray-400 font-medium leading-relaxed">
-                        <CheckCircle2 className="w-4 h-4 text-zinc-400 flex-shrink-0 mt-0.5" /> {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <button className="w-full py-5 bg-white/5 group-hover:bg-zinc-500 group-hover:text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">Seleccionar</button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Sección Planes Extra */}
-        <div className="mt-32">
-          <div className="mb-12 text-center">
-            <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 leading-none text-white text-center">Planes <span className="text-zinc-400">EXTRA</span></h2>
-            <div className="w-20 h-1 bg-white/10 mx-auto rounded-full" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
-            {t.extra_plans_data.map((plan, i) => (
-              <div 
-                key={i} 
-                onMouseMove={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const x = e.clientX - rect.left;
-                  const y = e.clientY - rect.top;
-                  e.currentTarget.style.setProperty("--x", `${x}px`);
-                  e.currentTarget.style.setProperty("--y", `${y}px`);
-                }}
-                className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.03] hover:z-50 shadow-2xl bg-white/5"
-                style={{ "--x": "0px", "--y": "0px" }}
-              >
-                {/* Snake Border - Active only on Hover (Zinc) */}
-                <div 
-                  className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ animationDuration: '4s' }}
-                />
-
-                <div className="relative rounded-[39px] h-full flex flex-col overflow-hidden p-8 bg-[#0a0a0a] border border-zinc-400/10">
-                  {/* 💡 Spotlight Tracking Effect - Soft & Wide (Zinc) */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                       style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
-                  <div className="relative z-10 flex flex-col h-full">
-                    <h3 className="text-2xl font-black italic mb-4 uppercase leading-tight text-white/70">{plan.name}</h3>
-                    <div className="mb-8">
-                      <div className="text-4xl font-black text-white/90 leading-none mb-1">{plan.priceBs}</div>
-                      <div className="text-2xl font-bold text-gray-500 transition-all group-hover:text-white">{plan.price} <span className="text-[10px] text-gray-600 uppercase tracking-tighter">usd</span></div>
-                    </div>
-                    <ul className="space-y-3 mb-10 flex-grow">
-                      {plan.items.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-3 text-xs text-gray-500 font-medium leading-relaxed">
-                          <CheckCircle2 className="w-4 h-4 text-gray-600 flex-shrink-0 mt-0.5" /> {item}
-                        </li>
-                      ))}
-                    </ul>
-                    <button className="w-full py-5 bg-white/5 group-hover:bg-white group-hover:text-black rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">Seleccionar</button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* 🛠️ Sección de Herramientas Premium (Extensión - Oculta temporalmente hasta versión DaVinci) */}
-      {false && (
-      <section id="herramientas" className="py-20 px-4 max-w-6xl mx-auto border-t border-white/5">
-        <div className="flex flex-col lg:flex-row gap-12 items-center">
-          {/* Columna Texto */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="w-full lg:w-1/2"
+      {/* ==================================================================== */}
+      {/* 7. PLANES DE EDICIÓN + PERSONALIZADOR (`#pricing` de 85thAgency)     */}
+      {/* ==================================================================== */}
+      <section id="pricing" className="py-12 md:py-24 px-4 md:px-6" style={{ backgroundColor: '#FFFCF5' }}>
+        <div className="max-w-[1120px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center space-y-3 md:space-y-4 mb-8 md:mb-12"
           >
-            <span className="px-4 py-1.5 rounded-full bg-zinc-500/10 border border-zinc-500/20 text-[10px] font-black tracking-widest text-zinc-400 uppercase mb-6 inline-block">
-              Sync Pro Labs / After Effects
-            </span>
-            <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 text-white leading-[0.9]">
-              Studio Sync <br /> <span className="text-zinc-500">PRO</span>
+            <span className="section-badge">Nuestros Planes</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold px-2 text-[#111111]">
+              Listos para Escalar la Calidad de tus Videos
             </h2>
-            <p className="text-gray-400 text-lg mb-8 font-light leading-relaxed">
-              La extensión definitiva para After Effects que optimiza tu flujo de trabajo en segundos.
+            <p className="text-sm md:text-base text-[#111111]/70 max-w-2xl mx-auto px-2">
+              Selecciona la duración de tu video y elige entre Edición Básica, Edición Avanzada o arma tu pedido a medida con extras de IA y terrenos.
             </p>
-            
-            <div className="bg-zinc-900/80 p-6 md:p-10 rounded-[2.5rem] border border-white/10 w-full shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10">
-                <Fingerprint className="w-20 h-20 text-white" />
-              </div>
 
-              {/* Encabezado de Compra */}
-              <div className="space-y-8 relative z-10">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="flex items-center gap-4 text-zinc-500">
-                    <span className="h-[1px] w-8 bg-zinc-800"></span>
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em]">Software Original</span>
-                    <span className="h-[1px] w-8 bg-zinc-800"></span>
-                  </div>
-                  <div className="text-6xl font-black text-white">$9.99</div>
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="flex gap-3 items-center opacity-70">
-                       <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" className="h-4" alt="PayPal" />
-                       <div className="h-3 w-[1px] bg-zinc-700"></div>
-                       <div className="flex gap-1.5">
-                          <div className="w-6 h-4 bg-zinc-800 rounded-sm border border-white/5 flex items-center justify-center text-[6px] font-bold">VISA</div>
-                          <div className="w-6 h-4 bg-zinc-800 rounded-sm border border-white/5 flex items-center justify-center text-[6px] font-bold">MC</div>
-                       </div>
-                    </div>
-                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-2">PayPal & Tarjetas de Crédito/Débito</p>
-                  </div>
-                </div>
-
-                {/* Botón de Acción Principal (Ahora lleva al pago) */}
-                <button 
-                  onClick={() => document.getElementById('paypal-section').scrollIntoView({ behavior: 'smooth' })}
-                  className="w-full flex items-center justify-center gap-3 text-xs font-black uppercase tracking-widest text-black bg-white hover:bg-zinc-200 transition-all py-6 rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-                >
-                  <Zap className="w-5 h-5 fill-current" /> Obtener Licencia de por Vida
-                </button>
-
-                <div id="paypal-section" className="pt-10 border-t border-white/5 flex flex-col items-center">
-                  <p className="text-[10px] text-zinc-400 font-black tracking-[0.2em] mb-8 uppercase text-center">Completa tu pago seguro abajo:</p>
-                  
-                  {/* Contenedor PayPal */}
-                  <div className="w-full flex justify-center overflow-hidden min-h-[100px]">
-                    <div className="min-w-[450px] flex justify-center scale-[0.7] md:scale-100 origin-center">
-                      <div id="paypal-container-MQ99WW5GG2UN2" className="w-full" />
-                    </div>
-                  </div>
-                  
-                  <div className="mt-12 p-6 bg-white/5 rounded-2xl border border-white/5 w-full text-center">
-                     <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mb-4">¿Ya tienes tu licencia?</p>
-                     <a 
-                      href="/Studio_Sync_Pro.zxp" 
-                      download
-                      className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
-                     >
-                      <Download className="w-4 h-4" /> Descargar Instalador
-                     </a>
-                     <p className="text-[8px] text-zinc-600 mt-3 uppercase font-bold tracking-widest">Requiere activación tras la instalación</p>
-                  </div>
-                </div>
+            {/* Selector de Duración por Cápsulas (30s / 60s / 90s / 120s) */}
+            <div className="pt-4 flex justify-center">
+              <div className="inline-flex flex-wrap justify-center gap-2 p-1.5 rounded-full bg-white border border-black/10 shadow-md">
+                {editingPlansByDuration.map((tier, idx) => {
+                  const active = activeDuration === idx;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveDuration(idx)}
+                      className={`px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold transition-all duration-300 ${
+                        active
+                          ? 'bg-[#029854] text-white shadow-md shadow-[#029854]/25 scale-[1.02]'
+                          : 'text-[#111111]/70 hover:text-[#111111] hover:bg-black/5'
+                      }`}
+                    >
+                      <span>{tier.duration}</span>
+                      <span
+                        className={`hidden sm:inline-block ml-1.5 text-[10px] font-medium ${
+                          active ? 'text-white/85' : 'text-[#666666]'
+                        }`}
+                      >
+                        · {tier.tag}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
 
-          {/* Columna Visual */}
-          <div className="hidden lg:block w-1/2 relative aspect-square bg-white/5 rounded-[40px] border border-white/10 p-1">
-             <div className="w-full h-full bg-black rounded-[39px] flex items-center justify-center">
-                <Layout className="w-32 h-32 text-zinc-800" />
-             </div>
+          {/* 3 Tarjetas de Planes idénticas a `#pricing` de 85thAgency */}
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-8 items-stretch">
+            {/* TARJETA 1: EDICIÓN BÁSICA (Blanca) */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-md border border-black/10 hover:shadow-xl hover:border-[#029854]/30 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-300 flex flex-col justify-between"
+            >
+              <div className="space-y-4 md:space-y-6">
+                <div>
+                  <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-[#029854] bg-[#029854]/10 px-3 py-1 rounded-full mb-2">
+                    {currentTier.duration}
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-bold text-[#111111] mb-1">
+                    {currentTier.basic.name}
+                  </h3>
+                  <p className="text-xs md:text-sm text-[#666666]">{currentTier.basic.subtitle}</p>
+                </div>
+
+                <div className="mb-4 md:mb-6">
+                  <div className="text-3xl md:text-4xl font-extrabold text-[#029854] mb-1">
+                    {currentTier.basic.price}
+                  </div>
+                  <p className="text-xs md:text-sm text-[#666666]">{currentTier.basic.delivery}</p>
+                </div>
+
+                <ul className="space-y-2.5 md:space-y-3">
+                  {currentTier.basic.items.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5">
+                      <span className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-[#029854]/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#029854]" />
+                      </span>
+                      <span className="text-xs md:text-sm text-[#111111]/85 font-medium">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <a
+                href={`https://wa.me/59169109766?text=${encodeURIComponent(
+                  `Hola Sync Pro, quiero contratar el plan de ${currentTier.basic.name} (${currentTier.duration} - ${currentTier.basic.price}).`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 w-full py-3.5 rounded-full bg-[#029854] text-white hover:bg-[#029854]/90 transition-all duration-300 text-xs md:text-sm font-bold text-center shadow-md block"
+              >
+                Elegir Edición Básica
+              </a>
+            </motion.div>
+
+            {/* TARJETA 2 (CENTRAL DESTACADA VERDE): EDICIÓN AVANZADA (Idéntica a "Growth - Creators' choice" de 85thAgency) */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="bg-[#029854] text-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl border-2 border-[#029854] relative transform md:scale-105 md:-translate-y-4 hover:-translate-y-6 hover:scale-[1.07] transition-all duration-300 flex flex-col justify-between"
+            >
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#111111] text-[#FFFCF5] px-4 py-1 rounded-full text-[11px] md:text-xs font-bold shadow-lg whitespace-nowrap">
+                Elección Más Pedida
+              </div>
+
+              <div className="space-y-4 md:space-y-6">
+                <div>
+                  <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-white bg-white/20 px-3 py-1 rounded-full mb-2">
+                    {currentTier.duration} · Full Pro
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-bold mb-1">{currentTier.advanced.name}</h3>
+                  <p className="text-xs md:text-sm text-white/85">{currentTier.advanced.subtitle}</p>
+                </div>
+
+                <div className="mb-4 md:mb-6">
+                  <div className="text-3xl md:text-4xl font-extrabold mb-1">
+                    {currentTier.advanced.price}
+                  </div>
+                  <p className="text-xs md:text-sm text-white/85">{currentTier.advanced.delivery}</p>
+                </div>
+
+                <ul className="space-y-2.5 md:space-y-3">
+                  {currentTier.advanced.items.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5">
+                      <span className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
+                      </span>
+                      <span className="text-xs md:text-sm font-medium">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <a
+                href={`https://wa.me/59169109766?text=${encodeURIComponent(
+                  `Hola Sync Pro, quiero contratar el plan de ${currentTier.advanced.name} (${currentTier.duration} - ${currentTier.advanced.price}).`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 w-full py-3.5 bg-[#FFFCF5] text-[#111111] hover:bg-white rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-xs md:text-sm text-center block"
+              >
+                Elegir Edición Avanzada
+              </a>
+            </motion.div>
+
+            {/* TARJETA 3: PERSONALIZA TU PEDIDO / EXTRAS A MEDIDA (Blanca) */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-md border border-black/10 hover:shadow-xl hover:border-[#029854]/30 hover:-translate-y-2 hover:scale-[1.01] transition-all duration-300 flex flex-col justify-between"
+            >
+              <div className="space-y-4 md:space-y-5">
+                <div>
+                  <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-[#111111] bg-black/5 px-3 py-1 rounded-full mb-2">
+                    Calculadora en Vivo
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-bold text-[#111111] mb-1">
+                    Personaliza tu Pedido
+                  </h3>
+                  <p className="text-xs md:text-sm text-[#666666]">
+                    Suma videos con IA o terrenos extra a tu medida
+                  </p>
+                </div>
+
+                {/* Total calculado en vivo */}
+                <div className="p-4 rounded-2xl bg-[#FFFCF5] border border-black/10">
+                  <div className="text-xs font-semibold text-[#666666] mb-0.5">
+                    Total Estimado ({currentTier.duration}):
+                  </div>
+                  <div className="text-3xl md:text-4xl font-extrabold text-[#029854]">
+                    Bs. {totalCustomPrice}
+                  </div>
+                </div>
+
+                {/* Selector Base */}
+                <div className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-black/5">
+                  <button
+                    type="button"
+                    onClick={() => setCustomPlanType('basic')}
+                    className={`py-2 rounded-lg text-xs font-bold transition-all ${
+                      customPlanType === 'basic'
+                        ? 'bg-white text-[#111111] shadow-sm'
+                        : 'text-[#666666]'
+                    }`}
+                  >
+                    Base Básica
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCustomPlanType('advanced')}
+                    className={`py-2 rounded-lg text-xs font-bold transition-all ${
+                      customPlanType === 'advanced'
+                        ? 'bg-[#029854] text-white shadow-sm'
+                        : 'text-[#666666]'
+                    }`}
+                  >
+                    Base Avanzada
+                  </button>
+                </div>
+
+                {/* Checkboxes de Adicionales */}
+                <div className="space-y-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setExtraAiVideo(!extraAiVideo)}
+                    className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all ${
+                      extraAiVideo
+                        ? 'bg-[#029854]/10 border-[#029854] text-[#111111]'
+                        : 'bg-white border-black/10 text-[#666666]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className={`w-5 h-5 rounded-md flex items-center justify-center ${
+                          extraAiVideo ? 'bg-[#029854] text-white' : 'border border-black/20'
+                        }`}
+                      >
+                        {extraAiVideo && <Check className="w-3.5 h-3.5" />}
+                      </div>
+                      <span className="text-xs font-semibold">+1 Video extra con IA</span>
+                    </div>
+                    <span className="text-xs font-bold text-[#029854]">+Bs. 50</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setExtraTerrain(!extraTerrain)}
+                    className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all ${
+                      extraTerrain
+                        ? 'bg-[#029854]/10 border-[#029854] text-[#111111]'
+                        : 'bg-white border-black/10 text-[#666666]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className={`w-5 h-5 rounded-md flex items-center justify-center ${
+                          extraTerrain ? 'bg-[#029854] text-white' : 'border border-black/20'
+                        }`}
+                      >
+                        {extraTerrain && <Check className="w-3.5 h-3.5" />}
+                      </div>
+                      <span className="text-xs font-semibold">+1 Terreno adicional</span>
+                    </div>
+                    <span className="text-xs font-bold text-[#029854]">+Bs. 80</span>
+                  </button>
+                </div>
+
+                {/* Resumen de adicionales fijos */}
+                <div className="text-[11px] text-[#666666] space-y-1 pt-1 border-t border-black/5">
+                  <div>• Ajuste extra: +Bs. 30 (Básica) / +Bs. 60 (Avanzada)</div>
+                  <div>• Cada +30 seg extra: +Bs. 60 (Básica) / +Bs. 100 (Avanzada)</div>
+                </div>
+              </div>
+
+              <a
+                href={`https://wa.me/59169109766?text=${encodeURIComponent(
+                  `Hola Sync Pro, armé mi pedido personalizado:\n• Plan Base: ${selectedCustomPlan.name}\n• Duración: ${currentTier.duration} (${selectedCustomPlan.price})\n${
+                    extraAiVideo ? '• Extra: +1 Video con IA (+Bs. 50)\n' : ''
+                  }${
+                    extraTerrain ? '• Extra: +1 Terreno adicional (+Bs. 80)\n' : ''
+                  }• Total Estimado: Bs. ${totalCustomPrice}`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 w-full py-3.5 rounded-full bg-[#111111] text-white hover:bg-[#029854] transition-all duration-300 text-xs md:text-sm font-bold text-center shadow-md block"
+              >
+                Enviar Pedido a WhatsApp
+              </a>
+            </motion.div>
           </div>
         </div>
       </section>
-      )}
 
-      {/* Contacto */}
-      <section id="contacto" className="py-20 md:py-32 px-4 md:px-6 max-w-4xl mx-auto">
-        <div className="mb-16">
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black italic text-center uppercase tracking-tighter leading-none">
-            ¿LISTO PARA EL <br /> SIGUIENTE <br /> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">NIVEL</span>
-            <span className="text-zinc-500">?</span>
-          </h2>
-        </div>
-        
-        <div className="bg-white/5 p-8 md:p-12 rounded-[2.5rem] md:rounded-[3rem] border border-white/10 text-center max-w-2xl mx-auto">
-          {formStatus === 'success' ? (
-            <div className="py-16 md:py-20"><CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-zinc-400 mx-auto mb-6" /><h3 className="text-2xl md:text-3xl font-black italic uppercase">Synced / Listo</h3></div>
-          ) : (
-            <form onSubmit={handleFormSubmit} className="space-y-5 md:space-y-6 text-left">
-              <input type="text" name="nombre" required placeholder="Nombre" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all" />
-              <input type="email" name="email" required placeholder="Email" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all" />
-              <textarea name="vision" required placeholder="Tu visión..." rows="4" className="w-full bg-black/40 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm focus:border-zinc-400 outline-none transition-all"></textarea>
-              <button type="submit" disabled={formStatus === 'loading'} className="w-full py-5 md:py-6 bg-zinc-500 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg uppercase transition-all shadow-[0_0_20px_rgba(113,113,122,0.3)]">{formStatus === 'loading' ? '...' : 'INICIAR PROYECTO'}</button>
-            </form>
-          )}
+      {/* ==================================================================== */}
+      {/* 8. CARRUSEL INFINITO DE RESEÑAS (`iR` de 85thAgency)                 */}
+      {/* ==================================================================== */}
+      <section className="py-12 md:py-24 px-4 md:px-6" style={{ backgroundColor: '#FFFCF5' }}>
+        <div className="max-w-[1120px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center space-y-3 md:space-y-4 mb-8 md:mb-12"
+          >
+            <span className="section-badge">Reseñas</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold px-2 text-[#111111]">
+              Lo Que Dicen Nuestros Clientes
+            </h2>
+          </motion.div>
+
+          <div className="relative overflow-x-clip overflow-y-visible py-4 sm:py-6">
+            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#FFFCF5] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#FFFCF5] to-transparent z-10 pointer-events-none" />
+
+            <div
+              aria-hidden="true"
+              onMouseEnter={() => setMarqueeDir('left')}
+              onMouseLeave={() => setMarqueeDir(null)}
+              className="absolute left-0 top-0 bottom-0 w-20 md:w-40 z-20"
+            />
+            <div
+              aria-hidden="true"
+              onMouseEnter={() => setMarqueeDir('right')}
+              onMouseLeave={() => setMarqueeDir(null)}
+              className="absolute right-0 top-0 bottom-0 w-20 md:w-40 z-20"
+            />
+
+            <div
+              className="flex gap-4 sm:gap-6 md:gap-8 py-4 animate-marquee"
+              style={{
+                animationPlayState: hoveredTestimonial !== null && !marqueeDir ? 'paused' : 'running',
+                animationDuration: marqueeDir ? '15s' : '35s',
+                animationDirection: marqueeDir === 'left' ? 'reverse' : 'normal',
+                width: 'max-content'
+              }}
+            >
+              {[...testimonials, ...testimonials].map((t, idx) => (
+                <TestimonialCard
+                  key={`${t.name}-${idx}`}
+                  testimonial={t}
+                  isHovered={hoveredTestimonial === idx}
+                  onHover={() => setHoveredTestimonial(idx)}
+                  onLeave={() => setHoveredTestimonial(null)}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
+      {/* ==================================================================== */}
+      {/* 9. PREGUNTAS FRECUENTES EN ACORDEÓN (`#faq` de 85thAgency)           */}
+      {/* ==================================================================== */}
+      <section id="faq" className="py-12 md:py-24 px-4 md:px-6" style={{ backgroundColor: '#FFFCF5' }}>
+        <div className="max-w-[1120px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center space-y-3 md:space-y-4 mb-8 md:mb-16"
+          >
+            <span className="section-badge">Preguntas Frecuentes</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold px-2 text-[#111111]">
+              ¿Tienes Preguntas? Tenemos Respuestas
+            </h2>
+          </motion.div>
 
-      <footer className="py-16 md:py-20 border-t border-white/5 text-center text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-gray-800 uppercase px-6">
-        © 2026 Sync Pro Studio // Bolivia // Global Reach
+          <div className="max-w-3xl mx-auto space-y-3 md:space-y-4">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  className="bg-white rounded-lg md:rounded-xl border border-black/10 overflow-hidden hover:border-[#029854]/40 transition-colors duration-300 shadow-sm"
+                >
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full px-4 md:px-8 py-4 md:py-6 flex items-center justify-between text-left hover:bg-black/[0.02] transition-colors"
+                  >
+                    <span className="font-semibold text-sm md:text-base lg:text-lg pr-4 md:pr-8 text-[#111111]">
+                      {faq.q}
+                    </span>
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ChevronDown className="w-4 h-4 md:w-5 md:h-5 text-[#029854] flex-shrink-0" />
+                    </motion.div>
+                  </button>
+
+                  <motion.div
+                    initial={false}
+                    animate={{ height: isOpen ? 'auto' : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-4 md:px-8 pb-4 md:pb-6 text-sm md:text-base text-[#111111]/70 leading-relaxed">
+                      {faq.a}
+                    </div>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* 10. BANNER INTERACTIVO "¿LISTO PARA SUBIR DE NIVEL?" (`ZQ` 85th)     */}
+      {/* ==================================================================== */}
+      <section className="relative py-16 lg:py-20 px-4 md:px-6 overflow-hidden">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="relative rounded-[2.5rem] p-10 md:p-14 lg:p-16 overflow-hidden shadow-2xl"
+            style={{ backgroundColor: '#111111' }}
+          >
+            {/* Píldoras Flotantes (Rojas -> Verdes al hacer clic) idénticas a `ZQ` */}
+            <AnimatePresence mode="wait">
+              {(levelUpSolved ? solutionPills : problemPills).map((label, idx) => (
+                <motion.div
+                  key={`${levelUpSolved ? 'sol' : 'prob'}-${idx}`}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
+                    y: [0, -10, 0],
+                    rotate: [0, idx % 2 === 0 ? 5 : -5, 0]
+                  }}
+                  exit={{ opacity: 0, scale: 0 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: idx * 0.1,
+                    y: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+                    rotate: { duration: 4, repeat: Infinity, ease: 'easeInOut' }
+                  }}
+                  className="hidden sm:block absolute text-xs lg:text-sm font-medium px-3.5 py-1.5 rounded-full whitespace-nowrap"
+                  style={{
+                    backgroundColor: levelUpSolved
+                      ? 'rgba(2, 152, 84, 0.18)'
+                      : 'rgba(239, 68, 68, 0.15)',
+                    color: levelUpSolved ? '#029854' : '#ef4444',
+                    border: levelUpSolved
+                      ? '1px solid rgba(2, 152, 84, 0.35)'
+                      : '1px solid rgba(239, 68, 68, 0.3)',
+                    left: idx === 0 ? '4%' : idx === 1 ? '6%' : idx === 2 ? '74%' : idx === 3 ? '70%' : '62%',
+                    top: idx === 0 ? '14%' : idx === 1 ? '76%' : idx === 2 ? '18%' : idx === 3 ? '76%' : '8%'
+                  }}
+                >
+                  {label}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            {/* Destello central al activar */}
+            <AnimatePresence>
+              {levelUpTriggered && (
+                <motion.div
+                  initial={{ scale: 0, opacity: 1 }}
+                  animate={{ scale: [0, 2, 3], opacity: [1, 0.5, 0] }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                >
+                  <Sparkles className="w-32 h-32 text-[#029854]" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="relative z-10 text-center space-y-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+                ¿Listo para Subir de Nivel tus Videos?
+              </h2>
+              <p className="text-base sm:text-lg lg:text-xl text-white/80 max-w-2xl mx-auto">
+                Ya sea la edición de un terreno, un Reel comercial o contenido continuo para tus redes y YouTube, estamos listos cuando tú lo estés.
+              </p>
+              <motion.button
+                onClick={handleTriggerLevelUp}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center gap-3 text-base sm:text-lg font-bold px-8 py-4 rounded-full transition-all shadow-lg hover:shadow-xl"
+                style={{ backgroundColor: '#029854', color: '#FFFFFF' }}
+              >
+                ¡Resolver Mis Videos Ahora!
+                <ArrowRight className="w-5 h-5" />
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* 11. SECCIÓN DE CONTACTO / WHATSAPP DIRECTO (`#book-call` de 85th)    */}
+      {/* ==================================================================== */}
+      <section id="book-call" className="py-12 md:py-24 px-4 md:px-6" style={{ backgroundColor: '#FFFCF5' }}>
+        <div className="max-w-[1120px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center space-y-3 md:space-y-4 mb-8 md:mb-12"
+          >
+            <span className="section-badge">Hablemos</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 px-2 text-[#111111]">
+              Inicia tu Proyecto Hoy Mismo
+            </h2>
+            <p className="text-sm md:text-base lg:text-lg text-[#111111]/70 max-w-2xl mx-auto px-2">
+              Escríbenos directamente a nuestro WhatsApp o déjanos los datos de tu proyecto para comenzar con la edición de tu video.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-black/10 overflow-hidden grid md:grid-cols-12"
+          >
+            {/* Columna Izquierda: Contacto Directo WhatsApp */}
+            <div className="md:col-span-5 bg-[#111111] text-white p-8 md:p-10 flex flex-col justify-between">
+              <div className="space-y-6">
+                <span className="inline-block px-3 py-1 rounded-full bg-[#029854]/20 text-[#029854] text-xs font-bold uppercase tracking-wider">
+                  Respuesta Inmediata
+                </span>
+                <h3 className="text-2xl md:text-3xl font-bold leading-tight">
+                  Atención Directa por WhatsApp
+                </h3>
+                <p className="text-sm text-white/75 leading-relaxed">
+                  Envíanos un mensaje con la duración aproximada de tu video y el tipo de proyecto (Inmobiliaria, Comercial o Redes).
+                </p>
+
+                <div className="space-y-4 pt-2">
+                  <a
+                    href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20quiero%20cotizar%20un%20proyecto%20de%20edici%C3%B3n%20de%20video."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-sm text-white/90 hover:text-[#029854] transition-colors"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[#029854]/20 flex items-center justify-center text-[#029854]">
+                      <Phone className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-white/50">WhatsApp Directo</div>
+                      <div className="font-bold text-base">+591 69109766</div>
+                    </div>
+                  </a>
+
+                  <div className="flex items-center gap-3 text-sm text-white/90">
+                    <div className="w-10 h-10 rounded-full bg-[#029854]/20 flex items-center justify-center text-[#029854]">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-white/50">Tiempo de Entrega</div>
+                      <div className="font-bold text-base">24 a 48 Horas</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <a
+                href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20quiero%20iniciar%20un%20proyecto%20de%20video."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 w-full py-4 rounded-full bg-[#029854] hover:bg-[#029854]/90 text-white font-bold text-sm text-center shadow-lg flex items-center justify-center gap-2 transition-all"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Abrir Chat en WhatsApp
+              </a>
+            </div>
+
+            {/* Columna Derecha: Formulario Rápido */}
+            <div className="md:col-span-7 p-8 md:p-10">
+              <h3 className="text-xl md:text-2xl font-bold text-[#111111] mb-2">
+                O envíanos tu solicitud aquí
+              </h3>
+              <p className="text-xs md:text-sm text-[#666666] mb-6">
+                Completa tus datos y te contactaremos de inmediato.
+              </p>
+
+              <form onSubmit={handleFormSubmit} className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <input
+                    name="Nombre"
+                    required
+                    placeholder="Tu Nombre"
+                    className="w-full px-4 py-3.5 rounded-xl bg-[#FFFCF5] border border-black/15 text-sm text-[#111111] focus:outline-none focus:border-[#029854]"
+                  />
+                  <input
+                    name="Telefono"
+                    required
+                    placeholder="Tu WhatsApp / Teléfono"
+                    className="w-full px-4 py-3.5 rounded-xl bg-[#FFFCF5] border border-black/15 text-sm text-[#111111] focus:outline-none focus:border-[#029854]"
+                  />
+                </div>
+                <input
+                  name="Email"
+                  type="email"
+                  placeholder="Tu Correo Electrónico (opcional)"
+                  className="w-full px-4 py-3.5 rounded-xl bg-[#FFFCF5] border border-black/15 text-sm text-[#111111] focus:outline-none focus:border-[#029854]"
+                />
+                <textarea
+                  name="Mensaje"
+                  rows="3"
+                  required
+                  placeholder="Cuéntanos sobre tu video (Ej: Terreno de 60 seg en Edición Avanzada, Reel comercial, etc.)"
+                  className="w-full px-4 py-3.5 rounded-xl bg-[#FFFCF5] border border-black/15 text-sm text-[#111111] focus:outline-none focus:border-[#029854]"
+                />
+                <button
+                  type="submit"
+                  disabled={formStatus === 'loading'}
+                  className="w-full py-4 rounded-full bg-[#111111] hover:bg-[#029854] text-white font-bold text-sm transition-all shadow-md"
+                >
+                  {formStatus === 'loading'
+                    ? 'Enviando solicitud...'
+                    : formStatus === 'success'
+                    ? '¡Solicitud Enviada con Éxito!'
+                    : 'Enviar Solicitud de Edición'}
+                </button>
+              </form>
+            </div>
+          </motion.div>
+
+          <p className="text-center text-xs md:text-sm text-[#111111]/60 mt-6 px-2">
+            Sin compromisos ni demoras. Respuesta directa para cotizar tu video.
+          </p>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* 12. FOOTER REDONDEADO OSCURO (`Qe` de 85thAgency)                    */}
+      {/* ==================================================================== */}
+      <footer aria-label="Pie de página" className="bg-[#FFFCF5] px-4 pt-8 md:px-6 md:pt-12">
+        <div className="mx-auto max-w-[1120px] rounded-t-2xl md:rounded-t-3xl bg-[#111111] px-6 py-10 text-white md:px-10 md:py-14 lg:px-16">
+          <div className="grid gap-x-12 gap-y-10 pb-10 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_0.8fr] lg:gap-x-16 border-b border-white/10">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-[#029854] flex items-center justify-center font-black text-white italic">
+                  S
+                </div>
+                <span className="text-xl font-extrabold tracking-tight text-white">
+                  Sync<span className="text-[#029854]">Pro</span>
+                </span>
+              </div>
+              <p className="text-sm leading-relaxed text-white/70">
+                Edición de video de alta retención, trazado inmobiliario, contenido con IA y colorización en DaVinci Resolve.
+                <br />
+                Cero complicaciones.
+              </p>
+              <div className="mt-6 flex flex-col items-start gap-2.5 text-sm text-white/75">
+                <a
+                  href="https://wa.me/59169109766"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 hover:text-[#029854] transition-colors"
+                >
+                  <Phone className="h-4 w-4 shrink-0 text-[#029854]" />
+                  +591 69109766 (WhatsApp Oficial)
+                </a>
+              </div>
+            </div>
+
+            <nav aria-label="Servicios">
+              <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-white/90">
+                Especialidades
+              </h2>
+              <ul className="space-y-3 text-sm text-white/70">
+                <li>Edición de Videos Inmobiliarios & Terrenos</li>
+                <li>Reels, TikToks y YouTube Shorts (9:16)</li>
+                <li>Videos Horizontales & Master Plans (16:9)</li>
+                <li>Señaladores Flotantes, Textos 3D e IA</li>
+                <li>Colorización en DaVinci Resolve</li>
+              </ul>
+            </nav>
+
+            <nav aria-label="Navegación rápida">
+              <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-white/90">
+                Sync Pro
+              </h2>
+              <ul className="space-y-3 text-sm text-white/70">
+                {navItems.map((item) => (
+                  <li key={item.id}>
+                    <button
+                      onClick={() => scrollToSection(item.id)}
+                      className="hover:text-white transition-colors"
+                    >
+                      {item.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20quiero%20cotizar%20un%20video."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#029854] px-5 py-2.5 text-xs font-bold text-white hover:bg-[#029854]/90 transition-all"
+              >
+                Cotizar por WhatsApp
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </nav>
+          </div>
+
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+            <p>© 2026 Sync Pro · Estudio de Post-Producción Digital. Todos los derechos reservados.</p>
+            <p>Santa Cruz, Bolivia</p>
+          </div>
+        </div>
       </footer>
-      {/* 📱 Botón Flotante de WhatsApp Minimalista */}
+
+      {/* ==================================================================== */}
+      {/* MODAL DE REPRODUCCIÓN DE VIDEO (Al hacer clic en un proyecto)        */}
+      {/* ==================================================================== */}
+      <AnimatePresence>
+        {selectedVideoModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedVideoModal(null)}
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className={`relative w-full ${
+                selectedVideoModal.aspect === '16/9' ? 'max-w-4xl aspect-video' : 'max-w-sm aspect-[9/16]'
+              } bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/20`}
+            >
+              <button
+                onClick={() => setSelectedVideoModal(null)}
+                aria-label="Cerrar video"
+                className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-[#029854] transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <video
+                src={selectedVideoModal.video}
+                poster={selectedVideoModal.poster}
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ==================================================================== */}
+      {/* BOTONES FLOTANTES: SUBIR ARRIBA (`gt` de 85th) + WHATSAPP OFICIAL    */}
+      {/* ==================================================================== */}
+      <AnimatePresence>
+        {showBackToTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Volver arriba"
+            className="fixed bottom-6 left-6 z-40 w-12 h-12 rounded-full bg-[#111111] text-white shadow-lg hover:bg-[#029854] transition-colors flex items-center justify-center"
+          >
+            <ArrowUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       <motion.a
-        href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios%20de%20edici%C3%B3n."
+        href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20quiero%20cotizar%20un%20video."
         target="_blank"
         rel="noopener noreferrer"
-        initial={{ opacity: 0, scale: 0.5, y: 50 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] group overflow-hidden"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.95 }}
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-5 py-3.5 bg-[#029854] text-white rounded-full shadow-2xl shadow-[#029854]/40 font-bold text-xs md:text-sm"
       >
-        <div className="absolute inset-0 bg-gradient-to-tr from-zinc-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <svg 
-          viewBox="0 0 24 24" 
-          className="w-7 h-7 md:w-8 md:h-8 fill-zinc-400 group-hover:fill-white transition-colors duration-300 relative z-10"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-        </svg>
-        <span className="absolute right-20 bg-zinc-800 text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden md:block border border-white/10 backdrop-blur-md">
-          Hablemos
-        </span>
+        <MessageCircle className="w-5 h-5 fill-white" />
+        <span>WhatsApp</span>
       </motion.a>
-      </div>
     </div>
   );
 };
