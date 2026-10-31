@@ -75,6 +75,11 @@ const App = () => {
   const [lang, setLang] = useState('es'); 
   const [activeService, setActiveService] = useState(0);
   const [activeDuration, setActiveDuration] = useState(1);
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [compareSlider, setCompareSlider] = useState(50);
+  const [orderPlanType, setOrderPlanType] = useState('advanced');
+  const [extraAiVideo, setExtraAiVideo] = useState(true);
+  const [extraTerrain, setExtraTerrain] = useState(false);
   const [formStatus, setFormStatus] = useState('idle');
 
   // ID de Videos de Google Drive (Sincronizado con actualizar_videos.py)
@@ -249,12 +254,57 @@ const App = () => {
         { name: "Plan Foto Pro", price: "$220", priceBs: "Bs. 1.500", items: ["Marca y Producto", "20 Fotos Editadas", "Dirección de Arte", "1 Sesión (3-4h)", "Luces + Fondo", "Retoque Digital"] },
         { name: "Plan Eventos Pro", price: "$360", priceBs: "Bs. 2.500", items: ["Social y Ceremonial", "Video Cine + Recap", "Guion Narrativo", "Cobertura (Hasta 6h)", "Cámara Pro + Audio", "Edición Highlights"] }
       ],
+      projects_categories: [
+        { id: 'all', label: 'TODOS' },
+        { id: 'inmobiliaria', label: 'INMOBILIARIA & TERRENOS' },
+        { id: 'comercial', label: 'COMERCIAL & NEGOCIOS' },
+        { id: 'fitness', label: 'FITNESS & MARCAS' }
+      ],
       projects_data: [
-        { title: "SPORT FIT", subtitle: "Fitness", color: "from-blue-500/20", img: "/video01.jpeg" },
-        { title: "ZAMBRANOS", subtitle: "Auto servicio", color: "from-cyan-500/20", img: "/video02.jpeg" },
-        { title: "CHINO BARBER", subtitle: "Barbería", color: "from-blue-600/20", img: "/video03.jpeg" },
-        { title: "NOVAFIT", subtitle: "Fitness", color: "from-purple-500/20", img: "/video04.jpeg" },
-        { title: "YOJA HAIR LOUNGE", subtitle: "Belleza", color: "from-zinc-400/20", img: "/video05.jpeg" }
+        { title: "URBANIZACIÓN URUBÓ", subtitle: "Inmobiliaria & Terrenos", category: "inmobiliaria", color: "from-zinc-400/20", img: "/video02.jpeg", videoSrc: "/cuadro-2.mp4", hasLandOverlay: true, badge: "Trazado + IA" },
+        { title: "CONDOMINIO SUR", subtitle: "Inmobiliaria & Terrenos", category: "inmobiliaria", color: "from-zinc-500/20", img: "/video05.jpeg", videoSrc: "/cuadro-5.mp4", hasLandOverlay: true, badge: "Señaladores + Voz IA" },
+        { title: "SPORT FIT", subtitle: "Fitness", category: "fitness", color: "from-blue-500/20", img: "/video01.jpeg", videoSrc: "/cuadro-1.mp4" },
+        { title: "ZAMBRANOS", subtitle: "Auto servicio", category: "comercial", color: "from-cyan-500/20", img: "/video02.jpeg", videoSrc: "/cuadro-2.mp4" },
+        { title: "CHINO BARBER", subtitle: "Barbería", category: "comercial", color: "from-blue-600/20", img: "/video03.jpeg", videoSrc: "/cuadro-3.mp4" },
+        { title: "NOVAFIT", subtitle: "Fitness", category: "fitness", color: "from-purple-500/20", img: "/video04.jpeg", videoSrc: "/cuadro-4.mp4" },
+        { title: "YOJA HAIR LOUNGE", subtitle: "Belleza", category: "comercial", color: "from-zinc-400/20", img: "/video05.jpeg", videoSrc: "/cuadro-5.mp4" }
+      ],
+      horizontal_section_title: "PROYECTOS HORIZONTALES / MASTER PLAN (16:9)",
+      horizontal_projects_data: [
+        {
+          title: "MASTER PLAN · URBANIZACIÓN URUBÓ",
+          subtitle: "Trazado de Precisión + Señaladores Flotantes + Color DaVinci",
+          category: "inmobiliaria",
+          img: "/video02.jpeg",
+          videoSrc: "/cuadro-2.mp4",
+          pin1: "Av. Principal 2 min",
+          pin2: "500 m²",
+          polygon: "22,68 48,42 82,52 64,84"
+        },
+        {
+          title: "PROYECTO · CONDOMINIO & LOTES COMERCIALES",
+          subtitle: "Delimitación de Terreno + Proyección IA + Voz Comercial",
+          category: "inmobiliaria",
+          img: "/video05.jpeg",
+          videoSrc: "/cuadro-5.mp4",
+          pin1: "Zona de Alta Plusvalía",
+          pin2: "360 m²",
+          polygon: "18,64 52,38 85,48 58,82"
+        }
+      ],
+      bento_before_after_title: "ANTES VS. DESPUÉS (DAVINCI STUDIO)",
+      bento_before_label: "TOMA CRUDA DE DRON",
+      bento_after_label: "EDICIÓN AVANZADA SYNC PRO",
+      bento_customizer_title: "PERSONALIZA TU PEDIDO",
+      bento_extra_ai_label: "+1 Video IA extra",
+      bento_extra_terrain_label: "+1 Terreno adicional",
+      bento_total_label: "TOTAL ESTIMADO:",
+      bento_whatsapp_btn: "ENVIAR PEDIDO A WHATSAPP (69109766)",
+      bento_how_title: "¿CÓMO TRABAJAMOS?",
+      bento_how_steps: [
+        { num: "01.", text: "ENVÍA TUS TOMAS Y GUION" },
+        { num: "02.", text: "EDICIÓN, TRAZADO E IA" },
+        { num: "03.", text: "REVISIÓN Y ENTREGA FINAL" }
       ],
       services_data: [
         { title: "Post-Producción", desc: "Edición rítmica en Premiere Pro y VFX avanzados en After Effects.", tag: "AE + PR", color: "from-zinc-400 to-orange-700", icon: Play },
@@ -430,12 +480,57 @@ const App = () => {
         { name: "Photo Pro Plan", price: "$220", priceBs: "Bs. 1,500", items: ["Brand & Product", "20 Edited Photos", "Art Direction", "1 Session (3-4h)", "Lights + Backdrop", "Digital Retouching"] },
         { name: "Events Pro Plan", price: "$360", priceBs: "Bs. 2,500", items: ["Social & Ceremonial", "Cine Video + Recap", "Narrative Script", "Coverage (Up to 6h)", "Pro Camera + Audio", "Highlights Editing"] }
       ],
+      projects_categories: [
+        { id: 'all', label: 'ALL' },
+        { id: 'inmobiliaria', label: 'REAL ESTATE & LAND' },
+        { id: 'comercial', label: 'COMMERCIAL & BUSINESS' },
+        { id: 'fitness', label: 'FITNESS & BRANDS' }
+      ],
       projects_data: [
-        { title: "SPORT FIT", subtitle: "Fitness", color: "from-blue-500/20", img: "/video01.jpeg" },
-        { title: "ZAMBRANOS", subtitle: "Auto Service", color: "from-cyan-500/20", img: "/video02.jpeg" },
-        { title: "CHINO BARBER", subtitle: "Barber Shop", color: "from-blue-600/20", img: "/video03.jpeg" },
-        { title: "NOVAFIT", subtitle: "Fitness", color: "from-purple-500/20", img: "/video04.jpeg" },
-        { title: "YOJA HAIR LOUNGE", subtitle: "Beauty", color: "from-zinc-400/20", img: "/video05.jpeg" }
+        { title: "URBANIZACIÓN URUBÓ", subtitle: "Real Estate & Land", category: "inmobiliaria", color: "from-zinc-400/20", img: "/video02.jpeg", videoSrc: "/cuadro-2.mp4", hasLandOverlay: true, badge: "Land Tracing + AI" },
+        { title: "CONDOMINIO SUR", subtitle: "Real Estate & Land", category: "inmobiliaria", color: "from-zinc-500/20", img: "/video05.jpeg", videoSrc: "/cuadro-5.mp4", hasLandOverlay: true, badge: "Callouts + AI Voice" },
+        { title: "SPORT FIT", subtitle: "Fitness", category: "fitness", color: "from-blue-500/20", img: "/video01.jpeg", videoSrc: "/cuadro-1.mp4" },
+        { title: "ZAMBRANOS", subtitle: "Auto Service", category: "comercial", color: "from-cyan-500/20", img: "/video02.jpeg", videoSrc: "/cuadro-2.mp4" },
+        { title: "CHINO BARBER", subtitle: "Barber Shop", category: "comercial", color: "from-blue-600/20", img: "/video03.jpeg", videoSrc: "/cuadro-3.mp4" },
+        { title: "NOVAFIT", subtitle: "Fitness", category: "fitness", color: "from-purple-500/20", img: "/video04.jpeg", videoSrc: "/cuadro-4.mp4" },
+        { title: "YOJA HAIR LOUNGE", subtitle: "Beauty", category: "comercial", color: "from-zinc-400/20", img: "/video05.jpeg", videoSrc: "/cuadro-5.mp4" }
+      ],
+      horizontal_section_title: "HORIZONTAL PROJECTS / MASTER PLAN (16:9)",
+      horizontal_projects_data: [
+        {
+          title: "MASTER PLAN · URBANIZACIÓN URUBÓ",
+          subtitle: "Precision Tracing + Floating Callouts + DaVinci Color",
+          category: "inmobiliaria",
+          img: "/video02.jpeg",
+          videoSrc: "/cuadro-2.mp4",
+          pin1: "Main Ave 2 min",
+          pin2: "500 m²",
+          polygon: "22,68 48,42 82,52 64,84"
+        },
+        {
+          title: "PROJECT · CONDO & COMMERCIAL LOTS",
+          subtitle: "Land Marking + AI Projection + Commercial Voiceover",
+          category: "inmobiliaria",
+          img: "/video05.jpeg",
+          videoSrc: "/cuadro-5.mp4",
+          pin1: "High Value Area",
+          pin2: "360 m²",
+          polygon: "18,64 52,38 85,48 58,82"
+        }
+      ],
+      bento_before_after_title: "BEFORE VS. AFTER (DAVINCI STUDIO)",
+      bento_before_label: "RAW DRONE FOOTAGE",
+      bento_after_label: "SYNC PRO ADVANCED EDIT",
+      bento_customizer_title: "CUSTOMIZE YOUR ORDER",
+      bento_extra_ai_label: "+1 Extra AI Video",
+      bento_extra_terrain_label: "+1 Additional Land Lot",
+      bento_total_label: "ESTIMATED TOTAL:",
+      bento_whatsapp_btn: "SEND ORDER TO WHATSAPP (69109766)",
+      bento_how_title: "HOW DO WE WORK?",
+      bento_how_steps: [
+        { num: "01.", text: "SEND FOOTAGE & SCRIPT" },
+        { num: "02.", text: "EDITING, TRACING & AI" },
+        { num: "03.", text: "REVISION & FINAL DELIVERY" }
       ],
       services_data: [
         { title: "Post-Production", desc: "Rhythmic editing in Premiere Pro and advanced VFX in After Effects.", tag: "AE + PR", color: "from-zinc-400 to-orange-700", icon: Play },
@@ -489,10 +584,13 @@ const App = () => {
           </div>
           <div className="flex items-center gap-3 md:gap-6">
             <div className="hidden lg:flex gap-10 text-[11px] font-bold text-gray-400 tracking-[0.2em] uppercase">
-              {t.nav.map((item, i) => <a key={i} href={`#${item.toLowerCase()}`} className="hover:text-zinc-400 transition-colors">{item}</a>)}
+              <a href="#proyectos" className="hover:text-zinc-400 transition-colors">{t.nav[0]}</a>
+              <a href="#planes-edicion" className="hover:text-zinc-400 transition-colors">{t.nav[2]}</a>
+              <a href="#herramientas-cliente" className="hover:text-zinc-400 transition-colors">{t.nav[1]}</a>
+              <a href="#contacto" className="hover:text-zinc-400 transition-colors">{t.nav[3]}</a>
             </div>
             <button onClick={() => setLang(lang === 'es' ? 'en' : 'es')} className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-bold uppercase tracking-widest"><Globe className="w-3 h-3 text-zinc-400" /> {lang.toUpperCase()}</button>
-            <button className="hidden sm:block bg-white text-black px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-[11px] font-black uppercase tracking-widest">{t.cta_nav}</button>
+            <a href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20quiero%20cotizar%20un%20proyecto%20de%20edici%C3%B3n%20de%20video." target="_blank" rel="noopener noreferrer" className="hidden sm:block bg-white text-black px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-[11px] font-black uppercase tracking-widest">{t.cta_nav}</a>
           </div>
         </nav>
 
@@ -508,57 +606,191 @@ const App = () => {
             </h1>
             <p className="text-gray-400 text-base md:text-xl max-w-2xl mx-auto mb-10 md:mb-12 font-light px-4">{t.hero_p}</p>
             <div className="flex flex-col sm:flex-row gap-4 md:gap-5 justify-center px-6">
-              <button className="bg-zinc-500 text-white font-black px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 uppercase tracking-tighter shadow-lg text-sm md:text-base w-full sm:w-auto">{t.hero_btn_main} <ArrowRight className="w-5 h-5" /></button>
-              <button className="border border-white/10 bg-white/5 backdrop-blur-md px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-[10px] md:text-xs w-full sm:w-auto"><Play className="w-4 h-4 fill-current" /> {t.hero_btn_sec}</button>
+              <a href="#planes-edicion" className="bg-zinc-500 text-white font-black px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 uppercase tracking-tighter shadow-lg text-sm md:text-base w-full sm:w-auto">{t.hero_btn_main} <ArrowRight className="w-5 h-5" /></a>
+              <a href="#proyectos" className="border border-white/10 bg-white/5 backdrop-blur-md px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-[10px] md:text-xs w-full sm:w-auto"><Play className="w-4 h-4 fill-current" /> {t.hero_btn_sec}</a>
             </div>
           </motion.div>
         </section>
 
-      {/* Galería Proyectos */}
+      {/* Galería Proyectos Sectorizada (Verticales 9:16 + Horizontales 16:9) */}
       <section id="proyectos" className="py-16 md:py-24 px-4 md:px-6 max-w-[1600px] mx-auto overflow-hidden">
-        <div className="mb-10 md:mb-16 px-2">
-          <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase mb-4">Nuestros <span className="text-zinc-400">PROYECTOS</span></h2>
-          <p className="text-gray-500 text-base md:text-lg max-w-xl">{t.projects_p}</p>
-        </div>
-        <div className="flex overflow-x-auto gap-3 md:gap-5 pb-20 pt-10 no-scrollbar snap-x px-4 md:px-10">
-          {t.projects_data.map((proj, i) => (
-            <motion.div 
-              key={i} 
-              whileHover={{ 
-                y: -15,
-                scale: 1.03,
-                zIndex: 50
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="relative min-w-[225px] md:min-w-[324px] aspect-[9/16] rounded-xl md:rounded-2xl overflow-hidden group snap-center border-2 border-white/20 shadow-2xl transform-gpu cursor-pointer"
-              style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
-              onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play(); }}
-              onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
-            >
-              {/* Contenedor de Imagen / Video con Zoom y Filtro Negro */}
-              <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-106">
-                <img src={proj.img} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                <video src={`/cuadro-${i + 1}.mp4`} className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity" muted loop playsInline />
-                
-                {/* Black Filter Overlay - Even Lighter (20%) */}
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-700 z-10" />
-              </div>
+        <div className="mb-10 md:mb-12 px-2 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+          <div>
+            <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase mb-4">Nuestros <span className="text-zinc-400">PROYECTOS</span></h2>
+            <p className="text-gray-500 text-base md:text-lg max-w-xl">{t.projects_p}</p>
+          </div>
 
-              {/* Overlay Gradient for Text */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent p-8 md:p-12 flex flex-col justify-end z-20">
-                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <h3 className="text-xl md:text-3xl font-black italic tracking-tighter leading-none mb-1 uppercase drop-shadow-2xl">{proj.title}</h3>
-                  <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                    <p className="text-[10px] md:text-[12px] font-black text-zinc-400 tracking-[0.2em] uppercase">{proj.subtitle}</p>
+          {/* Paneles de Categorías (Estilo Limpio Mate Sync Pro) */}
+          <div className="bg-[#0a0a0a] border border-white/10 rounded-[24px] p-1.5 flex flex-wrap gap-1.5 self-start lg:self-auto">
+            {t.projects_categories.map((cat) => {
+              const isActive = activeCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-4 md:px-5 py-2.5 rounded-[18px] text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-300 ${
+                    isActive
+                      ? 'bg-zinc-800/90 border border-white/15 text-white'
+                      : 'text-gray-500 hover:text-gray-300 border border-transparent'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Fila 1: Proyectos Verticales (9:16) */}
+        <div className="flex overflow-x-auto gap-4 md:gap-5 pb-12 pt-6 no-scrollbar snap-x px-4 md:px-10">
+          {t.projects_data
+            .filter((proj) => activeCategory === 'all' || proj.category === activeCategory)
+            .map((proj, i) => (
+              <motion.div 
+                key={`${proj.title}-${i}`} 
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                whileHover={{ 
+                  y: -12,
+                  scale: 1.02,
+                  zIndex: 50
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                className="relative min-w-[235px] md:min-w-[310px] aspect-[9/16] rounded-xl md:rounded-2xl overflow-hidden group snap-center border border-white/15 shadow-2xl transform-gpu cursor-pointer bg-[#0a0a0a]"
+                style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+                onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play(); }}
+                onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
+              >
+                {/* Contenedor de Imagen / Video con Zoom y Filtro Negro */}
+                <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
+                  <img src={proj.img} alt={proj.title} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                  <video src={proj.videoSrc} className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity" muted loop playsInline />
+                  
+                  {/* Overlay de Trazado de Terreno para proyectos de Inmobiliaria */}
+                  {proj.hasLandOverlay && (
+                    <svg viewBox="0 0 100 160" className="absolute inset-0 w-full h-full pointer-events-none z-10 opacity-80 group-hover:opacity-100 transition-opacity">
+                      <polygon
+                        points="20,95 55,70 85,82 58,118"
+                        fill="rgba(255,255,255,0.06)"
+                        stroke="#ffffff"
+                        strokeWidth="1.2"
+                        strokeDasharray="3,1.5"
+                      />
+                      <line x1="20" y1="95" x2="55" y2="70" stroke="#ffffff" strokeWidth="1.4" />
+                      <line x1="55" y1="70" x2="85" y2="82" stroke="#ffffff" strokeWidth="1.4" />
+                      <line x1="85" y1="82" x2="58" y2="118" stroke="#ffffff" strokeWidth="1.4" />
+                      <line x1="58" y1="118" x2="20" y2="95" stroke="#ffffff" strokeWidth="1.4" />
+                    </svg>
+                  )}
+
+                  {/* Black Filter Overlay */}
+                  <div className="absolute inset-0 bg-black/25 group-hover:bg-black/5 transition-colors duration-700 z-10" />
+                </div>
+
+                {proj.badge && (
+                  <div className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/15 text-[9px] font-black uppercase tracking-widest text-zinc-300">
+                    {proj.badge}
+                  </div>
+                )}
+
+                {/* Overlay Gradient for Text */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-6 md:p-8 flex flex-col justify-end z-20">
+                  <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                    <h3 className="text-lg md:text-2xl font-black italic tracking-tighter leading-none mb-2 uppercase drop-shadow-2xl">{proj.title}</h3>
+                    <span className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-black text-zinc-300 tracking-[0.15em] uppercase">
+                      {proj.subtitle}
+                    </span>
                   </div>
                 </div>
-              </div>
 
-              {/* Glow sutil */}
-              <div className="absolute inset-0 border-[3px] border-zinc-400/0 group-hover:border-zinc-400/30 rounded-xl md:rounded-2xl transition-all duration-500 pointer-events-none z-30" />
-            </motion.div>
-          ))}
+                {/* Borde sutil en hover */}
+                <div className="absolute inset-0 border-2 border-zinc-400/0 group-hover:border-zinc-400/30 rounded-xl md:rounded-2xl transition-all duration-500 pointer-events-none z-30" />
+              </motion.div>
+            ))}
         </div>
+
+        {/* Fila 2: Proyectos Horizontales / Master Plan (16:9) */}
+        {(activeCategory === 'all' || activeCategory === 'inmobiliaria') && (
+          <div className="mt-8 px-2 md:px-10">
+            <div className="flex items-center justify-between mb-6">
+              <span className="text-xs md:text-sm font-black uppercase tracking-[0.2em] text-zinc-400">
+                {t.horizontal_section_title}
+              </span>
+              <div className="hidden sm:block h-px flex-grow bg-white/10 ml-6" />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+              {t.horizontal_projects_data.map((hProj, idx) => (
+                <div
+                  key={idx}
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    e.currentTarget.style.setProperty("--x", `${x}px`);
+                    e.currentTarget.style.setProperty("--y", `${y}px`);
+                  }}
+                  onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) v.play(); }}
+                  onMouseLeave={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
+                  className="relative rounded-[32px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.01] shadow-2xl bg-white/5 cursor-pointer"
+                  style={{ "--x": "0px", "--y": "0px" }}
+                >
+                  {/* Snake Border - Active only on Hover */}
+                  <div 
+                    className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ animationDuration: '4s' }}
+                  />
+
+                  <div className="relative bg-[#0a0a0a] rounded-[31px] overflow-hidden border border-white/10 aspect-video">
+                    <img src={hProj.img} alt={hProj.title} className="absolute inset-0 w-full h-full object-cover grayscale-[35%] group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" />
+                    <video src={hProj.videoSrc} className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500" muted loop playsInline />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/10 z-10" />
+
+                    {/* Demostración de Trazado Perimetral y Señaladores Flotantes (16:9) */}
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full pointer-events-none z-20">
+                      <polygon
+                        points={hProj.polygon}
+                        fill="rgba(255, 255, 255, 0.07)"
+                        stroke="#ffffff"
+                        strokeWidth="0.7"
+                      />
+                      <line x1="25" y1="60" x2="65" y2="48" stroke="rgba(255,255,255,0.45)" strokeWidth="0.4" strokeDasharray="1.5,1.5" />
+                      <line x1="40" y1="74" x2="74" y2="62" stroke="rgba(255,255,255,0.45)" strokeWidth="0.4" strokeDasharray="1.5,1.5" />
+                    </svg>
+
+                    {/* Señaladores Flotantes (Callouts Limpios) */}
+                    <div className="absolute top-[22%] right-[16%] z-20 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/15 flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                      <span className="text-[10px] font-bold text-white tracking-tight">{hProj.pin1}</span>
+                    </div>
+                    <div className="absolute bottom-[32%] left-[38%] z-20 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/15 flex items-center gap-2">
+                      <Layers className="w-3 h-3 text-zinc-400" />
+                      <span className="text-[10px] font-bold text-white tracking-tight">{hProj.pin2}</span>
+                    </div>
+
+                    {/* Textos Inferiores */}
+                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 z-20 flex items-end justify-between gap-4">
+                      <div>
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 block mb-1">
+                          Formato Horizontal 16:9
+                        </span>
+                        <h3 className="text-lg md:text-2xl font-black italic uppercase tracking-tight text-white">
+                          {hProj.title}
+                        </h3>
+                        <p className="text-xs text-gray-400 mt-1">{hProj.subtitle}</p>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center flex-shrink-0 group-hover:bg-white group-hover:text-black transition-colors">
+                        <Play className="w-4 h-4 fill-current" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Servicios Bento */}
@@ -737,6 +969,263 @@ const App = () => {
         </div>
       </section>
 
+      {/* Bento Grid: Antes vs. Después + Personaliza tu Pedido + ¿Cómo Trabajamos? */}
+      <section id="herramientas-cliente" className="pb-20 md:pb-32 px-4 md:px-6 max-w-6xl mx-auto">
+        {(() => {
+          const currentTier = t.editing_plans_data[activeDuration] || t.editing_plans_data[0];
+          const selectedPlanData = orderPlanType === 'advanced' ? currentTier.advanced : currentTier.basic;
+          const basePrice = parseInt(selectedPlanData.price.replace(/[^0-9]/g, ''), 10) || 0;
+          const totalEstimated = basePrice + (extraAiVideo ? 50 : 0) + (extraTerrain ? 80 : 0);
+
+          const extrasList = [
+            extraAiVideo ? '+1 Video IA extra (+Bs. 50)' : null,
+            extraTerrain ? '+1 Terreno adicional (+Bs. 80)' : null
+          ].filter(Boolean);
+
+          const whatsappOrderText = `Hola Sync Pro, quiero cotizar mi pedido:\n• Plan: ${selectedPlanData.name}\n• Duración: ${currentTier.duration} (${selectedPlanData.price})\n${extrasList.length > 0 ? `• Extras: ${extrasList.join(', ')}\n` : ''}• Total Estimado: Bs. ${totalEstimated}`;
+
+          return (
+            <div className="space-y-6 md:space-y-8">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+                {/* Tarjeta Izquierda: Antes vs. Después (DaVinci Studio) */}
+                <div className="lg:col-span-7 relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 shadow-2xl bg-white/5">
+                  <div 
+                    className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ animationDuration: '4s' }}
+                  />
+                  <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col p-6 md:p-10 border border-white/10">
+                    <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tight text-white mb-6">
+                      {t.bento_before_after_title}
+                    </h3>
+
+                    {/* Visor Comparativo Interactivo */}
+                    <div
+                      className="relative w-full aspect-video rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 select-none cursor-ew-resize bg-black"
+                      onMouseMove={(e) => {
+                        if (e.buttons === 1) {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          const pos = Math.max(5, Math.min(95, ((e.clientX - rect.left) / rect.width) * 100));
+                          setCompareSlider(pos);
+                        }
+                      }}
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const pos = Math.max(5, Math.min(95, ((e.clientX - rect.left) / rect.width) * 100));
+                        setCompareSlider(pos);
+                      }}
+                    >
+                      {/* Capa Derecha (Fondo Completo): Después - Edición Avanzada Sync Pro */}
+                      <div className="absolute inset-0">
+                        <img
+                          src="/video02.jpeg"
+                          alt="Edición Avanzada Sync Pro"
+                          className="w-full h-full object-cover saturate-[1.25] contrast-[1.12] brightness-105"
+                        />
+                        {/* Trazado de Terreno y Señaladores Flotantes en el lado Editado */}
+                        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full pointer-events-none">
+                          <polygon
+                            points="32,68 58,34 88,48 66,85"
+                            fill="rgba(255, 255, 255, 0.08)"
+                            stroke="#ffffff"
+                            strokeWidth="0.8"
+                          />
+                          <line x1="45" y1="51" x2="73" y2="66" stroke="rgba(255,255,255,0.65)" strokeWidth="0.5" />
+                        </svg>
+                        <div className="absolute top-[24%] left-[56%] px-2.5 py-1 rounded-md bg-white text-black text-[9px] font-black uppercase tracking-wider shadow-lg pointer-events-none">
+                          LOT: 500 m²
+                        </div>
+                        <div className="absolute top-[42%] left-[64%] px-2.5 py-1 rounded-md bg-black/85 border border-white/20 text-white text-[9px] font-black uppercase tracking-wider shadow-lg pointer-events-none">
+                          AV. PRINCIPAL · 2 MIN
+                        </div>
+                      </div>
+
+                      {/* Capa Izquierda (Recortada por el Slider): Antes - Toma Cruda de Dron */}
+                      <div
+                        className="absolute inset-0 overflow-hidden"
+                        style={{ clipPath: `inset(0 ${100 - compareSlider}% 0 0)` }}
+                      >
+                        <img
+                          src="/video02.jpeg"
+                          alt="Toma Cruda de Dron"
+                          className="w-full h-full object-cover grayscale-[75%] contrast-75 brightness-90"
+                        />
+                        <div className="absolute inset-0 bg-zinc-900/25" />
+                      </div>
+
+                      {/* Línea Divisoria y Control Deslizante */}
+                      <div
+                        className="absolute inset-y-0 w-0.5 bg-white/80 z-20 pointer-events-none"
+                        style={{ left: `${compareSlider}%` }}
+                      >
+                        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-12 rounded-full bg-[#0a0a0a] border border-white/30 flex items-center justify-center shadow-xl">
+                          <div className="flex gap-1">
+                            <span className="w-0.5 h-3.5 bg-white/80 rounded-full" />
+                            <span className="w-0.5 h-3.5 bg-white/80 rounded-full" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Control Input Range Transparente para soporte táctil y arrastre fluido */}
+                      <input
+                        type="range"
+                        min="5"
+                        max="95"
+                        value={compareSlider}
+                        onChange={(e) => setCompareSlider(Number(e.target.value))}
+                        aria-label="Comparador Antes y Después"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30"
+                      />
+
+                      {/* Etiquetas Inferiores */}
+                      <div className="absolute bottom-3 left-3 z-20 px-3 py-1.5 rounded-lg bg-black/75 backdrop-blur-md border border-white/10 text-[9px] md:text-[10px] font-black uppercase tracking-wider text-gray-300 pointer-events-none">
+                        {t.bento_before_label}
+                      </div>
+                      <div className="absolute bottom-3 right-3 z-20 px-3 py-1.5 rounded-lg bg-black/75 backdrop-blur-md border border-white/10 text-[9px] md:text-[10px] font-black uppercase tracking-wider text-white pointer-events-none">
+                        {t.bento_after_label}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tarjeta Derecha: Personaliza tu Pedido (Conectado a WhatsApp 69109766) */}
+                <div className="lg:col-span-5 relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 shadow-2xl bg-white/5">
+                  <div 
+                    className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ animationDuration: '4s' }}
+                  />
+                  <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col justify-between p-6 md:p-10 border border-white/10">
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tight text-white mb-6">
+                        {t.bento_customizer_title}
+                      </h3>
+
+                      {/* Selector de Plan y Duración */}
+                      <div className="space-y-3 mb-6">
+                        <div className="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-black border border-white/10">
+                          <button
+                            type="button"
+                            onClick={() => setOrderPlanType('basic')}
+                            className={`py-2.5 px-3 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${
+                              orderPlanType === 'basic'
+                                ? 'bg-zinc-800 text-white border border-white/15'
+                                : 'text-gray-500 hover:text-gray-300'
+                            }`}
+                          >
+                            {currentTier.basic.name}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setOrderPlanType('advanced')}
+                            className={`py-2.5 px-3 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${
+                              orderPlanType === 'advanced'
+                                ? 'bg-zinc-800 text-white border border-white/15'
+                                : 'text-gray-500 hover:text-gray-300'
+                            }`}
+                          >
+                            {currentTier.advanced.name}
+                          </button>
+                        </div>
+
+                        <select
+                          value={activeDuration}
+                          onChange={(e) => setActiveDuration(Number(e.target.value))}
+                          className="w-full bg-black border border-white/10 rounded-2xl px-4 py-3.5 text-xs md:text-sm font-bold text-white focus:border-zinc-400 outline-none cursor-pointer"
+                        >
+                          {t.editing_plans_data.map((tier, idx) => {
+                            const tierPlan = orderPlanType === 'advanced' ? tier.advanced : tier.basic;
+                            return (
+                              <option key={idx} value={idx} className="bg-[#0a0a0a] text-white">
+                                {tierPlan.name} · {tier.duration} ({tierPlan.price})
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+
+                      {/* Casillas de Adicionales */}
+                      <div className="space-y-3 mb-6">
+                        <button
+                          type="button"
+                          onClick={() => setExtraAiVideo(!extraAiVideo)}
+                          className="w-full flex items-center gap-3.5 p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 transition-all text-left"
+                        >
+                          <div className={`w-6 h-6 rounded-lg border flex items-center justify-center text-xs font-black transition-all ${
+                            extraAiVideo ? 'border-white bg-white/10 text-white' : 'border-white/20 text-transparent'
+                          }`}>
+                            ✕
+                          </div>
+                          <span className="text-xs md:text-sm font-bold text-white">
+                            {t.bento_extra_ai_label} <span className="text-gray-400 font-normal">(+Bs. 50)</span>
+                          </span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setExtraTerrain(!extraTerrain)}
+                          className="w-full flex items-center gap-3.5 p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 transition-all text-left"
+                        >
+                          <div className={`w-6 h-6 rounded-lg border flex items-center justify-center text-xs font-black transition-all ${
+                            extraTerrain ? 'border-white bg-white/10 text-white' : 'border-white/20 text-transparent'
+                          }`}>
+                            ✕
+                          </div>
+                          <span className="text-xs md:text-sm font-bold text-white">
+                            {t.bento_extra_terrain_label} <span className="text-gray-400 font-normal">(+Bs. 80)</span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Total y Botón a WhatsApp 69109766 */}
+                    <div className="pt-6 border-t border-white/10">
+                      <div className="flex items-baseline justify-between mb-5">
+                        <span className="text-sm md:text-base font-black italic uppercase tracking-tight text-gray-300">
+                          {t.bento_total_label}
+                        </span>
+                        <span className="text-2xl md:text-3xl font-black italic text-white">
+                          Bs. {totalEstimated}
+                        </span>
+                      </div>
+
+                      <a
+                        href={`https://wa.me/59169109766?text=${encodeURIComponent(whatsappOrderText)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-4 md:py-5 bg-zinc-800/90 hover:bg-zinc-700 border border-white/15 text-white font-black italic text-[11px] md:text-xs uppercase tracking-widest transition-all rounded-2xl text-center block"
+                      >
+                        {t.bento_whatsapp_btn}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tarjeta Inferior (Ancho Completo): ¿Cómo Trabajamos? */}
+              <div className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 shadow-2xl bg-white/5">
+                <div className="relative bg-[#0a0a0a] rounded-[39px] p-6 md:p-10 border border-white/10">
+                  <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tight text-white mb-6">
+                    {t.bento_how_title}
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {t.bento_how_steps.map((step, idx) => (
+                      <div
+                        key={idx}
+                        className="px-5 py-4 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center gap-3"
+                      >
+                        <span className="text-sm md:text-base font-black italic text-zinc-500">{step.num}</span>
+                        <span className="text-xs md:text-sm font-black italic uppercase tracking-tight text-white">
+                          {step.text}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+      </section>
+
       {/* Planes de Creación de Contenido */}
       {false && (
       <section id="planes" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
@@ -843,7 +1332,8 @@ const App = () => {
       </section>
       )}
 
-      {/* 🛠️ Sección de Herramientas Premium (Extensión) */}
+      {/* 🛠️ Sección de Herramientas Premium (Extensión - Oculta temporalmente hasta versión DaVinci) */}
+      {false && (
       <section id="herramientas" className="py-20 px-4 max-w-6xl mx-auto border-t border-white/5">
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           {/* Columna Texto */}
@@ -931,6 +1421,7 @@ const App = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Contacto */}
       <section id="contacto" className="py-20 md:py-32 px-4 md:px-6 max-w-4xl mx-auto">
