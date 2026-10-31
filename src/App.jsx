@@ -20,6 +20,11 @@ import {
   ShieldCheck,
   Zap,
   Camera,
+  Sliders,
+  Type,
+  Lock,
+  Eye,
+  Scissors,
   X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -506,7 +511,7 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
             const instanceKey = `${item.id}-${idx}`;
             const isVideo = item.type === 'video';
             const isUnmuted = unmutedKey === instanceKey;
-            const aspectClass = isVideo ? 'aspect-[9/16]' : 'aspect-[3/4]';
+            const aspectClass = isVideo ? 'aspect-[9/16]' : item.wide ? 'aspect-[4/3]' : 'aspect-[3/4]';
 
             return (
               <figure
@@ -596,11 +601,568 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
 };
 
 /* ============================================================================
-   SHOWCASE DE INGENIERÍA VISUAL (TRAZOS QUIRÚRGICOS DE 1PX + IMAGEN REAL +
-   DAVINCI RESOLVE STUDIO & ADOBE AFTER EFFECTS OFICIAL)
+    ECOSISTEMA 100% DAVINCI RESOLVE STUDIO (RÉPLICA DE TIMELINE REAL +
+   APLICACIÓN DE ARCHIVO DE COLOR + CURVAS SPLINE + ANIMACIÓN DE TEXTO +
+   TRAZADO INMOBILIARIO 3D)
    ============================================================================ */
 
-// 1. Showcase Inmobiliario sobre Fotografía Aérea Real con Tracking 3D de 1px
+// 1. Réplica Fiel de la Línea de Tiempo de DaVinci Resolve Studio 19 (Edit Page)
+const DaVinciResolveAuthenticTimeline = () => {
+  const waveformSamples = [
+    30, 62, 85, 45, 92, 70, 55, 88, 40, 75, 95, 60, 48, 82, 68, 90, 38, 72, 84, 52, 78, 94, 58, 66, 42, 86, 74, 50, 88,
+    64, 92, 46, 76, 60, 80, 54
+  ];
+
+  return (
+    <div className="rounded-2xl bg-[#18181c] border border-zinc-800 overflow-hidden text-white shadow-[0_20px_50px_-20px_rgba(0,0,0,0.45)] select-none">
+      {/* Barra superior estilo ventana nativa de DaVinci Resolve Studio */}
+      <div className="bg-[#111114] px-4 py-2.5 border-b border-white/[0.07] flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
+          </div>
+          <span className="text-white/20 text-xs mx-1">|</span>
+          {/* Icono oficial de 3 ruedas DaVinci Resolve */}
+          <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0">
+            <circle cx="12" cy="7.5" r="3.2" fill="none" stroke="#60a5fa" strokeWidth="1.5" />
+            <circle cx="8" cy="15" r="3.2" fill="none" stroke="#34d399" strokeWidth="1.5" />
+            <circle cx="16" cy="15" r="3.2" fill="none" stroke="#f87171" strokeWidth="1.5" />
+          </svg>
+          <span className="text-[11px] font-semibold tracking-tight text-zinc-200">
+            DaVinci Resolve Studio 19 — Proyecto: SYNC_PRO_MASTER_4K
+          </span>
+        </div>
+
+        {/* Timecode Display estilo DaVinci Resolve */}
+        <div className="flex items-center gap-3">
+          <span className="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-[9px] font-mono text-emerald-300">
+            100% DAVINCI RESOLVE STUDIO
+          </span>
+          <span className="font-mono text-xs font-bold tracking-wider text-[#ef4444] bg-[#0b0b0d] px-2.5 py-1 rounded border border-white/[0.07]">
+            01:00:08:14
+          </span>
+        </div>
+      </div>
+
+      {/* Barra de herramientas secundaria (Snapping, Blade, Flags, Zoom) */}
+      <div className="bg-[#1c1c21] px-4 py-1.5 border-b border-black/60 flex items-center justify-between text-[10px] text-zinc-400">
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1 text-white font-medium">
+            <MousePointerIcon /> Selección
+          </span>
+          <span className="flex items-center gap-1 text-zinc-400">
+            <Scissors size={11} /> Corte (B)
+          </span>
+          <span className="text-zinc-600">|</span>
+          <span className="font-mono text-[9px] text-amber-400/90">Imán Activo (N)</span>
+        </div>
+        <div className="hidden sm:flex items-center gap-3 font-mono text-[9px] text-zinc-400">
+          <span>24.000 fps</span>
+          <span>·</span>
+          <span>3840 × 2160 Ultra HD</span>
+          <span>·</span>
+          <span className="text-sky-300">DaVinci YRGB Color Managed</span>
+        </div>
+      </div>
+
+      {/* Área Principal del Timeline: Cabeceras de Pista a la izquierda + Pistas a la derecha */}
+      <div className="grid grid-cols-12 bg-[#141417]">
+        {/* Columna Izquierda: Track Headers auténticos de DaVinci Resolve */}
+        <div className="col-span-3 sm:col-span-2 bg-[#1c1c21] border-r border-black/80 flex flex-col text-[10px] font-mono">
+          {/* Espacio esquina de regla */}
+          <div className="h-6 border-b border-black/70 px-2 flex items-center text-[8px] text-zinc-500">
+            TIMECODE
+          </div>
+
+          {/* Track Header V3 */}
+          <div className="h-10 border-b border-black/60 px-2 flex items-center justify-between bg-[#202026]">
+            <div className="flex items-center gap-1">
+              <span className="px-1 py-0.2 rounded bg-zinc-700 text-zinc-200 font-bold text-[9px]">V3</span>
+              <span className="hidden md:inline text-[9px] text-zinc-400 truncate">Text+</span>
+            </div>
+            <div className="flex items-center gap-1 text-zinc-500">
+              <Lock size={9} />
+              <Eye size={9} className="text-zinc-300" />
+            </div>
+          </div>
+
+          {/* Track Header V2 */}
+          <div className="h-10 border-b border-black/60 px-2 flex items-center justify-between bg-[#202026]">
+            <div className="flex items-center gap-1">
+              <span className="px-1 py-0.2 rounded bg-zinc-700 text-zinc-200 font-bold text-[9px]">V2</span>
+              <span className="hidden md:inline text-[9px] text-zinc-400 truncate">Fusion</span>
+            </div>
+            <div className="flex items-center gap-1 text-zinc-500">
+              <Lock size={9} />
+              <Eye size={9} className="text-zinc-300" />
+            </div>
+          </div>
+
+          {/* Track Header V1 (Activo con borde naranja/rojo de DaVinci) */}
+          <div className="h-12 border-b border-black/80 px-2 flex items-center justify-between bg-[#25252c]">
+            <div className="flex items-center gap-1">
+              <span className="px-1 py-0.2 rounded bg-[#d97706]/20 border border-[#f59e0b] text-white font-bold text-[9px]">
+                V1
+              </span>
+              <span className="hidden md:inline text-[9px] text-zinc-200 truncate">Master</span>
+            </div>
+            <div className="flex items-center gap-1 text-zinc-400">
+              <Lock size={9} />
+              <Eye size={9} className="text-white" />
+            </div>
+          </div>
+
+          {/* Track Header A1 (Fairlight Audio) */}
+          <div className="h-12 px-2 flex items-center justify-between bg-[#1b2420]">
+            <div className="flex items-center gap-1">
+              <span className="px-1 py-0.2 rounded bg-emerald-800/60 border border-emerald-500/40 text-emerald-200 font-bold text-[9px]">
+                A1
+              </span>
+              <span className="hidden md:inline text-[9px] text-emerald-300/80 truncate">2.0</span>
+            </div>
+            <div className="flex items-center gap-1 text-[8px] font-bold">
+              <span className="w-3.5 h-3.5 rounded bg-zinc-800 text-zinc-400 grid place-items-center">M</span>
+              <span className="w-3.5 h-3.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 grid place-items-center">
+                S
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Columna Derecha: Pistas y Clips con Colores Auténticos de DaVinci Resolve */}
+        <div className="col-span-9 sm:col-span-10 relative overflow-hidden">
+          {/* Regla de Tiempo con marcas finas de 1px */}
+          <div className="h-6 bg-[#18181d] border-b border-black/80 flex items-end justify-between px-3 pb-1 text-[8px] font-mono text-zinc-500">
+            <span>01:00:00:00</span>
+            <span>01:00:04:00</span>
+            <span>01:00:08:00</span>
+            <span>01:00:12:00</span>
+            <span className="hidden sm:inline">01:00:16:00</span>
+            <span>01:00:20:00</span>
+          </div>
+
+          {/* Pista V3: Clips de Títulos Text+ (Color Durazno/Tan y Violeta típicos de DaVinci) */}
+          <div className="h-10 border-b border-white/[0.04] px-2 flex items-center gap-2 bg-[#141418]">
+            <div className="w-[26%] h-7 rounded-[3px] bg-[#b46947] border border-[#e0916d]/60 overflow-hidden flex flex-col justify-between">
+              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                <span>Text+ HOOK_INICIAL</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white" />
+              </div>
+              <div className="px-1.5 pb-0.5 flex items-center justify-between text-[7px] font-mono text-white/80">
+                <span>Keyframe In</span>
+                <span>♦──♦</span>
+              </div>
+            </div>
+
+            <div className="w-[42%] h-7 rounded-[3px] bg-[#7c5295] border border-[#a779c4]/60 overflow-hidden flex flex-col justify-between ml-[6%]">
+              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                <span>Text+ SEÑALADOR_PRECIO_3D</span>
+                <span className="px-1 rounded bg-white/20 text-[7px]">FUSION</span>
+              </div>
+              <div className="px-1.5 pb-0.5 flex items-center justify-between text-[7px] font-mono text-white/80">
+                <span>Spline Curve</span>
+                <span>♦────♦</span>
+              </div>
+            </div>
+
+            <div className="flex-1 h-7 rounded-[3px] bg-[#b46947] border border-[#e0916d]/60 overflow-hidden flex flex-col justify-between">
+              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate">
+                Text+ CTA_WHATSAPP
+              </div>
+            </div>
+          </div>
+
+          {/* Pista V2: Clips Fusion / Trazado 3D & LUT Adjustment (Color Teal/Turquesa de DaVinci) */}
+          <div className="h-10 border-b border-white/[0.04] px-2 flex items-center gap-1.5 bg-[#15151a]">
+            <div className="w-[48%] h-7 rounded-[3px] bg-[#2c7a7b] border border-[#4fd1c5]/50 overflow-hidden flex flex-col justify-between ml-[12%]">
+              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                <span>FUSION_TRAZADO_TERRENO_3D.comp</span>
+                <span className="text-[7px] text-teal-200">3D TRACK</span>
+              </div>
+              <div className="px-1.5 pb-0.5 text-[7px] font-mono text-teal-100/80 truncate">
+                PlanarTracker1 → Polygon1 → Render3D
+              </div>
+            </div>
+
+            <div className="w-[34%] h-7 rounded-[3px] bg-[#319795] border border-[#81e6d9]/50 overflow-hidden flex flex-col justify-between">
+              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                <span>ARCHIVO_COLOR_CINEMA.cube</span>
+                <span className="text-[7px] text-amber-200">LUT 3D</span>
+              </div>
+              <div className="px-1.5 pb-0.5 text-[7px] font-mono text-teal-100/80 truncate">
+                ACEScct → Rec.709 Master
+              </div>
+            </div>
+          </div>
+
+          {/* Pista V1: Clips de Cámara Principal (Color Azul Acero clásico de DaVinci Resolve) */}
+          <div className="h-12 border-b border-white/[0.05] px-2 flex items-center gap-1 bg-[#121216]">
+            {[
+              { name: 'A001_DRONE_LOTE.braw', w: '32%' },
+              { name: 'A002_DETALLE_COMERCIAL.mov', w: '26%' },
+              { name: 'A003_IA_BROLL_GEN.mp4', w: '22%' },
+              { name: 'A004_CIERRE_MARCA.braw', w: '20%' }
+            ].map((clip, i) => (
+              <div
+                key={i}
+                style={{ width: clip.w }}
+                className="h-9 rounded-[3px] bg-[#2b6cb0] border border-[#63b3ed]/60 overflow-hidden flex flex-col justify-between"
+              >
+                <div className="bg-black/40 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                  <span className="truncate">{clip.name}</span>
+                  {/* Insignia arcoíris de corrección de color activa en DaVinci */}
+                  <span className="w-2 h-2 rounded-full bg-gradient-to-tr from-rose-400 via-emerald-300 to-sky-400 shrink-0 ml-1" />
+                </div>
+                <div className="px-1.5 pb-1 flex items-center justify-between text-[7px] font-mono text-sky-100/80">
+                  <span>Speed: 100%</span>
+                  <span>24 fps</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pista A1: Audio Fairlight (Color Verde Bosque clásico de DaVinci Resolve + línea de ganancia blanca 1px) */}
+          <div className="h-12 px-2 flex items-center bg-[#101614] relative">
+            <div className="w-full h-9 rounded-[3px] bg-[#276749] border border-[#48bb78]/50 overflow-hidden relative flex flex-col justify-between">
+              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-emerald-100 flex items-center justify-between z-10">
+                <span>VOZ_IA_MASTER + SFX_WOOSH_HITS.wav</span>
+                <span>-14.0 LUFS</span>
+              </div>
+              {/* Línea blanca de ganancia de 1px */}
+              <div className="absolute left-0 right-0 top-[58%] h-[1px] bg-white/75 z-10" />
+              {/* Onda de audio */}
+              <div className="flex items-end justify-between px-2 pb-0.5 h-5 gap-[2px]">
+                {waveformSamples.map((h, i) => (
+                  <motion.span
+                    key={i}
+                    animate={{ height: [`${Math.max(22, h * 0.5)}%`, `${h}%`, `${Math.max(22, h * 0.5)}%`] }}
+                    transition={{ duration: 1.1 + (i % 5) * 0.14, repeat: Infinity, ease: 'easeInOut' }}
+                    className="flex-1 bg-[#9ae6b4]/85 rounded-t-[1px]"
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Cabezal de Reproducción Naranja/Rojo idéntico a DaVinci Resolve */}
+          <motion.div
+            animate={{ left: ['8%', '92%', '8%'] }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-0 bottom-0 w-[1px] bg-[#ef4444] shadow-[0_0_10px_#ef4444] z-30 pointer-events-none"
+          >
+            {/* Capuchón pentagonal rojo en la regla de tiempo */}
+            <svg viewBox="0 0 12 14" className="w-3 h-3.5 -ml-[5.5px] text-[#ef4444] fill-current">
+              <polygon points="0,0 12,0 12,8 6,14 0,8" />
+            </svg>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Barra Inferior de Módulos de DaVinci Resolve (Media · Cut · Edit · Fusion · Color · Fairlight · Deliver) */}
+      <div className="bg-[#111114] border-t border-black px-3 py-2 flex items-center justify-center gap-2 sm:gap-5 text-[9px] font-mono text-zinc-500 overflow-x-auto no-scrollbar">
+        <span>Media</span>
+        <span>Cut</span>
+        <span className="px-2.5 py-0.5 rounded bg-[#27272f] text-white border border-white/15 font-semibold">
+          Edit
+        </span>
+        <span className="px-2.5 py-0.5 rounded bg-[#27272f]/70 text-zinc-200 border border-white/10">Fusion</span>
+        <span className="px-2.5 py-0.5 rounded bg-[#27272f]/70 text-zinc-200 border border-white/10">Color</span>
+        <span className="px-2.5 py-0.5 rounded bg-[#27272f]/70 text-zinc-200 border border-white/10">Fairlight</span>
+        <span>Deliver</span>
+      </div>
+    </div>
+  );
+};
+
+const MousePointerIcon = () => (
+  <svg viewBox="0 0 16 16" className="w-3 h-3 fill-current">
+    <path d="M3 2l10 6.5-4.5 1.2L6.2 14 3 2z" />
+  </svg>
+);
+
+// 2. Motion Graphic: Aplicación en Tiempo Real de Archivo de Color (LUT .CUBE / Color Wipe en DaVinci Resolve)
+const DaVinciColorGradeWipe = () => {
+  return (
+    <div className="rounded-2xl bg-[#141418] border border-zinc-800 p-4 md:p-5 text-white flex flex-col justify-between shadow-sm select-none">
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <span className="text-[9px] font-mono uppercase tracking-widest text-amber-400 block">
+            MÓDULO COLOR // DAVINCI RESOLVE
+          </span>
+          <h4 className="text-sm md:text-base font-bold tracking-tight text-white">
+            Aplicación de Archivo de Color (.CUBE / ACES)
+          </h4>
+        </div>
+        <span className="px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/10 text-[9px] font-mono text-zinc-300">
+          32-BIT FLOAT
+        </span>
+      </div>
+
+      {/* Monitor comparativo Antes (LOG Gris) vs Después (Archivo de Color Aplicado) */}
+      <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-white/10 bg-black isolate">
+        {/* Capa Inferior: Imagen con Archivo de Color Cinematográfico Aplicado */}
+        <img
+          src="/inmobiliaria-drone.jpg"
+          alt="Video con archivo de color aplicado en DaVinci Resolve"
+          className="absolute inset-0 w-full h-full object-cover saturate-[1.35] contrast-[1.12] brightness-[1.02]"
+        />
+
+        {/* Capa Superior Recortada Animada: Imagen en LOG / Sin Color (Desaturada y Plana) */}
+        <motion.div
+          animate={{ clipPath: ['inset(0 82% 0 0)', 'inset(0 18% 0 0)', 'inset(0 82% 0 0)'] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute inset-0 z-10"
+        >
+          <img
+            src="/inmobiliaria-drone.jpg"
+            alt="Video en perfil LOG sin colorizar"
+            className="w-full h-full object-cover saturate-[0.22] contrast-[0.78] brightness-[1.08]"
+          />
+          <div className="absolute inset-0 bg-zinc-500/15 mix-blend-screen" />
+        </motion.div>
+
+        {/* Línea divisoria del barrido (Wipe Line de 1px) */}
+        <motion.div
+          animate={{ left: ['18%', '82%', '18%'] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-0 bottom-0 w-[1px] bg-white shadow-[0_0_12px_#ffffff] z-20 pointer-events-none"
+        >
+          <div className="absolute top-1/2 -translate-y-1/2 -left-3.5 w-7 h-7 rounded-full bg-zinc-950/90 border border-white/40 flex items-center justify-center text-[9px] font-mono text-white shadow-lg">
+            ↔
+          </div>
+        </motion.div>
+
+        {/* Etiquetas en esquina */}
+        <span className="absolute left-2.5 top-2.5 z-20 px-2 py-0.5 rounded bg-black/65 backdrop-blur-md border border-white/15 text-[9px] font-mono text-zinc-300">
+          RAW / LOG (SIN COLOR)
+        </span>
+        <span className="absolute right-2.5 top-2.5 z-20 px-2.5 py-0.5 rounded bg-amber-500/90 text-zinc-950 font-mono font-bold text-[9px] shadow">
+          LUT: SyncPro_Cinema.cube
+        </span>
+
+        {/* Árbol de Nodos superpuesto en la base */}
+        <div className="absolute inset-x-2.5 bottom-2.5 z-20 bg-zinc-950/80 backdrop-blur-md border border-white/15 rounded-lg px-3 py-1.5 flex items-center justify-between text-[9px] font-mono">
+          <div className="flex items-center gap-1.5 text-zinc-300">
+            <span className="px-1.5 py-0.2 rounded bg-white/10">01 CST</span>
+            <span>→</span>
+            <span className="px-1.5 py-0.2 rounded bg-white/10">02 BALANCE</span>
+            <span>→</span>
+            <span className="px-1.5 py-0.2 rounded bg-amber-400/20 border border-amber-400/40 text-amber-300">
+              03 ARCHIVO .CUBE
+            </span>
+          </div>
+          <span className="text-emerald-400 hidden sm:inline">REC.709</span>
+        </div>
+      </div>
+
+      <p className="mt-3 text-[11px] text-zinc-400 leading-relaxed font-normal">
+        Transformamos grabaciones planas o apagadas aplicando archivos de color (`.cube`) y corrección por nodos para que
+        tu producto o propiedad luzca de cine.
+      </p>
+    </div>
+  );
+};
+
+// 3. Motion Graphic: Movimiento de Curvas Spline + Animación de Texto en DaVinci Resolve
+const DaVinciCurvesAndTextMotion = () => {
+  return (
+    <div className="rounded-2xl bg-[#141418] border border-zinc-800 p-4 md:p-5 text-white flex flex-col justify-between shadow-sm select-none">
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <span className="text-[9px] font-mono uppercase tracking-widest text-sky-400 block">
+            SPLINE CURVES & TEXT+ // DAVINCI RESOLVE
+          </span>
+          <h4 className="text-sm md:text-base font-bold tracking-tight text-white">
+            Movimiento de Curvas & Animación de Textos
+          </h4>
+        </div>
+        <span className="px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/10 text-[9px] font-mono text-zinc-300">
+          60 FPS
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-auto">
+        {/* Panel Izquierdo: Movimiento de Curva en vivo (Custom Curves / Spline Editor de 1px) */}
+        <div className="rounded-xl bg-[#0c0c0f] border border-white/[0.08] p-3 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[9px] font-mono text-zinc-400 mb-2">
+            <span className="flex items-center gap-1.5 text-zinc-200">
+              <Sliders size={11} className="text-sky-400" /> Curva Dinámica
+            </span>
+            <span className="text-[8px] text-sky-300">Y · R · G · B</span>
+          </div>
+
+          <div className="relative h-28 w-full rounded-lg bg-[#08080a] border border-white/[0.06] overflow-hidden">
+            <svg viewBox="0 0 200 110" className="w-full h-full">
+              {/* Cuadrícula fina de 1px */}
+              <line
+                x1="0"
+                y1="27.5"
+                x2="200"
+                y2="27.5"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.75"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1="0"
+                y1="55"
+                x2="200"
+                y2="55"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.75"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1="0"
+                y1="82.5"
+                x2="200"
+                y2="82.5"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.75"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1="50"
+                y1="0"
+                x2="50"
+                y2="110"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.75"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1="100"
+                y1="0"
+                x2="100"
+                y2="110"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.75"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1="150"
+                y1="0"
+                x2="150"
+                y2="110"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.75"
+                vectorEffect="non-scaling-stroke"
+              />
+
+              {/* Diagonal base de referencia (1px) */}
+              <line
+                x1="12"
+                y1="98"
+                x2="188"
+                y2="12"
+                stroke="rgba(255,255,255,0.16)"
+                strokeWidth="0.75"
+                strokeDasharray="3 3"
+                vectorEffect="non-scaling-stroke"
+              />
+
+              {/* Curva S animada en vivo con trazo quirúrgico de 1.25px */}
+              <motion.path
+                animate={{
+                  d: [
+                    'M 12 98 C 60 96, 75 72, 100 55 C 125 38, 140 14, 188 12',
+                    'M 12 98 C 55 104, 82 22, 105 46 C 132 70, 148 10, 188 12',
+                    'M 12 98 C 60 96, 75 72, 100 55 C 125 38, 140 14, 188 12'
+                  ]
+                }}
+                transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+                fill="none"
+                stroke="#38bdf8"
+                strokeWidth="1.25"
+                vectorEffect="non-scaling-stroke"
+              />
+
+              {/* Punto de control animado sobre la curva */}
+              <motion.circle
+                cx="72"
+                animate={{ cy: [78, 52, 78] }}
+                transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+                r="3.2"
+                fill="#ffffff"
+                stroke="#38bdf8"
+                strokeWidth="1.2"
+              />
+              <motion.circle
+                cx="132"
+                animate={{ cy: [32, 48, 32] }}
+                transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+                r="3.2"
+                fill="#ffffff"
+                stroke="#38bdf8"
+                strokeWidth="1.2"
+              />
+            </svg>
+          </div>
+
+          <span className="text-[9px] font-mono text-zinc-400 mt-2 block">
+            Aceleración suave (Speed Ramp) y contraste S-Curve
+          </span>
+        </div>
+
+        {/* Panel Derecho: Animación de Texto en Vivo (DaVinci Text+ Kinetic Typography) */}
+        <div className="rounded-xl bg-[#0c0c0f] border border-white/[0.08] p-3 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[9px] font-mono text-zinc-400 mb-2">
+            <span className="flex items-center gap-1.5 text-zinc-200">
+              <Type size={11} className="text-emerald-400" /> Animación Text+
+            </span>
+            <span className="text-[8px] text-emerald-300">KEYFRAMES</span>
+          </div>
+
+          {/* Visor de Texto Dinámico */}
+          <div className="relative h-28 w-full rounded-lg bg-[#08080a] border border-white/[0.06] p-3 flex flex-col items-center justify-center overflow-hidden">
+            {/* Marco guía de título seguro (Safe Title 1px) */}
+            <div className="absolute inset-2 border border-dashed border-white/10 rounded pointer-events-none" />
+
+            <motion.div
+              animate={{ y: [6, 0, 0, -6], opacity: [0, 1, 1, 0], scale: [0.94, 1, 1, 0.96] }}
+              transition={{ duration: 3.4, repeat: Infinity, times: [0, 0.2, 0.82, 1] }}
+              className="text-center z-10"
+            >
+              <span className="inline-block px-2 py-0.5 rounded bg-emerald-500 text-zinc-950 text-[8px] font-extrabold uppercase tracking-widest mb-1">
+                OFERTA EXCLUSIVA
+              </span>
+              <div className="text-sm font-black uppercase tracking-tight text-white leading-none">
+                VENTA DIRECTA
+              </div>
+              <div className="text-[10px] font-mono text-zinc-400 mt-1">Subtítulos y títulos con retención</div>
+            </motion.div>
+
+            {/* Barra de Keyframes inferior */}
+            <div className="absolute inset-x-3 bottom-2 flex items-center justify-between text-[8px] font-mono text-zinc-500">
+              <span>♦ IN</span>
+              <div className="flex-1 mx-2 h-[1px] bg-white/15 relative">
+                <motion.div
+                  animate={{ left: ['0%', '100%', '0%'] }}
+                  transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute -top-1 w-2 h-2 rotate-45 bg-emerald-400"
+                />
+              </div>
+              <span>OUT ♦</span>
+            </div>
+          </div>
+
+          <span className="text-[9px] font-mono text-zinc-400 mt-2 block">
+            Títulos animados, subtítulos dinámicos y callouts
+          </span>
+        </div>
+      </div>
+
+      <p className="mt-3 text-[11px] text-zinc-400 leading-relaxed font-normal">
+        Cada entrada de texto, zoom y transición se anima con curvas personalizadas en DaVinci Resolve para lograr un
+        movimiento fluido y profesional.
+      </p>
+    </div>
+  );
+};
+
+// 4. Showcase Inmobiliario sobre Fotografía Aérea Real con Tracking 3D de 1px en DaVinci Resolve Fusion
 const RealEstateMotionShowcase = () => {
   const lotVertices = [
     [245, 232],
@@ -611,482 +1173,111 @@ const RealEstateMotionShowcase = () => {
   ];
 
   return (
-    <div className="relative rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-200/80 shadow-[0_20px_50px_-22px_rgba(0,0,0,0.22)] aspect-[16/10] sm:aspect-[16/9] select-none group">
-      {/* Imagen real de dron inmobiliario */}
-      <img
-        src="/inmobiliaria-drone.jpg"
-        alt="Trazado inmobiliario 3D con Motion Graphics sobre toma aérea de dron"
-        className="absolute inset-0 w-full h-full object-cover block brightness-[0.92] contrast-[1.03] transition-transform duration-1000 group-hover:scale-[1.02]"
-      />
-
-      {/* Viñeta técnica sutil para lectura de HUD */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/45 pointer-events-none" />
-
-      {/* Barra HUD Superior con trazos de 1px */}
-      <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-950/75 backdrop-blur-md border border-white/15 text-[10px] font-medium tracking-wider text-white">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>3D CAMERA TRACKER · LOTES & INMUEBLES</span>
+    <div className="rounded-2xl bg-[#141418] border border-zinc-800 p-4 md:p-5 text-white flex flex-col justify-between shadow-sm select-none">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <div>
+          <span className="text-[9px] font-mono uppercase tracking-widest text-emerald-400 block">
+            FUSION 3D TRACKER // INMOBILIARIA & LOTES
+          </span>
+          <h4 className="text-sm md:text-base font-bold tracking-tight text-white">
+            Delimitación de Terrenos y Señaladores Flotantes 3D
+          </h4>
         </div>
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-950/75 backdrop-blur-md border border-white/15 text-[10px] font-mono text-zinc-300">
-          <span>SOLVE: 0.14 px</span>
-          <span className="text-white/30">|</span>
-          <span>4K 60FPS</span>
-        </div>
-      </div>
-
-      {/* Superposición SVG con trazos quirúrgicos (vectorEffect="non-scaling-stroke" = 1px exacto siempre) */}
-      <svg viewBox="0 0 1000 562" className="absolute inset-0 w-full h-full z-10 pointer-events-none">
-        <defs>
-          <linearGradient id="lotFillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0.08" />
-          </linearGradient>
-        </defs>
-
-        {/* Relleno translúcido suave del terreno */}
-        <motion.polygon
-          points="245,232 492,208 725,258 545,452 465,455"
-          fill="url(#lotFillGrad)"
-          animate={{ opacity: [0.45, 0.85, 0.45] }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-        />
-
-        {/* Contorno base de 1px exacto */}
-        <polygon
-          points="245,232 492,208 725,258 545,452 465,455"
-          fill="none"
-          stroke="rgba(255,255,255,0.45)"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        />
-
-        {/* Haz luminoso fino (1.25px) recorriendo el perímetro del terreno */}
-        <motion.polygon
-          points="245,232 492,208 725,258 545,452 465,455"
-          fill="none"
-          stroke="#ffffff"
-          strokeWidth="1.25"
-          strokeDasharray="14 8"
-          vectorEffect="non-scaling-stroke"
-          animate={{ strokeDashoffset: [0, -88] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-        />
-
-        {/* Guías internas de medición (1px punteado muy sutil) */}
-        <line
-          x1="245"
-          y1="232"
-          x2="545"
-          y2="452"
-          stroke="rgba(255,255,255,0.22)"
-          strokeWidth="0.75"
-          strokeDasharray="4 4"
-          vectorEffect="non-scaling-stroke"
-        />
-        <line
-          x1="492"
-          y1="208"
-          x2="465"
-          y2="455"
-          stroke="rgba(255,255,255,0.22)"
-          strokeWidth="0.75"
-          strokeDasharray="4 4"
-          vectorEffect="non-scaling-stroke"
-        />
-
-        {/* Marcadores de vértice de precisión (Crosshairs finos de 1px) */}
-        {lotVertices.map(([cx, cy], idx) => (
-          <g key={idx}>
-            <circle
-              cx={cx}
-              cy={cy}
-              r="7"
-              fill="none"
-              stroke="rgba(255,255,255,0.75)"
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
-            />
-            <circle cx={cx} cy={cy} r="2.2" fill="#ffffff" />
-            <line
-              x1={cx - 11}
-              y1={cy}
-              x2={cx + 11}
-              y2={cy}
-              stroke="rgba(255,255,255,0.45)"
-              strokeWidth="0.75"
-              vectorEffect="non-scaling-stroke"
-            />
-            <line
-              x1={cx}
-              y1={cy - 11}
-              x2={cx}
-              y2={cy + 11}
-              stroke="rgba(255,255,255,0.45)"
-              strokeWidth="0.75"
-              vectorEffect="non-scaling-stroke"
-            />
-          </g>
-        ))}
-
-        {/* Línea de anclaje 3D vertical desde el centro del lote */}
-        <line
-          x1="478"
-          y1="322"
-          x2="478"
-          y2="162"
-          stroke="#ffffff"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        />
-        <circle cx="478" cy="322" r="3.5" fill="#10b981" />
-        <circle
-          cx="478"
-          cy="322"
-          r="10"
-          fill="none"
-          stroke="#ffffff"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        />
-
-        {/* Línea secundaria hacia avenida derecha */}
-        <line
-          x1="670"
-          y1="335"
-          x2="770"
-          y2="290"
-          stroke="rgba(255,255,255,0.8)"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        />
-        <circle cx="670" cy="335" r="2.5" fill="#ffffff" />
-      </svg>
-
-      {/* Callout Flotante Principal (Anclado al terreno) */}
-      <motion.div
-        animate={{ y: [0, -4, 0] }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute left-[34%] sm:left-[38%] top-[14%] sm:top-[16%] z-20 bg-zinc-950/85 backdrop-blur-md text-white border border-white/25 rounded-xl px-3.5 py-2 shadow-2xl pointer-events-none"
-      >
-        <div className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-300">LOTE ESQUINERO #14</span>
-        </div>
-        <div className="text-sm sm:text-base font-bold tracking-tight text-white mt-0.5">680.00 m² · Disponible</div>
-        <div className="text-[10px] text-zinc-400 font-normal">Frente: 22.5 m × Fondo: 30.2 m</div>
-      </motion.div>
-
-      {/* Callout Secundario (Avenida / Plusvalía) */}
-      <div className="hidden sm:block absolute right-[8%] top-[44%] z-20 bg-white/95 backdrop-blur-md text-zinc-900 border border-zinc-200 rounded-lg px-3 py-1.5 shadow-lg pointer-events-none">
-        <span className="block text-[8px] font-mono uppercase tracking-widest text-zinc-500">ACCESO PAVIMENTADO</span>
-        <span className="block text-[11px] font-bold tracking-tight text-zinc-900">Av. Principal · Zona Norte</span>
-      </div>
-
-      {/* Pie informativo de la toma inmobiliaria */}
-      <div className="absolute bottom-3.5 left-3.5 right-3.5 z-20 flex flex-wrap items-center justify-between gap-2 text-[11px] text-white/90 pointer-events-none">
-        <span className="font-medium">
-          Trazado 3D real anclado al movimiento del dron · Ideal para inmobiliarias, urbanizaciones y quintas.
-        </span>
-        <span className="px-2.5 py-0.5 rounded bg-white/15 backdrop-blur-md text-[10px] font-mono">
-          TRACKING 3D + CALLOUTS
-        </span>
-      </div>
-    </div>
-  );
-};
-
-// 2. Línea de Tiempo Real de DaVinci Resolve Studio (Trazos de 1px, limpia y profesional)
-const DaVinciResolveStudioTimeline = () => {
-  const audioBars = [28, 52, 74, 42, 88, 64, 92, 48, 76, 58, 84, 38, 68, 90, 54, 72, 44, 80, 62, 48, 70, 86, 50, 66];
-
-  return (
-    <div className="rounded-2xl bg-[#0c0c0f] border border-zinc-800/90 p-5 text-white shadow-sm select-none">
-      {/* Cabecera DaVinci Resolve Studio */}
-      <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-white/[0.07]">
-        <div className="flex items-center gap-2.5">
-          {/* Icono de 3 ruedas de color estilo DaVinci Resolve */}
-          <div className="w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center">
-            <svg viewBox="0 0 24 24" className="w-4 h-4">
-              <circle cx="12" cy="7.5" r="3.2" fill="none" stroke="#60a5fa" strokeWidth="1.4" />
-              <circle cx="8" cy="15" r="3.2" fill="none" stroke="#34d399" strokeWidth="1.4" />
-              <circle cx="16" cy="15" r="3.2" fill="none" stroke="#f87171" strokeWidth="1.4" />
-            </svg>
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold tracking-tight text-white">DaVinci Resolve Studio</span>
-              <span className="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-[9px] font-mono text-emerald-300">
-                LICENCIA OFICIAL
-              </span>
-            </div>
-            <span className="block text-[10px] text-zinc-400">
-              Edición de precisión, mezcla Fairlight y colorización ACES 32-bit
-            </span>
-          </div>
-        </div>
-        <span className="text-[10px] font-mono text-zinc-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-md">
-          TC 01:00:04:12
+        <span className="px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/10 text-[9px] font-mono text-zinc-300">
+          SOLVE: 0.14 PX
         </span>
       </div>
 
-      {/* Regla de Tiempo Fina (1px) */}
-      <div className="relative bg-[#08080a] rounded-xl border border-white/[0.07] p-3.5 overflow-hidden">
-        <div className="flex justify-between text-[8px] font-mono text-zinc-500 pb-2 mb-2.5 border-b border-white/[0.06]">
-          <span>00:00</span>
-          <span>00:03 (HOOK)</span>
-          <span>00:08</span>
-          <span>00:15</span>
-          <span>00:22</span>
-          <span>00:30</span>
-        </div>
+      <div className="relative rounded-xl overflow-hidden bg-zinc-950 border border-white/10 aspect-[16/10] group isolate">
+        <img
+          src="/inmobiliaria-drone.jpg"
+          alt="Trazado inmobiliario 3D con Motion Graphics en DaVinci Resolve"
+          className="absolute inset-0 w-full h-full object-cover block brightness-[0.92] contrast-[1.04] transition-transform duration-1000 group-hover:scale-[1.02]"
+        />
 
-        {/* Pistas de Edición con bordes de 1px */}
-        <div className="relative space-y-1.5">
-          {/* V3: Textos Flotantes & Señaladores */}
-          <div className="flex items-center gap-2.5">
-            <span className="text-[9px] font-mono text-zinc-500 w-7">V3</span>
-            <div className="flex-1 h-6 rounded bg-white/[0.02] border border-white/[0.05] flex items-center px-1.5 gap-2">
-              <div className="h-4 w-[26%] rounded-[4px] bg-sky-500/15 border border-sky-400/35 px-2 flex items-center justify-between text-[8px] font-mono text-sky-200">
-                <span>HOOK_3D.comp</span>
-                <span className="w-1.5 h-1.5 rotate-45 bg-sky-300" />
-              </div>
-              <div className="h-4 w-[38%] rounded-[4px] bg-purple-500/15 border border-purple-400/35 px-2 flex items-center justify-between text-[8px] font-mono text-purple-200">
-                <span>CALLOUT_LOTE.fusion</span>
-                <span className="w-1.5 h-1.5 rotate-45 bg-purple-300" />
-              </div>
-              <div className="h-4 flex-1 rounded-[4px] bg-emerald-500/15 border border-emerald-400/35 px-2 flex items-center text-[8px] font-mono text-emerald-200">
-                <span>CTA_WHATSAPP</span>
-              </div>
-            </div>
-          </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/35 pointer-events-none" />
 
-          {/* V2: Tomas B-Roll & IA */}
-          <div className="flex items-center gap-2.5">
-            <span className="text-[9px] font-mono text-zinc-500 w-7">V2</span>
-            <div className="flex-1 h-6 rounded bg-white/[0.02] border border-white/[0.05] flex items-center px-1.5 gap-1.5">
-              <div className="h-4 w-[18%] rounded-[4px] bg-zinc-800/90 border border-white/15 px-1.5 flex items-center text-[8px] font-mono text-zinc-300">
-                DRONE_A01
-              </div>
-              <div className="h-4 w-[24%] rounded-[4px] bg-amber-500/15 border border-amber-400/35 px-1.5 flex items-center text-[8px] font-mono text-amber-200">
-                IA_BROLL_GEN
-              </div>
-              <div className="h-4 w-[28%] rounded-[4px] bg-zinc-800/90 border border-white/15 px-1.5 flex items-center text-[8px] font-mono text-zinc-300">
-                DETALLE_LOTE
-              </div>
-              <div className="h-4 flex-1 rounded-[4px] bg-zinc-800/90 border border-white/15 px-1.5 flex items-center text-[8px] font-mono text-zinc-300">
-                CIERRE_4K
-              </div>
-            </div>
-          </div>
+        {/* Superposición SVG con trazos quirúrgicos de 1px */}
+        <svg viewBox="0 0 1000 562" className="absolute inset-0 w-full h-full z-10 pointer-events-none">
+          <defs>
+            <linearGradient id="lotFillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#10b981" stopOpacity="0.08" />
+            </linearGradient>
+          </defs>
 
-          {/* V1: Cámara Principal Colorizada */}
-          <div className="flex items-center gap-2.5">
-            <span className="text-[9px] font-mono text-zinc-500 w-7">V1</span>
-            <div className="flex-1 h-6 rounded bg-white/[0.02] border border-white/[0.05] flex items-center px-1.5 gap-1">
-              {[22, 19, 25, 16, 18].map((w, i) => (
-                <div
-                  key={i}
-                  style={{ width: `${w}%` }}
-                  className="h-4 rounded-[4px] bg-zinc-900 border border-zinc-700/80 px-1.5 flex items-center justify-between text-[7px] font-mono text-zinc-400"
-                >
-                  <span>CAM_{i + 1}</span>
-                  <span className="w-1 h-1 rounded-full bg-emerald-400/80" />
-                </div>
-              ))}
-            </div>
-          </div>
+          <motion.polygon
+            points="245,232 492,208 725,258 545,452 465,455"
+            fill="url(#lotFillGrad)"
+            animate={{ opacity: [0.45, 0.85, 0.45] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+          />
 
-          {/* A1: Onda de Audio Fairlight de 1px */}
-          <div className="flex items-center gap-2.5">
-            <span className="text-[9px] font-mono text-emerald-400/80 w-7">A1</span>
-            <div className="flex-1 h-7 rounded bg-emerald-950/20 border border-emerald-500/20 flex items-center justify-between px-2 gap-[3px]">
-              {audioBars.map((h, i) => (
-                <motion.span
-                  key={i}
-                  animate={{ height: [`${Math.max(18, h * 0.45)}%`, `${h}%`, `${Math.max(18, h * 0.45)}%`] }}
-                  transition={{ duration: 1.2 + (i % 5) * 0.15, repeat: Infinity, ease: 'easeInOut' }}
-                  className="w-[1.5px] rounded-full bg-emerald-400/75"
-                />
-              ))}
-            </div>
-          </div>
+          <polygon
+            points="245,232 492,208 725,258 545,452 465,455"
+            fill="none"
+            stroke="rgba(255,255,255,0.45)"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+          />
 
-          {/* Playhead Quirúrgico de 1px */}
-          <motion.div
-            animate={{ left: ['11%', '93%', '11%'] }}
-            transition={{ duration: 8.5, repeat: Infinity, ease: 'linear' }}
-            className="absolute -top-2 bottom-0 w-[1px] bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] z-20 pointer-events-none"
-          >
-            <div className="w-2 h-2 -ml-[3.5px] bg-rose-500 rotate-45" />
-          </motion.div>
-        </div>
-      </div>
+          <motion.polygon
+            points="245,232 492,208 725,258 545,452 465,455"
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="1.25"
+            strokeDasharray="14 8"
+            vectorEffect="non-scaling-stroke"
+            animate={{ strokeDashoffset: [0, -88] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+          />
 
-      {/* Pie Técnico de Nodos de Color */}
-      <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-400">
-        <div className="flex items-center gap-2 font-mono">
-          <span className="px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-zinc-300">01 RAW LOG</span>
-          <span>→</span>
-          <span className="px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-zinc-300">02 SKIN TONE</span>
-          <span>→</span>
-          <span className="px-2 py-0.5 rounded bg-white/[0.08] border border-white/20 text-white">03 FILM MASTER</span>
-        </div>
-        <span className="text-[10px] text-zinc-400">Colorización cinematográfica + Audio -14 LUFS</span>
-      </div>
-    </div>
-  );
-};
-
-// 3. Adobe After Effects Oficial (Curvas de Velocidad Bézier & Capas 3D con trazos de 1px)
-const AfterEffectsOfficialMotion = () => {
-  return (
-    <div className="rounded-2xl bg-[#0c0c0f] border border-zinc-800/90 p-5 text-white shadow-sm select-none">
-      {/* Cabecera After Effects Oficial */}
-      <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-white/[0.07]">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-[#1e1b4b] border border-indigo-400/30 flex items-center justify-center text-[11px] font-bold tracking-tight text-indigo-200">
-            Ae
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold tracking-tight text-white">Adobe After Effects Oficial</span>
-              <span className="px-2 py-0.5 rounded bg-indigo-500/15 border border-indigo-400/30 text-[9px] font-mono text-indigo-300">
-                CREATIVE CLOUD OFICIAL
-              </span>
-            </div>
-            <span className="block text-[10px] text-zinc-400">
-              Motion Graphics, tracking 3D de terrenos, speed-ramps y composición avanzada
-            </span>
-          </div>
-        </div>
-        <span className="text-[10px] font-mono text-zinc-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-md">
-          60 FPS · 3D COMP
-        </span>
-      </div>
-
-      {/* Graph Editor (Curva Bézier con trazo de 1px) + Capas 3D */}
-      <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 bg-[#08080a] rounded-xl border border-white/[0.07] p-3.5">
-        {/* Lista de Capas 3D */}
-        <div className="sm:col-span-5 flex flex-col justify-between space-y-1.5 border-b sm:border-b-0 sm:border-r border-white/[0.06] pb-3 sm:pb-0 sm:pr-3">
-          <div className="text-[8px] font-mono uppercase tracking-widest text-zinc-500 mb-0.5">
-            CAPAS DE COMPOSICIÓN 3D
-          </div>
-          {[
-            { id: '01', name: '3D_CAMERA_TRACK', tag: '3D', color: 'text-sky-300 border-sky-400/30 bg-sky-500/10' },
-            { id: '02', name: 'TERRENO_TRAZADO', tag: 'SHP', color: 'text-emerald-300 border-emerald-400/30 bg-emerald-500/10' },
-            { id: '03', name: 'CALLOUT_PRECIO', tag: 'TXT', color: 'text-purple-300 border-purple-400/30 bg-purple-500/10' },
-            { id: '04', name: 'IA_VOICE_SYNC', tag: 'WAV', color: 'text-amber-300 border-amber-400/30 bg-amber-500/10' }
-          ].map((layer) => (
-            <div
-              key={layer.id}
-              className="flex items-center justify-between px-2 py-1 rounded bg-white/[0.02] border border-white/[0.05] text-[9px] font-mono"
-            >
-              <span className="text-zinc-300 truncate">
-                <span className="text-zinc-600 mr-1.5">{layer.id}</span>
-                {layer.name}
-              </span>
-              <span className={`px-1.5 py-0.2 rounded border text-[8px] ${layer.color}`}>{layer.tag}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Editor de Gráficos de Velocidad (Speed Graph Bézier 1px) */}
-        <div className="sm:col-span-7 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[8px] font-mono text-zinc-500 mb-1">
-            <span>SPEED GRAPH // EASY EASE</span>
-            <span className="text-indigo-300">CURVA BÉZIER 1PX</span>
-          </div>
-
-          <div className="relative h-24 w-full rounded bg-white/[0.015] border border-white/[0.05] overflow-hidden">
-            <svg viewBox="0 0 260 90" className="w-full h-full">
-              {/* Líneas horizontales de referencia de 0.75px */}
-              <line
-                x1="0"
-                y1="22"
-                x2="260"
-                y2="22"
-                stroke="rgba(255,255,255,0.06)"
-                strokeWidth="0.75"
-                vectorEffect="non-scaling-stroke"
-              />
-              <line
-                x1="0"
-                y1="45"
-                x2="260"
-                y2="45"
-                stroke="rgba(255,255,255,0.06)"
-                strokeWidth="0.75"
-                vectorEffect="non-scaling-stroke"
-              />
-              <line
-                x1="0"
-                y1="68"
-                x2="260"
-                y2="68"
-                stroke="rgba(255,255,255,0.06)"
-                strokeWidth="0.75"
-                vectorEffect="non-scaling-stroke"
-              />
-
-              {/* Relleno sutil bajo la curva de velocidad */}
-              <path
-                d="M 16 74 C 85 74, 105 14, 130 14 C 155 14, 175 74, 244 74 L 244 86 L 16 86 Z"
-                fill="rgba(129, 140, 248, 0.10)"
-              />
-
-              {/* Curva Bézier de velocidad con trazo fino exacto de 1.25px */}
-              <path
-                d="M 16 74 C 85 74, 105 14, 130 14 C 155 14, 175 74, 244 74"
+          {lotVertices.map(([cx, cy], idx) => (
+            <g key={idx}>
+              <circle
+                cx={cx}
+                cy={cy}
+                r="7"
                 fill="none"
-                stroke="#818cf8"
-                strokeWidth="1.25"
-                vectorEffect="non-scaling-stroke"
-              />
-
-              {/* Tiradores Bézier (Handles de 1px) */}
-              <line
-                x1="16"
-                y1="74"
-                x2="72"
-                y2="74"
-                stroke="#fbbf24"
+                stroke="rgba(255,255,255,0.75)"
                 strokeWidth="1"
                 vectorEffect="non-scaling-stroke"
               />
-              <circle cx="72" cy="74" r="2.5" fill="#fbbf24" />
+              <circle cx={cx} cy={cy} r="2.2" fill="#ffffff" />
+            </g>
+          ))}
 
-              <line
-                x1="188"
-                y1="74"
-                x2="244"
-                y2="74"
-                stroke="#fbbf24"
-                strokeWidth="1"
-                vectorEffect="non-scaling-stroke"
-              />
-              <circle cx="188" cy="74" r="2.5" fill="#fbbf24" />
+          <line
+            x1="478"
+            y1="322"
+            x2="478"
+            y2="168"
+            stroke="#ffffff"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+          />
+          <circle cx="478" cy="322" r="3.5" fill="#10b981" />
+        </svg>
 
-              {/* Keyframes (Rombo inicial, pico central, rombo final) */}
-              <rect x="13" y="71" width="6" height="6" fill="#fbbf24" transform="rotate(45 16 74)" />
-              <rect x="127" y="11" width="6" height="6" fill="#ffffff" transform="rotate(45 130 14)" />
-              <rect x="241" y="71" width="6" height="6" fill="#fbbf24" transform="rotate(45 244 74)" />
-            </svg>
-
-            {/* Línea de escaneo en el editor de curvas */}
-            <motion.div
-              animate={{ left: ['6%', '94%', '6%'] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute top-0 bottom-0 w-[1px] bg-indigo-400/80 pointer-events-none"
-            />
+        {/* Callout Flotante Principal */}
+        <motion.div
+          animate={{ y: [0, -4, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute left-[32%] sm:left-[36%] top-[14%] z-20 bg-zinc-950/85 backdrop-blur-md text-white border border-white/25 rounded-xl px-3 py-1.5 shadow-2xl pointer-events-none"
+        >
+          <div className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span className="text-[8px] font-mono uppercase tracking-widest text-zinc-300">LOTE ESQUINERO #14</span>
           </div>
-        </div>
+          <div className="text-xs sm:text-sm font-bold tracking-tight text-white">680.00 m² · Disponible</div>
+          <div className="text-[9px] text-zinc-400">Frente: 22.5 m × Fondo: 30.2 m</div>
+        </motion.div>
       </div>
 
-      <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-400">
-        <span>Animaciones fluidas a 60fps · Señaladores flotantes y textos 3D</span>
-        <span className="font-mono text-zinc-300">DYNAMIC LINK + IA</span>
-      </div>
+      <p className="mt-3 text-[11px] text-zinc-400 leading-relaxed font-normal">
+        Trazado inmobiliario anclado al movimiento real del dron en DaVinci Resolve Fusion para destacar terrenos,
+        dimensiones, avenidas y plusvalía.
+      </p>
     </div>
   );
 };
@@ -1097,7 +1288,7 @@ const AfterEffectsOfficialMotion = () => {
 const App = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
-  const [selectedDurationIndex, setSelectedDurationIndex] = useState(1); // 31 a 60 seg por defecto (Más pedido)
+  const [selectedDurationIndex, setSelectedDurationIndex] = useState(1);
   const [lightboxItem, setLightboxItem] = useState(null);
 
   useEffect(() => {
@@ -1227,22 +1418,22 @@ const App = () => {
 
   const tools = [
     {
-      name: 'WorkFlow Sync',
-      target: 'Adobe After Effects & Premiere Pro Oficial',
+      name: 'WorkFlow Sync DRX',
+      target: 'DaVinci Resolve Studio (Edit & Fusion)',
       description:
-        'Automatiza tareas repetitivas, organiza bins inteligentes y sincroniza composiciones pesadas con precisión de cuadro.',
+        'Automatiza tareas repetitivas, organiza bins inteligentes y acelera el renderizado de composiciones Fusion en segundos.',
       badge: 'Best Seller',
       icon: <Layers className="text-zinc-900" size={20} />,
-      specs: ['Auto-Render Queue', 'Smart Bin Organizer', 'Dynamic Link Boost', 'Frame-Accurate Sync']
+      specs: ['Auto-Render Queue', 'Smart MediaPool Bins', 'Fusion Macros 3D', 'Frame-Accurate Sync']
     },
     {
       name: 'ColorMaster Node',
-      target: 'DaVinci Resolve Studio',
+      target: 'DaVinci Resolve Studio (Color Page)',
       description:
-        'Árboles de nodos pre-configurados con gestión de color ACES, aislamiento de tonos de piel y emulación cinematográfica.',
+        'Árboles de nodos pre-configurados con gestión de color ACES, aislamiento de tonos de piel y archivos .CUBE de cine.',
       badge: 'Nuevo',
       icon: <Cpu className="text-zinc-900" size={20} />,
-      specs: ['One-Click ACES Pipeline', 'Skin Tone Isolation', 'Halation & Bloom Realista', 'LUTs de Cine Incluidos']
+      specs: ['One-Click ACES Pipeline', 'Skin Tone Isolation', 'Halation & Bloom Realista', 'Archivos .CUBE Incluidos']
     }
   ];
 
@@ -1268,7 +1459,7 @@ const App = () => {
             Así Trabajamos
           </a>
           <a href="#ingenieria-visual" className="hover:text-white transition-colors">
-            Tecnología
+            DaVinci Resolve
           </a>
           <a href="#planes-edicion" className="hover:text-white transition-colors">
             Planes
@@ -1298,7 +1489,7 @@ const App = () => {
           <div>
             <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400">
               <span className="w-1.5 h-1.5 rounded-full bg-white" />
-              Edición · Motion Graphics 3D · IA
+              DaVinci Resolve Studio · Motion Graphics 3D · IA
             </span>
             <h1 className="mt-2 text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.94] text-white">
               Edición <span className="text-zinc-400">que vende.</span>
@@ -1325,7 +1516,6 @@ const App = () => {
           </div>
         </div>
 
-        {/* Carrusel infinito de tus 5 videos que se mueve solo y se pausa + agranda al acercar el cursor */}
         <div className="mt-4">
           <InfiniteMediaCarousel items={projects} onSelectItem={(item) => setLightboxItem(item)} />
         </div>
@@ -1370,10 +1560,11 @@ const App = () => {
       </section>
 
       {/* =====================================================================
-          3. APARTADO DE FOTOS: FOTOGRAFÍA QUE VENDE
+          3. APARTADO DE FOTOS: FOTOGRAFÍA QUE VENDE (DE EXTREMO A EXTREMO
+             IZQUIERDA Y DERECHA + GRILLA COMPLETA)
           ===================================================================== */}
-      <section id="fotografia" className="py-16 md:py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/60">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+      <section id="fotografia" className="py-16 md:py-20 border-b border-zinc-200/60 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
           <div>
             <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
               Producción Visual & Comercial
@@ -1383,38 +1574,49 @@ const App = () => {
             </h2>
           </div>
           <p className="text-zinc-500 text-xs md:text-sm max-w-sm font-normal leading-relaxed">
-            Producto, gastronomía, inmobiliaria y marca. Toca una foto para verla en grande.
+            Producto, gastronomía, inmobiliaria y marca. Las fotografías continúan hacia ambos costados; pasa el cursor o
+            toca cualquiera para verla en grande.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 grid-flow-dense">
-          {COMMERCIAL_PHOTOS.map((shot) => (
-            <figure
-              key={shot.id}
-              onClick={() => setLightboxItem(shot)}
-              className={`group relative m-0 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-200/80 shadow-sm cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl hover:z-10 ${
-                shot.wide ? 'col-span-2 aspect-[16/9] md:aspect-[3/2]' : 'aspect-[3/4]'
-              }`}
-            >
-              <img
-                src={shot.src}
-                alt={`${shot.title}: ${shot.subtitle}`}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
-              <figcaption className="absolute left-0 right-0 bottom-0 p-3.5 md:p-4 text-white pointer-events-none">
-                <span className="block text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-300 mb-0.5">
-                  {shot.title}
-                </span>
-                <b className="block text-xs md:text-sm font-bold tracking-tight leading-snug">{shot.subtitle}</b>
-              </figcaption>
-            </figure>
-          ))}
+        {/* Cinta continua de extremo a extremo (izquierda a derecha de toda la pantalla) */}
+        <InfiniteMediaCarousel
+          items={COMMERCIAL_PHOTOS}
+          onSelectItem={(item) => setLightboxItem(item)}
+          cardHeightClass="h-[300px] md:h-[380px] lg:h-[410px]"
+        />
+
+        {/* Grilla ancha de extremo a extremo (Full-Bleed de izquierda a derecha) */}
+        <div className="w-full px-2 sm:px-4 md:px-6 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 md:gap-3.5 grid-flow-dense">
+            {COMMERCIAL_PHOTOS.map((shot) => (
+              <figure
+                key={shot.id}
+                onClick={() => setLightboxItem(shot)}
+                className={`group relative m-0 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-200/80 shadow-sm cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl hover:z-10 ${
+                  shot.wide ? 'col-span-2 aspect-[16/9] sm:aspect-[3/2]' : 'aspect-[3/4]'
+                }`}
+              >
+                <img
+                  src={shot.src}
+                  alt={`${shot.title}: ${shot.subtitle}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+                <figcaption className="absolute left-0 right-0 bottom-0 p-3.5 text-white pointer-events-none">
+                  <span className="block text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-300 mb-0.5">
+                    {shot.title}
+                  </span>
+                  <b className="block text-xs md:text-sm font-bold tracking-tight leading-snug">{shot.subtitle}</b>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-9 flex justify-center">
+        <div className="mt-9 flex justify-center px-6">
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
               'Hola Sync Pro, vi su portafolio de video y fotografía y quiero algo así para mi marca.'
@@ -1454,91 +1656,46 @@ const App = () => {
       </section>
 
       {/* =====================================================================
-          5. POR QUÉ TUS VIDEOS GENERAN CLIENTES (DISEÑO LIMPIO DE 1PX +
-             IMAGEN INMOBILIARIA CON MOTION GRAPHICS + DAVINCI RESOLVE STUDIO
-             & ADOBE AFTER EFFECTS OFICIAL)
+          5. POR QUÉ TUS VIDEOS GENERAN CLIENTES (100% DAVINCI RESOLVE STUDIO:
+             LÍNEA DE TIEMPO FIEL + APLICACIÓN DE ARCHIVO DE COLOR + CURVAS Y
+             ANIMACIÓN DE TEXTO + TRAZADO INMOBILIARIO 3D)
           ===================================================================== */}
       <section
         id="ingenieria-visual"
         className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70"
       >
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
           <div>
             <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-2">
-              Ingeniería Visual & Flujo Oficial
+              Ingeniería Visual · 100% DaVinci Resolve Studio
             </span>
             <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-tight">
               Por qué tus videos generan clientes
             </h2>
           </div>
           <div className="flex flex-wrap gap-2">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-[11px] font-semibold text-zinc-800">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              DaVinci Resolve Studio
-            </span>
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-[11px] font-semibold text-zinc-800">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-              Adobe After Effects Oficial
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-950 text-white text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              DaVinci Resolve Studio Oficial (Edit · Fusion · Color · Fairlight)
             </span>
           </div>
         </div>
 
-        {/* Bloque Principal: Imagen Inmobiliaria Real con Trazado Motion Graphics 1px + Software Oficial */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* Columna Izquierda (7 cols): Trazado Inmobiliario sobre toma aérea real */}
-          <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl bg-white border border-zinc-200/90 p-5 md:p-6 shadow-[0_12px_36px_-18px_rgba(0,0,0,0.08)]">
-            <div>
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                <div>
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-600 block">
-                    ESPECIALIDAD INMOBILIARIA & COMERCIAL
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mt-0.5">
-                    Motion Graphics 3D y Delimitación Exacta de Terrenos
-                  </h3>
-                </div>
-                <span className="px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-[10px] font-mono text-zinc-600">
-                  TRACKING 3D REAL
-                </span>
-              </div>
+        {/* 1. Línea de Tiempo Auténtica de DaVinci Resolve Studio (Ancho Completo Superior) */}
+        <div className="mb-6">
+          <DaVinciResolveAuthenticTimeline />
+        </div>
 
-              {/* Imagen de dron con Motion Graphics 1px superpuestos */}
-              <RealEstateMotionShowcase />
-            </div>
-
-            <div className="mt-5 pt-4 border-t border-zinc-100 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-              <div>
-                <b className="block text-zinc-900 font-semibold">Trazado de Lotes 3D</b>
-                <span className="text-zinc-500 text-[11px] leading-snug block mt-0.5">
-                  Líneas finas ancladas al terreno real para mostrar metrajes y colindancias.
-                </span>
-              </div>
-              <div>
-                <b className="block text-zinc-900 font-semibold">Señaladores Flotantes</b>
-                <span className="text-zinc-500 text-[11px] leading-snug block mt-0.5">
-                  Callouts de ubicación, avenidas, precios y plusvalía integrados al vuelo.
-                </span>
-              </div>
-              <div>
-                <b className="block text-zinc-900 font-semibold">Retención en 3 Segundos</b>
-                <span className="text-zinc-500 text-[11px] leading-snug block mt-0.5">
-                  Ganchos visuales e Inteligencia Artificial que detienen el scroll de inmediato.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Columna Derecha (5 cols): Línea de tiempo DaVinci Resolve Studio + After Effects Oficial */}
-          <div className="lg:col-span-5 flex flex-col justify-between gap-6">
-            <DaVinciResolveStudioTimeline />
-            <AfterEffectsOfficialMotion />
-          </div>
+        {/* 2. Tres Módulos Visuales en Vivo: Archivo de Color (.CUBE), Movimiento de Curvas + Animación de Texto, y Trazado Inmobiliario 3D */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <DaVinciColorGradeWipe />
+          <DaVinciCurvesAndTextMotion />
+          <RealEstateMotionShowcase />
         </div>
       </section>
 
       {/* =====================================================================
-          6. PLANES DE EDICIÓN DE VIDEO POR DURACIÓN (DISEÑO ULTRA LIMPIO,
-             MODERNO Y PROFESIONAL DE 1PX)
+          6. PLANES DE EDICIÓN DE VIDEO POR DURACIÓN
           ===================================================================== */}
       <section id="planes-edicion" className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
@@ -1551,7 +1708,8 @@ const App = () => {
             </h2>
           </div>
           <p className="text-zinc-500 text-xs md:text-sm max-w-md font-normal leading-relaxed">
-            Elige la duración de tu video y compara al instante qué incluye cada nivel de producción.
+            Elige la duración de tu video y compara al instante qué incluye cada nivel de producción en DaVinci Resolve
+            Studio.
           </p>
         </div>
 
@@ -1593,7 +1751,7 @@ const App = () => {
           })}
         </div>
 
-        {/* Tarjetas Comparativas: Edición Básica (Blanca Editorial) vs Edición Avanzada (Obsidiana Studio) */}
+        {/* Tarjetas Comparativas: Edición Básica vs Edición Avanzada */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* EDICIÓN BÁSICA */}
           <div className="rounded-3xl bg-white border border-zinc-200/90 p-7 md:p-9 shadow-[0_12px_40px_-20px_rgba(0,0,0,0.07)] flex flex-col justify-between">
@@ -1686,7 +1844,7 @@ const App = () => {
                   </div>
                   <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">Edición Avanzada</h3>
                   <p className="text-zinc-400 text-xs md:text-sm mt-1 font-normal">
-                    Producción comercial con After Effects Oficial, trazado de terrenos 3D e Inteligencia Artificial.
+                    Producción comercial con DaVinci Resolve Fusion 3D, archivos de color e Inteligencia Artificial.
                   </p>
                 </div>
                 <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0 text-white">
@@ -1728,8 +1886,8 @@ const App = () => {
                 </div>
                 {[
                   'El cliente envía sus tomas y el guion (o estructuramos el ritmo visual)',
-                  'Edición dinámica con speed-ramps, efectos visuales y diseño sonoro en DaVinci Resolve Studio',
-                  'Motion Graphics en Adobe After Effects Oficial: señaladores y textos flotantes 3D',
+                  'Edición dinámica con curvas de velocidad, archivos de color (.cube) y sonido Fairlight',
+                  'Motion Graphics en DaVinci Resolve Fusion: señaladores y textos flotantes 3D',
                   'Incluye el marcado / trazado animado de 1 terreno o lote',
                   'Incluye hasta 2 videos generados con Inteligencia Artificial (IA)',
                   'Incluye 1 audio o locución comercial generada con IA',
@@ -1754,7 +1912,7 @@ const App = () => {
           </div>
         </div>
 
-        {/* Barra de Adicionales y Extras con diseño limpio de 1px */}
+        {/* Barra de Adicionales y Extras */}
         <div className="rounded-2xl bg-zinc-50 border border-zinc-200/80 p-6 md:p-7">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="max-w-xs">
@@ -1811,7 +1969,7 @@ const App = () => {
       </section>
 
       {/* =====================================================================
-          7. PROCESO EN 3 PASOS (LIMPIO Y EDITORIAL)
+          7. PROCESO EN 3 PASOS
           ===================================================================== */}
       <section className="py-16 md:py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
@@ -1838,9 +1996,9 @@ const App = () => {
             },
             {
               step: '02',
-              title: 'Edición, Motion 3D e IA',
-              desc: 'Montaje en DaVinci Resolve Studio, trazado 3D y gráficos en Adobe After Effects Oficial, más locución o tomas con IA.',
-              badge: 'Postproducción'
+              title: 'Edición, Fusion 3D, Color e IA',
+              desc: 'Montaje íntegro en DaVinci Resolve Studio: curvas de velocidad, trazado 3D de terrenos, archivos de color (.cube) y locución/tomas con IA.',
+              badge: 'DaVinci Resolve Studio'
             },
             {
               step: '03',
@@ -1882,7 +2040,7 @@ const App = () => {
       </section>
 
       {/* =====================================================================
-          8. CONTACTO DIRECTO (DISEÑO LIMPIO Y PROFESIONAL)
+          8. CONTACTO DIRECTO
           ===================================================================== */}
       <section id="contacto" className="py-16 md:py-20 px-6 md:px-8 max-w-5xl mx-auto">
         <div className="rounded-3xl bg-[#0b0b0e] text-white border border-zinc-800 p-8 md:p-12 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.28)]">
@@ -1916,7 +2074,7 @@ const App = () => {
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-zinc-400">
                   <ShieldCheck size={15} className="text-zinc-300" />
-                  <span>DaVinci Resolve Studio & Adobe After Effects Oficial</span>
+                  <span>Postproducción 100% en DaVinci Resolve Studio Oficial</span>
                 </div>
               </div>
             </div>
@@ -1959,7 +2117,7 @@ const App = () => {
       </section>
 
       {/* =====================================================================
-          9. STUDIO SYNC PRO (HERRAMIENTAS Y PLUGINS CON TRAZOS LIMPIOS 1PX)
+          9. STUDIO SYNC PRO (HERRAMIENTAS PARA DAVINCI RESOLVE STUDIO)
           ===================================================================== */}
       <section id="herramientas" className="py-16 px-6 md:px-8 max-w-7xl mx-auto border-t border-zinc-200/70">
         <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -1972,8 +2130,7 @@ const App = () => {
             </h2>
           </div>
           <p className="text-zinc-500 text-xs max-w-md font-normal">
-            Herramientas y estructuras desarrolladas internamente para acelerar el flujo en DaVinci Resolve Studio y
-            After Effects.
+            Herramientas, macros y árboles de nodos desarrollados internamente para DaVinci Resolve Studio.
           </p>
         </div>
 
@@ -2102,7 +2259,7 @@ const App = () => {
         <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-xs font-extrabold tracking-tight text-zinc-900">SYNC PRO // 2026</div>
           <p className="text-zinc-400 text-[11px] font-medium">
-            Post-Producción Digital · DaVinci Resolve Studio · Adobe After Effects Oficial
+            Post-Producción Digital · 100% DaVinci Resolve Studio Oficial
           </p>
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}`}
