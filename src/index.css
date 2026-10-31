@@ -6,12 +6,61 @@
   --bg-light: #ffffff;
 }
 
-body {
+html, body {
   background-color: var(--bg-light);
   color: #18181b;
   margin: 0;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Escenario principal en negro y gris carbón (estilo Estudio Vector adaptado a Sync Pro) */
+.sync-stage {
+  background:
+    radial-gradient(70% 60% at 100% 0%, rgba(161, 161, 170, 0.20), transparent 60%),
+    radial-gradient(60% 50% at 0% 100%, rgba(82, 82, 91, 0.26), transparent 60%),
+    linear-gradient(160deg, #050505 0%, #0d0d10 55%, #18181b 100%);
+}
+
+/* Máscara suave en los bordes laterales de los carruseles */
+.sync-edge-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+/* Tarjeta individual dentro del carrusel infinito (Reels & Así trabajamos) */
+.sync-reel-card {
+  transition: transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+@media (hover: hover) {
+  .sync-reel-card:hover,
+  .sync-reel-card:focus-visible {
+    transform: translateY(-14px) scale(1.07);
+    z-index: 20;
+    box-shadow: 0 34px 68px -20px rgba(0, 0, 0, 0.88), 0 0 0 1px rgba(255, 255, 255, 0.28);
+  }
+}
+
+/* Cintillo infinito de marcas que se detiene al pasar el cursor */
+@keyframes syncBrandScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.sync-brand-track {
+  display: flex;
+  width: max-content;
+  animation: syncBrandScroll 95s linear infinite;
+}
+
+.sync-brand-mq:hover .sync-brand-track {
+  animation-play-state: paused;
 }
 
 /* Custom Scrollbar */
