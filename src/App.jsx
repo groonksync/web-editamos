@@ -305,13 +305,18 @@ const BTS_ITEMS = [
 ];
 
 /* ============================================================================
-   CARRUSEL INFINITO INTERACTIVO (SE MUEVE SOLO, SE DETIENE Y AGRANDA EN HOVER)
+   CARRUSEL INFINITO INTERACTIVO (OPTIMIZADO PARA SMARTPHONE Y ESCRITORIO)
    ============================================================================ */
-const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340px] md:h-[430px] lg:h-[460px]' }) => {
+const InfiniteMediaCarousel = ({
+  items,
+  onSelectItem,
+  cardHeightClass = 'h-[300px] sm:h-[360px] md:h-[430px] lg:h-[460px]'
+}) => {
   const scrollRef = useRef(null);
   const [unmutedKey, setUnmutedKey] = useState(null);
 
-  const baseList = items.length < 10 ? [...items, ...items, ...items] : items;
+  // En móvil y escritorio duplicamos lo justo para bucle continuo sin sobrecargar decodificadores móviles
+  const baseList = items.length < 8 ? [...items, ...items] : items;
   const loopList = [...baseList, ...baseList];
 
   useEffect(() => {
@@ -352,7 +357,7 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
       if (resumeTimer) clearTimeout(resumeTimer);
     };
 
-    const go = (delay = 1200) => {
+    const go = (delay = 1400) => {
       if (resumeTimer) clearTimeout(resumeTimer);
       resumeTimer = setTimeout(() => {
         if (hover || drag) return;
@@ -362,7 +367,7 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
     };
 
     const onTouchStart = () => stop();
-    const onTouchEnd = () => go(2000);
+    const onTouchEnd = () => go(2200);
 
     const onPointerEnter = (e) => {
       if (e.pointerType && e.pointerType !== 'mouse') return;
@@ -456,7 +461,8 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
       io.observe(box);
     }
 
-    const SPEED = 78;
+    const isMobile = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+    const SPEED = isMobile ? 56 : 78;
     let last = 0;
 
     const step = (now) => {
@@ -504,7 +510,7 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
     <div className="relative group/carousel">
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto no-scrollbar sync-edge-mask py-6 px-4 md:px-10 cursor-grab select-none"
+        className="flex overflow-x-auto no-scrollbar sync-edge-mask py-4 md:py-6 px-3 sm:px-6 md:px-10 cursor-grab select-none"
       >
         <div className="flex w-max items-center">
           {loopList.map((item, idx) => {
@@ -517,7 +523,7 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
               <figure
                 key={instanceKey}
                 onClick={() => onSelectItem && onSelectItem(item)}
-                className={`sync-reel-card relative flex-none ${cardHeightClass} ${aspectClass} mr-3.5 md:mr-4 rounded-[22px] overflow-hidden bg-[#0a0a0a] border border-white/10 shadow-[0_24px_50px_-24px_rgba(0,0,0,0.85)] cursor-pointer isolate`}
+                className={`sync-reel-card relative flex-none ${cardHeightClass} ${aspectClass} mr-3 md:mr-4 rounded-[20px] md:rounded-[22px] overflow-hidden bg-[#0a0a0a] border border-white/10 shadow-[0_20px_44px_-20px_rgba(0,0,0,0.85)] cursor-pointer isolate`}
               >
                 {isVideo ? (
                   <video
@@ -543,7 +549,7 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
                 <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/90 pointer-events-none" />
 
                 {item.category && (
-                  <span className="absolute left-3 top-3 z-10 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/15 text-[9px] font-bold uppercase tracking-[0.18em] text-zinc-200">
+                  <span className="absolute left-2.5 top-2.5 md:left-3 md:top-3 z-10 px-2 py-0.5 md:px-2.5 md:py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[8px] md:text-[9px] font-bold uppercase tracking-[0.16em] text-zinc-200 max-w-[72%] truncate">
                     {item.category}
                   </span>
                 )}
@@ -556,21 +562,21 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
                       setUnmutedKey(isUnmuted ? null : instanceKey);
                     }}
                     title={isUnmuted ? 'Silenciar audio' : 'Activar audio'}
-                    className="absolute right-3 top-3 z-20 w-9 h-9 rounded-full bg-black/55 hover:bg-white hover:text-zinc-950 text-white border border-white/25 backdrop-blur-md flex items-center justify-center transition-all duration-300"
+                    className="absolute right-2.5 top-2.5 md:right-3 md:top-3 z-20 w-9 h-9 rounded-full bg-black/60 hover:bg-white hover:text-zinc-950 text-white border border-white/25 backdrop-blur-md flex items-center justify-center transition-all duration-300"
                   >
                     {isUnmuted ? <Volume2 size={15} /> : <VolumeX size={15} />}
                   </button>
                 ) : (
-                  <span className="absolute right-3 top-3 z-10 w-8 h-8 rounded-full bg-black/45 border border-white/20 text-white/80 backdrop-blur-md flex items-center justify-center">
+                  <span className="absolute right-2.5 top-2.5 md:right-3 md:top-3 z-10 w-8 h-8 rounded-full bg-black/45 border border-white/20 text-white/80 backdrop-blur-md flex items-center justify-center">
                     <Camera size={14} />
                   </span>
                 )}
 
-                <figcaption className="absolute left-3.5 right-3.5 bottom-3.5 z-10 text-left text-white pointer-events-none">
-                  <b className="block text-sm md:text-[15px] font-extrabold uppercase tracking-tight leading-tight drop-shadow">
+                <figcaption className="absolute left-3 right-3 bottom-3 md:left-3.5 md:right-3.5 md:bottom-3.5 z-10 text-left text-white pointer-events-none">
+                  <b className="block text-[13px] md:text-[15px] font-extrabold uppercase tracking-tight leading-tight drop-shadow">
                     {item.title}
                   </b>
-                  <span className="block text-[11px] font-medium text-white/75 leading-snug mt-0.5 line-clamp-2">
+                  <span className="block text-[10.5px] md:text-[11px] font-medium text-white/75 leading-snug mt-0.5 line-clamp-2">
                     {item.subtitle}
                   </span>
                 </figcaption>
@@ -601,9 +607,7 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
 };
 
 /* ============================================================================
-    ECOSISTEMA 100% DAVINCI RESOLVE STUDIO (RÉPLICA DE TIMELINE REAL +
-   APLICACIÓN DE ARCHIVO DE COLOR + CURVAS SPLINE + ANIMACIÓN DE TEXTO +
-   TRAZADO INMOBILIARIO 3D)
+   ECOSISTEMA 100% DAVINCI RESOLVE STUDIO (ADAPTADO A MÓVIL Y ESCRITORIO)
    ============================================================================ */
 
 // 1. Réplica Fiel de la Línea de Tiempo de DaVinci Resolve Studio 19 (Edit Page)
@@ -616,39 +620,37 @@ const DaVinciResolveAuthenticTimeline = () => {
   return (
     <div className="rounded-2xl bg-[#18181c] border border-zinc-800 overflow-hidden text-white shadow-[0_20px_50px_-20px_rgba(0,0,0,0.45)] select-none">
       {/* Barra superior estilo ventana nativa de DaVinci Resolve Studio */}
-      <div className="bg-[#111114] px-4 py-2.5 border-b border-white/[0.07] flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1.5">
+      <div className="bg-[#111114] px-3.5 sm:px-4 py-2.5 border-b border-white/[0.07] flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="hidden sm:flex items-center gap-1.5 shrink-0">
             <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
             <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
             <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
           </div>
-          <span className="text-white/20 text-xs mx-1">|</span>
-          {/* Icono oficial de 3 ruedas DaVinci Resolve */}
+          <span className="hidden sm:inline text-white/20 text-xs mx-0.5">|</span>
           <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0">
             <circle cx="12" cy="7.5" r="3.2" fill="none" stroke="#60a5fa" strokeWidth="1.5" />
             <circle cx="8" cy="15" r="3.2" fill="none" stroke="#34d399" strokeWidth="1.5" />
             <circle cx="16" cy="15" r="3.2" fill="none" stroke="#f87171" strokeWidth="1.5" />
           </svg>
-          <span className="text-[11px] font-semibold tracking-tight text-zinc-200">
-            DaVinci Resolve Studio 19 — Proyecto: SYNC_PRO_MASTER_4K
+          <span className="text-[11px] font-semibold tracking-tight text-zinc-200 truncate">
+            DaVinci Resolve Studio 19 <span className="hidden md:inline">— Proyecto: SYNC_PRO_MASTER_4K</span>
           </span>
         </div>
 
-        {/* Timecode Display estilo DaVinci Resolve */}
-        <div className="flex items-center gap-3">
-          <span className="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-[9px] font-mono text-emerald-300">
-            100% DAVINCI RESOLVE STUDIO
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="hidden xs:inline-block px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-[8px] sm:text-[9px] font-mono text-emerald-300">
+            OFICIAL
           </span>
-          <span className="font-mono text-xs font-bold tracking-wider text-[#ef4444] bg-[#0b0b0d] px-2.5 py-1 rounded border border-white/[0.07]">
+          <span className="font-mono text-[11px] sm:text-xs font-bold tracking-wider text-[#ef4444] bg-[#0b0b0d] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded border border-white/[0.07]">
             01:00:08:14
           </span>
         </div>
       </div>
 
-      {/* Barra de herramientas secundaria (Snapping, Blade, Flags, Zoom) */}
-      <div className="bg-[#1c1c21] px-4 py-1.5 border-b border-black/60 flex items-center justify-between text-[10px] text-zinc-400">
-        <div className="flex items-center gap-3">
+      {/* Barra de herramientas secundaria */}
+      <div className="bg-[#1c1c21] px-3.5 sm:px-4 py-1.5 border-b border-black/60 flex items-center justify-between text-[9px] sm:text-[10px] text-zinc-400">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <span className="flex items-center gap-1 text-white font-medium">
             <MousePointerIcon /> Selección
           </span>
@@ -656,7 +658,7 @@ const DaVinciResolveAuthenticTimeline = () => {
             <Scissors size={11} /> Corte (B)
           </span>
           <span className="text-zinc-600">|</span>
-          <span className="font-mono text-[9px] text-amber-400/90">Imán Activo (N)</span>
+          <span className="font-mono text-[8.5px] sm:text-[9px] text-amber-400/90">Imán Activo (N)</span>
         </div>
         <div className="hidden sm:flex items-center gap-3 font-mono text-[9px] text-zinc-400">
           <span>24.000 fps</span>
@@ -665,211 +667,215 @@ const DaVinciResolveAuthenticTimeline = () => {
           <span>·</span>
           <span className="text-sky-300">DaVinci YRGB Color Managed</span>
         </div>
+        <span className="sm:hidden font-mono text-[8.5px] text-zinc-400">Desliza ↔</span>
       </div>
 
-      {/* Área Principal del Timeline: Cabeceras de Pista a la izquierda + Pistas a la derecha */}
-      <div className="grid grid-cols-12 bg-[#141417]">
-        {/* Columna Izquierda: Track Headers auténticos de DaVinci Resolve */}
-        <div className="col-span-3 sm:col-span-2 bg-[#1c1c21] border-r border-black/80 flex flex-col text-[10px] font-mono">
-          {/* Espacio esquina de regla */}
-          <div className="h-6 border-b border-black/70 px-2 flex items-center text-[8px] text-zinc-500">
-            TIMECODE
-          </div>
+      {/* Contenedor con scroll horizontal suave en móvil para que las pistas y clips nunca se aplasten */}
+      <div className="overflow-x-auto no-scrollbar bg-[#141417]">
+        <div className="grid grid-cols-12 min-w-[560px] sm:min-w-0">
+          {/* Columna Izquierda: Track Headers auténticos de DaVinci Resolve */}
+          <div className="col-span-2 bg-[#1c1c21] border-r border-black/80 flex flex-col text-[10px] font-mono">
+            <div className="h-6 border-b border-black/70 px-2 flex items-center text-[8px] text-zinc-500">
+              TIMECODE
+            </div>
 
-          {/* Track Header V3 */}
-          <div className="h-10 border-b border-black/60 px-2 flex items-center justify-between bg-[#202026]">
-            <div className="flex items-center gap-1">
-              <span className="px-1 py-0.2 rounded bg-zinc-700 text-zinc-200 font-bold text-[9px]">V3</span>
-              <span className="hidden md:inline text-[9px] text-zinc-400 truncate">Text+</span>
-            </div>
-            <div className="flex items-center gap-1 text-zinc-500">
-              <Lock size={9} />
-              <Eye size={9} className="text-zinc-300" />
-            </div>
-          </div>
-
-          {/* Track Header V2 */}
-          <div className="h-10 border-b border-black/60 px-2 flex items-center justify-between bg-[#202026]">
-            <div className="flex items-center gap-1">
-              <span className="px-1 py-0.2 rounded bg-zinc-700 text-zinc-200 font-bold text-[9px]">V2</span>
-              <span className="hidden md:inline text-[9px] text-zinc-400 truncate">Fusion</span>
-            </div>
-            <div className="flex items-center gap-1 text-zinc-500">
-              <Lock size={9} />
-              <Eye size={9} className="text-zinc-300" />
-            </div>
-          </div>
-
-          {/* Track Header V1 (Activo con borde naranja/rojo de DaVinci) */}
-          <div className="h-12 border-b border-black/80 px-2 flex items-center justify-between bg-[#25252c]">
-            <div className="flex items-center gap-1">
-              <span className="px-1 py-0.2 rounded bg-[#d97706]/20 border border-[#f59e0b] text-white font-bold text-[9px]">
-                V1
-              </span>
-              <span className="hidden md:inline text-[9px] text-zinc-200 truncate">Master</span>
-            </div>
-            <div className="flex items-center gap-1 text-zinc-400">
-              <Lock size={9} />
-              <Eye size={9} className="text-white" />
-            </div>
-          </div>
-
-          {/* Track Header A1 (Fairlight Audio) */}
-          <div className="h-12 px-2 flex items-center justify-between bg-[#1b2420]">
-            <div className="flex items-center gap-1">
-              <span className="px-1 py-0.2 rounded bg-emerald-800/60 border border-emerald-500/40 text-emerald-200 font-bold text-[9px]">
-                A1
-              </span>
-              <span className="hidden md:inline text-[9px] text-emerald-300/80 truncate">2.0</span>
-            </div>
-            <div className="flex items-center gap-1 text-[8px] font-bold">
-              <span className="w-3.5 h-3.5 rounded bg-zinc-800 text-zinc-400 grid place-items-center">M</span>
-              <span className="w-3.5 h-3.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 grid place-items-center">
-                S
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Columna Derecha: Pistas y Clips con Colores Auténticos de DaVinci Resolve */}
-        <div className="col-span-9 sm:col-span-10 relative overflow-hidden">
-          {/* Regla de Tiempo con marcas finas de 1px */}
-          <div className="h-6 bg-[#18181d] border-b border-black/80 flex items-end justify-between px-3 pb-1 text-[8px] font-mono text-zinc-500">
-            <span>01:00:00:00</span>
-            <span>01:00:04:00</span>
-            <span>01:00:08:00</span>
-            <span>01:00:12:00</span>
-            <span className="hidden sm:inline">01:00:16:00</span>
-            <span>01:00:20:00</span>
-          </div>
-
-          {/* Pista V3: Clips de Títulos Text+ (Color Durazno/Tan y Violeta típicos de DaVinci) */}
-          <div className="h-10 border-b border-white/[0.04] px-2 flex items-center gap-2 bg-[#141418]">
-            <div className="w-[26%] h-7 rounded-[3px] bg-[#b46947] border border-[#e0916d]/60 overflow-hidden flex flex-col justify-between">
-              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
-                <span>Text+ HOOK_INICIAL</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-white" />
+            {/* Track Header V3 */}
+            <div className="h-10 border-b border-black/60 px-2 flex items-center justify-between bg-[#202026]">
+              <div className="flex items-center gap-1">
+                <span className="px-1 py-0.2 rounded bg-zinc-700 text-zinc-200 font-bold text-[9px]">V3</span>
+                <span className="text-[9px] text-zinc-400 truncate">Text+</span>
               </div>
-              <div className="px-1.5 pb-0.5 flex items-center justify-between text-[7px] font-mono text-white/80">
-                <span>Keyframe In</span>
-                <span>♦──♦</span>
+              <div className="flex items-center gap-1 text-zinc-500">
+                <Lock size={9} />
+                <Eye size={9} className="text-zinc-300" />
               </div>
             </div>
 
-            <div className="w-[42%] h-7 rounded-[3px] bg-[#7c5295] border border-[#a779c4]/60 overflow-hidden flex flex-col justify-between ml-[6%]">
-              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
-                <span>Text+ SEÑALADOR_PRECIO_3D</span>
-                <span className="px-1 rounded bg-white/20 text-[7px]">FUSION</span>
+            {/* Track Header V2 */}
+            <div className="h-10 border-b border-black/60 px-2 flex items-center justify-between bg-[#202026]">
+              <div className="flex items-center gap-1">
+                <span className="px-1 py-0.2 rounded bg-zinc-700 text-zinc-200 font-bold text-[9px]">V2</span>
+                <span className="text-[9px] text-zinc-400 truncate">Fusion</span>
               </div>
-              <div className="px-1.5 pb-0.5 flex items-center justify-between text-[7px] font-mono text-white/80">
-                <span>Spline Curve</span>
-                <span>♦────♦</span>
+              <div className="flex items-center gap-1 text-zinc-500">
+                <Lock size={9} />
+                <Eye size={9} className="text-zinc-300" />
               </div>
             </div>
 
-            <div className="flex-1 h-7 rounded-[3px] bg-[#b46947] border border-[#e0916d]/60 overflow-hidden flex flex-col justify-between">
-              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate">
-                Text+ CTA_WHATSAPP
+            {/* Track Header V1 */}
+            <div className="h-12 border-b border-black/80 px-2 flex items-center justify-between bg-[#25252c]">
+              <div className="flex items-center gap-1">
+                <span className="px-1 py-0.2 rounded bg-[#d97706]/20 border border-[#f59e0b] text-white font-bold text-[9px]">
+                  V1
+                </span>
+                <span className="text-[9px] text-zinc-200 truncate">Master</span>
+              </div>
+              <div className="flex items-center gap-1 text-zinc-400">
+                <Lock size={9} />
+                <Eye size={9} className="text-white" />
+              </div>
+            </div>
+
+            {/* Track Header A1 */}
+            <div className="h-12 px-2 flex items-center justify-between bg-[#1b2420]">
+              <div className="flex items-center gap-1">
+                <span className="px-1 py-0.2 rounded bg-emerald-800/60 border border-emerald-500/40 text-emerald-200 font-bold text-[9px]">
+                  A1
+                </span>
+                <span className="text-[9px] text-emerald-300/80 truncate">2.0</span>
+              </div>
+              <div className="flex items-center gap-1 text-[8px] font-bold">
+                <span className="w-3.5 h-3.5 rounded bg-zinc-800 text-zinc-400 grid place-items-center">M</span>
+                <span className="w-3.5 h-3.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 grid place-items-center">
+                  S
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Pista V2: Clips Fusion / Trazado 3D & LUT Adjustment (Color Teal/Turquesa de DaVinci) */}
-          <div className="h-10 border-b border-white/[0.04] px-2 flex items-center gap-1.5 bg-[#15151a]">
-            <div className="w-[48%] h-7 rounded-[3px] bg-[#2c7a7b] border border-[#4fd1c5]/50 overflow-hidden flex flex-col justify-between ml-[12%]">
-              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
-                <span>FUSION_TRAZADO_TERRENO_3D.comp</span>
-                <span className="text-[7px] text-teal-200">3D TRACK</span>
-              </div>
-              <div className="px-1.5 pb-0.5 text-[7px] font-mono text-teal-100/80 truncate">
-                PlanarTracker1 → Polygon1 → Render3D
-              </div>
+          {/* Columna Derecha: Pistas y Clips */}
+          <div className="col-span-10 relative overflow-hidden">
+            {/* Regla de Tiempo */}
+            <div className="h-6 bg-[#18181d] border-b border-black/80 flex items-end justify-between px-3 pb-1 text-[8px] font-mono text-zinc-500">
+              <span>01:00:00:00</span>
+              <span>01:00:04:00</span>
+              <span>01:00:08:00</span>
+              <span>01:00:12:00</span>
+              <span>01:00:16:00</span>
+              <span>01:00:20:00</span>
             </div>
 
-            <div className="w-[34%] h-7 rounded-[3px] bg-[#319795] border border-[#81e6d9]/50 overflow-hidden flex flex-col justify-between">
-              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
-                <span>ARCHIVO_COLOR_CINEMA.cube</span>
-                <span className="text-[7px] text-amber-200">LUT 3D</span>
-              </div>
-              <div className="px-1.5 pb-0.5 text-[7px] font-mono text-teal-100/80 truncate">
-                ACEScct → Rec.709 Master
-              </div>
-            </div>
-          </div>
-
-          {/* Pista V1: Clips de Cámara Principal (Color Azul Acero clásico de DaVinci Resolve) */}
-          <div className="h-12 border-b border-white/[0.05] px-2 flex items-center gap-1 bg-[#121216]">
-            {[
-              { name: 'A001_DRONE_LOTE.braw', w: '32%' },
-              { name: 'A002_DETALLE_COMERCIAL.mov', w: '26%' },
-              { name: 'A003_IA_BROLL_GEN.mp4', w: '22%' },
-              { name: 'A004_CIERRE_MARCA.braw', w: '20%' }
-            ].map((clip, i) => (
-              <div
-                key={i}
-                style={{ width: clip.w }}
-                className="h-9 rounded-[3px] bg-[#2b6cb0] border border-[#63b3ed]/60 overflow-hidden flex flex-col justify-between"
-              >
-                <div className="bg-black/40 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
-                  <span className="truncate">{clip.name}</span>
-                  {/* Insignia arcoíris de corrección de color activa en DaVinci */}
-                  <span className="w-2 h-2 rounded-full bg-gradient-to-tr from-rose-400 via-emerald-300 to-sky-400 shrink-0 ml-1" />
+            {/* Pista V3 */}
+            <div className="h-10 border-b border-white/[0.04] px-2 flex items-center gap-2 bg-[#141418]">
+              <div className="w-[26%] h-7 rounded-[3px] bg-[#b46947] border border-[#e0916d]/60 overflow-hidden flex flex-col justify-between">
+                <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                  <span>Text+ HOOK_INICIAL</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
                 </div>
-                <div className="px-1.5 pb-1 flex items-center justify-between text-[7px] font-mono text-sky-100/80">
-                  <span>Speed: 100%</span>
-                  <span>24 fps</span>
+                <div className="px-1.5 pb-0.5 flex items-center justify-between text-[7px] font-mono text-white/80">
+                  <span>Keyframe In</span>
+                  <span>♦──♦</span>
                 </div>
               </div>
-            ))}
-          </div>
 
-          {/* Pista A1: Audio Fairlight (Color Verde Bosque clásico de DaVinci Resolve + línea de ganancia blanca 1px) */}
-          <div className="h-12 px-2 flex items-center bg-[#101614] relative">
-            <div className="w-full h-9 rounded-[3px] bg-[#276749] border border-[#48bb78]/50 overflow-hidden relative flex flex-col justify-between">
-              <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-emerald-100 flex items-center justify-between z-10">
-                <span>VOZ_IA_MASTER + SFX_WOOSH_HITS.wav</span>
-                <span>-14.0 LUFS</span>
+              <div className="w-[42%] h-7 rounded-[3px] bg-[#7c5295] border border-[#a779c4]/60 overflow-hidden flex flex-col justify-between ml-[6%]">
+                <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                  <span>Text+ SEÑALADOR_PRECIO_3D</span>
+                  <span className="px-1 rounded bg-white/20 text-[7px] shrink-0">FUSION</span>
+                </div>
+                <div className="px-1.5 pb-0.5 flex items-center justify-between text-[7px] font-mono text-white/80">
+                  <span>Spline Curve</span>
+                  <span>♦────♦</span>
+                </div>
               </div>
-              {/* Línea blanca de ganancia de 1px */}
-              <div className="absolute left-0 right-0 top-[58%] h-[1px] bg-white/75 z-10" />
-              {/* Onda de audio */}
-              <div className="flex items-end justify-between px-2 pb-0.5 h-5 gap-[2px]">
-                {waveformSamples.map((h, i) => (
-                  <motion.span
-                    key={i}
-                    animate={{ height: [`${Math.max(22, h * 0.5)}%`, `${h}%`, `${Math.max(22, h * 0.5)}%`] }}
-                    transition={{ duration: 1.1 + (i % 5) * 0.14, repeat: Infinity, ease: 'easeInOut' }}
-                    className="flex-1 bg-[#9ae6b4]/85 rounded-t-[1px]"
-                  />
-                ))}
+
+              <div className="flex-1 h-7 rounded-[3px] bg-[#b46947] border border-[#e0916d]/60 overflow-hidden flex flex-col justify-between">
+                <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate">
+                  Text+ CTA_WHATSAPP
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Cabezal de Reproducción Naranja/Rojo idéntico a DaVinci Resolve */}
-          <motion.div
-            animate={{ left: ['8%', '92%', '8%'] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-            className="absolute top-0 bottom-0 w-[1px] bg-[#ef4444] shadow-[0_0_10px_#ef4444] z-30 pointer-events-none"
-          >
-            {/* Capuchón pentagonal rojo en la regla de tiempo */}
-            <svg viewBox="0 0 12 14" className="w-3 h-3.5 -ml-[5.5px] text-[#ef4444] fill-current">
-              <polygon points="0,0 12,0 12,8 6,14 0,8" />
-            </svg>
-          </motion.div>
+            {/* Pista V2 */}
+            <div className="h-10 border-b border-white/[0.04] px-2 flex items-center gap-1.5 bg-[#15151a]">
+              <div className="w-[48%] h-7 rounded-[3px] bg-[#2c7a7b] border border-[#4fd1c5]/50 overflow-hidden flex flex-col justify-between ml-[12%]">
+                <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                  <span>FUSION_TRAZADO_TERRENO_3D.comp</span>
+                  <span className="text-[7px] text-teal-200 shrink-0">3D TRACK</span>
+                </div>
+                <div className="px-1.5 pb-0.5 text-[7px] font-mono text-teal-100/80 truncate">
+                  PlanarTracker1 → Polygon1 → Render3D
+                </div>
+              </div>
+
+              <div className="w-[34%] h-7 rounded-[3px] bg-[#319795] border border-[#81e6d9]/50 overflow-hidden flex flex-col justify-between">
+                <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                  <span>ARCHIVO_COLOR_CINEMA.cube</span>
+                  <span className="text-[7px] text-amber-200 shrink-0">LUT 3D</span>
+                </div>
+                <div className="px-1.5 pb-0.5 text-[7px] font-mono text-teal-100/80 truncate">
+                  ACEScct → Rec.709 Master
+                </div>
+              </div>
+            </div>
+
+            {/* Pista V1 */}
+            <div className="h-12 border-b border-white/[0.05] px-2 flex items-center gap-1 bg-[#121216]">
+              {[
+                { name: 'A001_DRONE_LOTE.braw', w: '32%' },
+                { name: 'A002_DETALLE_COMERCIAL.mov', w: '26%' },
+                { name: 'A003_IA_BROLL_GEN.mp4', w: '22%' },
+                { name: 'A004_CIERRE_MARCA.braw', w: '20%' }
+              ].map((clip, i) => (
+                <div
+                  key={i}
+                  style={{ width: clip.w }}
+                  className="h-9 rounded-[3px] bg-[#2b6cb0] border border-[#63b3ed]/60 overflow-hidden flex flex-col justify-between"
+                >
+                  <div className="bg-black/40 px-1.5 py-0.5 text-[8px] font-mono text-white truncate flex items-center justify-between">
+                    <span className="truncate">{clip.name}</span>
+                    <span className="w-2 h-2 rounded-full bg-gradient-to-tr from-rose-400 via-emerald-300 to-sky-400 shrink-0 ml-1" />
+                  </div>
+                  <div className="px-1.5 pb-1 flex items-center justify-between text-[7px] font-mono text-sky-100/80">
+                    <span>Speed: 100%</span>
+                    <span>24 fps</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Pista A1 */}
+            <div className="h-12 px-2 flex items-center bg-[#101614] relative">
+              <div className="w-full h-9 rounded-[3px] bg-[#276749] border border-[#48bb78]/50 overflow-hidden relative flex flex-col justify-between">
+                <div className="bg-black/35 px-1.5 py-0.5 text-[8px] font-mono text-emerald-100 flex items-center justify-between z-10">
+                  <span>VOZ_IA_MASTER + SFX_WOOSH_HITS.wav</span>
+                  <span>-14.0 LUFS</span>
+                </div>
+                <div className="absolute left-0 right-0 top-[58%] h-[1px] bg-white/75 z-10" />
+                <div className="flex items-end justify-between px-2 pb-0.5 h-5 gap-[2px]">
+                  {waveformSamples.map((h, i) => (
+                    <motion.span
+                      key={i}
+                      animate={{ height: [`${Math.max(22, h * 0.5)}%`, `${h}%`, `${Math.max(22, h * 0.5)}%`] }}
+                      transition={{ duration: 1.1 + (i % 5) * 0.14, repeat: Infinity, ease: 'easeInOut' }}
+                      className="flex-1 bg-[#9ae6b4]/85 rounded-t-[1px]"
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Playhead Naranja/Rojo */}
+            <motion.div
+              animate={{ left: ['8%', '92%', '8%'] }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+              className="absolute top-0 bottom-0 w-[1px] bg-[#ef4444] shadow-[0_0_10px_#ef4444] z-30 pointer-events-none"
+            >
+              <svg viewBox="0 0 12 14" className="w-3 h-3.5 -ml-[5.5px] text-[#ef4444] fill-current">
+                <polygon points="0,0 12,0 12,8 6,14 0,8" />
+              </svg>
+            </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* Barra Inferior de Módulos de DaVinci Resolve (Media · Cut · Edit · Fusion · Color · Fairlight · Deliver) */}
-      <div className="bg-[#111114] border-t border-black px-3 py-2 flex items-center justify-center gap-2 sm:gap-5 text-[9px] font-mono text-zinc-500 overflow-x-auto no-scrollbar">
+      {/* Barra Inferior de Módulos de DaVinci Resolve */}
+      <div className="bg-[#111114] border-t border-black px-3 py-2 flex items-center justify-between sm:justify-center gap-1.5 sm:gap-5 text-[8.5px] sm:text-[9px] font-mono text-zinc-500 overflow-x-auto no-scrollbar">
         <span>Media</span>
         <span>Cut</span>
-        <span className="px-2.5 py-0.5 rounded bg-[#27272f] text-white border border-white/15 font-semibold">
+        <span className="px-2 sm:px-2.5 py-0.5 rounded bg-[#27272f] text-white border border-white/15 font-semibold">
           Edit
         </span>
-        <span className="px-2.5 py-0.5 rounded bg-[#27272f]/70 text-zinc-200 border border-white/10">Fusion</span>
-        <span className="px-2.5 py-0.5 rounded bg-[#27272f]/70 text-zinc-200 border border-white/10">Color</span>
-        <span className="px-2.5 py-0.5 rounded bg-[#27272f]/70 text-zinc-200 border border-white/10">Fairlight</span>
+        <span className="px-2 sm:px-2.5 py-0.5 rounded bg-[#27272f]/70 text-zinc-200 border border-white/10">
+          Fusion
+        </span>
+        <span className="px-2 sm:px-2.5 py-0.5 rounded bg-[#27272f]/70 text-zinc-200 border border-white/10">
+          Color
+        </span>
+        <span className="px-2 sm:px-2.5 py-0.5 rounded bg-[#27272f]/70 text-zinc-200 border border-white/10">
+          Fairlight
+        </span>
         <span>Deliver</span>
       </div>
     </div>
@@ -886,7 +892,7 @@ const MousePointerIcon = () => (
 const DaVinciColorGradeWipe = () => {
   return (
     <div className="rounded-2xl bg-[#141418] border border-zinc-800 p-4 md:p-5 text-white flex flex-col justify-between shadow-sm select-none">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between gap-2 mb-3">
         <div>
           <span className="text-[9px] font-mono uppercase tracking-widest text-amber-400 block">
             MÓDULO COLOR // DAVINCI RESOLVE
@@ -895,21 +901,18 @@ const DaVinciColorGradeWipe = () => {
             Aplicación de Archivo de Color (.CUBE / ACES)
           </h4>
         </div>
-        <span className="px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/10 text-[9px] font-mono text-zinc-300">
-          32-BIT FLOAT
+        <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-white/[0.05] border border-white/10 text-[8.5px] sm:text-[9px] font-mono text-zinc-300 shrink-0">
+          32-BIT
         </span>
       </div>
 
-      {/* Monitor comparativo Antes (LOG Gris) vs Después (Archivo de Color Aplicado) */}
       <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-white/10 bg-black isolate">
-        {/* Capa Inferior: Imagen con Archivo de Color Cinematográfico Aplicado */}
         <img
           src="/inmobiliaria-drone.jpg"
           alt="Video con archivo de color aplicado en DaVinci Resolve"
           className="absolute inset-0 w-full h-full object-cover saturate-[1.35] contrast-[1.12] brightness-[1.02]"
         />
 
-        {/* Capa Superior Recortada Animada: Imagen en LOG / Sin Color (Desaturada y Plana) */}
         <motion.div
           animate={{ clipPath: ['inset(0 82% 0 0)', 'inset(0 18% 0 0)', 'inset(0 82% 0 0)'] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
@@ -923,37 +926,34 @@ const DaVinciColorGradeWipe = () => {
           <div className="absolute inset-0 bg-zinc-500/15 mix-blend-screen" />
         </motion.div>
 
-        {/* Línea divisoria del barrido (Wipe Line de 1px) */}
         <motion.div
           animate={{ left: ['18%', '82%', '18%'] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute top-0 bottom-0 w-[1px] bg-white shadow-[0_0_12px_#ffffff] z-20 pointer-events-none"
         >
-          <div className="absolute top-1/2 -translate-y-1/2 -left-3.5 w-7 h-7 rounded-full bg-zinc-950/90 border border-white/40 flex items-center justify-center text-[9px] font-mono text-white shadow-lg">
+          <div className="absolute top-1/2 -translate-y-1/2 -left-3 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-zinc-950/90 border border-white/40 flex items-center justify-center text-[8px] sm:text-[9px] font-mono text-white shadow-lg">
             ↔
           </div>
         </motion.div>
 
-        {/* Etiquetas en esquina */}
-        <span className="absolute left-2.5 top-2.5 z-20 px-2 py-0.5 rounded bg-black/65 backdrop-blur-md border border-white/15 text-[9px] font-mono text-zinc-300">
-          RAW / LOG (SIN COLOR)
+        <span className="absolute left-2 top-2 z-20 px-2 py-0.5 rounded bg-black/70 backdrop-blur-md border border-white/15 text-[8px] sm:text-[9px] font-mono text-zinc-300">
+          LOG (SIN COLOR)
         </span>
-        <span className="absolute right-2.5 top-2.5 z-20 px-2.5 py-0.5 rounded bg-amber-500/90 text-zinc-950 font-mono font-bold text-[9px] shadow">
-          LUT: SyncPro_Cinema.cube
+        <span className="absolute right-2 top-2 z-20 px-2 py-0.5 rounded bg-amber-500/95 text-zinc-950 font-mono font-bold text-[8px] sm:text-[9px] shadow">
+          LUT: Cinema.cube
         </span>
 
-        {/* Árbol de Nodos superpuesto en la base */}
-        <div className="absolute inset-x-2.5 bottom-2.5 z-20 bg-zinc-950/80 backdrop-blur-md border border-white/15 rounded-lg px-3 py-1.5 flex items-center justify-between text-[9px] font-mono">
-          <div className="flex items-center gap-1.5 text-zinc-300">
+        <div className="absolute inset-x-2 bottom-2 z-20 bg-zinc-950/85 backdrop-blur-md border border-white/15 rounded-lg px-2.5 py-1.5 flex items-center justify-between text-[8px] sm:text-[9px] font-mono">
+          <div className="flex items-center gap-1 sm:gap-1.5 text-zinc-300 truncate">
             <span className="px-1.5 py-0.2 rounded bg-white/10">01 CST</span>
             <span>→</span>
-            <span className="px-1.5 py-0.2 rounded bg-white/10">02 BALANCE</span>
+            <span className="px-1.5 py-0.2 rounded bg-white/10">02 GRADE</span>
             <span>→</span>
             <span className="px-1.5 py-0.2 rounded bg-amber-400/20 border border-amber-400/40 text-amber-300">
-              03 ARCHIVO .CUBE
+              03 .CUBE
             </span>
           </div>
-          <span className="text-emerald-400 hidden sm:inline">REC.709</span>
+          <span className="text-emerald-400 ml-1 shrink-0">REC.709</span>
         </div>
       </div>
 
@@ -969,7 +969,7 @@ const DaVinciColorGradeWipe = () => {
 const DaVinciCurvesAndTextMotion = () => {
   return (
     <div className="rounded-2xl bg-[#141418] border border-zinc-800 p-4 md:p-5 text-white flex flex-col justify-between shadow-sm select-none">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between gap-2 mb-3">
         <div>
           <span className="text-[9px] font-mono uppercase tracking-widest text-sky-400 block">
             SPLINE CURVES & TEXT+ // DAVINCI RESOLVE
@@ -978,24 +978,23 @@ const DaVinciCurvesAndTextMotion = () => {
             Movimiento de Curvas & Animación de Textos
           </h4>
         </div>
-        <span className="px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/10 text-[9px] font-mono text-zinc-300">
+        <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-white/[0.05] border border-white/10 text-[8.5px] sm:text-[9px] font-mono text-zinc-300 shrink-0">
           60 FPS
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-auto">
-        {/* Panel Izquierdo: Movimiento de Curva en vivo (Custom Curves / Spline Editor de 1px) */}
-        <div className="rounded-xl bg-[#0c0c0f] border border-white/[0.08] p-3 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[9px] font-mono text-zinc-400 mb-2">
-            <span className="flex items-center gap-1.5 text-zinc-200">
-              <Sliders size={11} className="text-sky-400" /> Curva Dinámica
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 my-auto">
+        {/* Panel Izquierdo: Movimiento de Curva en vivo */}
+        <div className="rounded-xl bg-[#0c0c0f] border border-white/[0.08] p-2.5 sm:p-3 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[8.5px] sm:text-[9px] font-mono text-zinc-400 mb-1.5 sm:mb-2">
+            <span className="flex items-center gap-1 text-zinc-200 truncate">
+              <Sliders size={10} className="text-sky-400 shrink-0" /> Curva Spline
             </span>
-            <span className="text-[8px] text-sky-300">Y · R · G · B</span>
+            <span className="text-[7.5px] sm:text-[8px] text-sky-300 shrink-0">Y·R·G·B</span>
           </div>
 
-          <div className="relative h-28 w-full rounded-lg bg-[#08080a] border border-white/[0.06] overflow-hidden">
+          <div className="relative h-24 sm:h-28 w-full rounded-lg bg-[#08080a] border border-white/[0.06] overflow-hidden">
             <svg viewBox="0 0 200 110" className="w-full h-full">
-              {/* Cuadrícula fina de 1px */}
               <line
                 x1="0"
                 y1="27.5"
@@ -1051,7 +1050,6 @@ const DaVinciCurvesAndTextMotion = () => {
                 vectorEffect="non-scaling-stroke"
               />
 
-              {/* Diagonal base de referencia (1px) */}
               <line
                 x1="12"
                 y1="98"
@@ -1063,7 +1061,6 @@ const DaVinciCurvesAndTextMotion = () => {
                 vectorEffect="non-scaling-stroke"
               />
 
-              {/* Curva S animada en vivo con trazo quirúrgico de 1.25px */}
               <motion.path
                 animate={{
                   d: [
@@ -1079,7 +1076,6 @@ const DaVinciCurvesAndTextMotion = () => {
                 vectorEffect="non-scaling-stroke"
               />
 
-              {/* Punto de control animado sobre la curva */}
               <motion.circle
                 cx="72"
                 animate={{ cy: [78, 52, 78] }}
@@ -1101,55 +1097,52 @@ const DaVinciCurvesAndTextMotion = () => {
             </svg>
           </div>
 
-          <span className="text-[9px] font-mono text-zinc-400 mt-2 block">
-            Aceleración suave (Speed Ramp) y contraste S-Curve
+          <span className="text-[8.5px] sm:text-[9px] font-mono text-zinc-400 mt-1.5 block leading-tight">
+            Speed Ramp & S-Curve
           </span>
         </div>
 
-        {/* Panel Derecho: Animación de Texto en Vivo (DaVinci Text+ Kinetic Typography) */}
-        <div className="rounded-xl bg-[#0c0c0f] border border-white/[0.08] p-3 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[9px] font-mono text-zinc-400 mb-2">
-            <span className="flex items-center gap-1.5 text-zinc-200">
-              <Type size={11} className="text-emerald-400" /> Animación Text+
+        {/* Panel Derecho: Animación de Texto en Vivo */}
+        <div className="rounded-xl bg-[#0c0c0f] border border-white/[0.08] p-2.5 sm:p-3 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[8.5px] sm:text-[9px] font-mono text-zinc-400 mb-1.5 sm:mb-2">
+            <span className="flex items-center gap-1 text-zinc-200 truncate">
+              <Type size={10} className="text-emerald-400 shrink-0" /> Text+
             </span>
-            <span className="text-[8px] text-emerald-300">KEYFRAMES</span>
+            <span className="text-[7.5px] sm:text-[8px] text-emerald-300 shrink-0">KEYFRAMES</span>
           </div>
 
-          {/* Visor de Texto Dinámico */}
-          <div className="relative h-28 w-full rounded-lg bg-[#08080a] border border-white/[0.06] p-3 flex flex-col items-center justify-center overflow-hidden">
-            {/* Marco guía de título seguro (Safe Title 1px) */}
-            <div className="absolute inset-2 border border-dashed border-white/10 rounded pointer-events-none" />
+          <div className="relative h-24 sm:h-28 w-full rounded-lg bg-[#08080a] border border-white/[0.06] p-2 sm:p-3 flex flex-col items-center justify-center overflow-hidden">
+            <div className="absolute inset-1.5 sm:inset-2 border border-dashed border-white/10 rounded pointer-events-none" />
 
             <motion.div
               animate={{ y: [6, 0, 0, -6], opacity: [0, 1, 1, 0], scale: [0.94, 1, 1, 0.96] }}
               transition={{ duration: 3.4, repeat: Infinity, times: [0, 0.2, 0.82, 1] }}
               className="text-center z-10"
             >
-              <span className="inline-block px-2 py-0.5 rounded bg-emerald-500 text-zinc-950 text-[8px] font-extrabold uppercase tracking-widest mb-1">
+              <span className="inline-block px-1.5 py-0.5 rounded bg-emerald-500 text-zinc-950 text-[7px] sm:text-[8px] font-extrabold uppercase tracking-wider mb-1">
                 OFERTA EXCLUSIVA
               </span>
-              <div className="text-sm font-black uppercase tracking-tight text-white leading-none">
+              <div className="text-xs sm:text-sm font-black uppercase tracking-tight text-white leading-none">
                 VENTA DIRECTA
               </div>
-              <div className="text-[10px] font-mono text-zinc-400 mt-1">Subtítulos y títulos con retención</div>
+              <div className="text-[8.5px] sm:text-[10px] font-mono text-zinc-400 mt-1">Títulos con retención</div>
             </motion.div>
 
-            {/* Barra de Keyframes inferior */}
-            <div className="absolute inset-x-3 bottom-2 flex items-center justify-between text-[8px] font-mono text-zinc-500">
+            <div className="absolute inset-x-2.5 bottom-1.5 flex items-center justify-between text-[7.5px] font-mono text-zinc-500">
               <span>♦ IN</span>
-              <div className="flex-1 mx-2 h-[1px] bg-white/15 relative">
+              <div className="flex-1 mx-1.5 h-[1px] bg-white/15 relative">
                 <motion.div
                   animate={{ left: ['0%', '100%', '0%'] }}
                   transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -top-1 w-2 h-2 rotate-45 bg-emerald-400"
+                  className="absolute -top-1 w-1.5 h-1.5 rotate-45 bg-emerald-400"
                 />
               </div>
               <span>OUT ♦</span>
             </div>
           </div>
 
-          <span className="text-[9px] font-mono text-zinc-400 mt-2 block">
-            Títulos animados, subtítulos dinámicos y callouts
+          <span className="text-[8.5px] sm:text-[9px] font-mono text-zinc-400 mt-1.5 block leading-tight">
+            Títulos y subtítulos dinámicos
           </span>
         </div>
       </div>
@@ -1174,17 +1167,17 @@ const RealEstateMotionShowcase = () => {
 
   return (
     <div className="rounded-2xl bg-[#141418] border border-zinc-800 p-4 md:p-5 text-white flex flex-col justify-between shadow-sm select-none">
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+      <div className="flex items-center justify-between gap-2 mb-3">
         <div>
           <span className="text-[9px] font-mono uppercase tracking-widest text-emerald-400 block">
             FUSION 3D TRACKER // INMOBILIARIA & LOTES
           </span>
           <h4 className="text-sm md:text-base font-bold tracking-tight text-white">
-            Delimitación de Terrenos y Señaladores Flotantes 3D
+            Delimitación de Terrenos y Señaladores 3D
           </h4>
         </div>
-        <span className="px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/10 text-[9px] font-mono text-zinc-300">
-          SOLVE: 0.14 PX
+        <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-white/[0.05] border border-white/10 text-[8.5px] sm:text-[9px] font-mono text-zinc-300 shrink-0">
+          0.14 PX
         </span>
       </div>
 
@@ -1197,7 +1190,6 @@ const RealEstateMotionShowcase = () => {
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/35 pointer-events-none" />
 
-        {/* Superposición SVG con trazos quirúrgicos de 1px */}
         <svg viewBox="0 0 1000 562" className="absolute inset-0 w-full h-full z-10 pointer-events-none">
           <defs>
             <linearGradient id="lotFillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -1251,7 +1243,7 @@ const RealEstateMotionShowcase = () => {
             x1="478"
             y1="322"
             x2="478"
-            y2="168"
+            y2="175"
             stroke="#ffffff"
             strokeWidth="1"
             vectorEffect="non-scaling-stroke"
@@ -1259,18 +1251,22 @@ const RealEstateMotionShowcase = () => {
           <circle cx="478" cy="322" r="3.5" fill="#10b981" />
         </svg>
 
-        {/* Callout Flotante Principal */}
+        {/* Callout Flotante Principal adaptado a móvil y escritorio */}
         <motion.div
-          animate={{ y: [0, -4, 0] }}
+          animate={{ y: [0, -3, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute left-[32%] sm:left-[36%] top-[14%] z-20 bg-zinc-950/85 backdrop-blur-md text-white border border-white/25 rounded-xl px-3 py-1.5 shadow-2xl pointer-events-none"
+          className="absolute left-[26%] sm:left-[34%] top-[10%] sm:top-[12%] z-20 bg-zinc-950/85 backdrop-blur-md text-white border border-white/25 rounded-lg sm:rounded-xl px-2.5 py-1 sm:px-3 sm:py-1.5 shadow-2xl pointer-events-none"
         >
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span className="text-[8px] font-mono uppercase tracking-widest text-zinc-300">LOTE ESQUINERO #14</span>
+            <span className="text-[7.5px] sm:text-[8px] font-mono uppercase tracking-widest text-zinc-300">
+              LOTE ESQUINERO #14
+            </span>
           </div>
-          <div className="text-xs sm:text-sm font-bold tracking-tight text-white">680.00 m² · Disponible</div>
-          <div className="text-[9px] text-zinc-400">Frente: 22.5 m × Fondo: 30.2 m</div>
+          <div className="text-[11px] sm:text-sm font-bold tracking-tight text-white leading-tight mt-0.5">
+            680.00 m² · Disponible
+          </div>
+          <div className="text-[8px] sm:text-[9px] text-zinc-400">Frente: 22.5 m × Fondo: 30.2 m</div>
         </motion.div>
       </div>
 
@@ -1437,90 +1433,106 @@ const App = () => {
     }
   ];
 
+  const navLinks = [
+    { label: 'Videos', href: '#inicio-videos' },
+    { label: 'Marcas', href: '#marcas' },
+    { label: 'Fotografía', href: '#fotografia' },
+    { label: 'Así Trabajamos', href: '#asi-trabajamos' },
+    { label: 'DaVinci Resolve', href: '#ingenieria-visual' },
+    { label: 'Planes', href: '#planes-edicion' },
+    { label: 'Contacto', href: '#contacto' }
+  ];
+
   return (
     <div className="min-h-screen bg-[#ffffff] text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white overflow-x-clip">
-      {/* Navegación limpia con borde de 1px */}
-      <nav className="sticky top-0 w-full z-50 bg-zinc-950/90 backdrop-blur-xl border-b border-white/[0.08] px-6 md:px-8 py-3.5 flex justify-between items-center text-white">
-        <a href="#" className="text-lg font-extrabold tracking-tight flex items-center gap-2.5">
-          <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-          <span>SYNC PRO</span>
-        </a>
-        <div className="hidden lg:flex gap-7 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
-          <a href="#inicio-videos" className="hover:text-white transition-colors">
-            Videos
+      {/* Navegación con barra rápida táctil en Smartphone y barra clásica en Escritorio */}
+      <header className="sticky top-0 w-full z-50 bg-zinc-950/95 backdrop-blur-xl border-b border-white/[0.08] text-white">
+        <div className="px-4 sm:px-6 md:px-8 py-3 md:py-3.5 flex justify-between items-center">
+          <a href="#" className="text-base sm:text-lg font-extrabold tracking-tight flex items-center gap-2">
+            <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+            <span>SYNC PRO</span>
           </a>
-          <a href="#marcas" className="hover:text-white transition-colors">
-            Marcas
-          </a>
-          <a href="#fotografia" className="hover:text-white transition-colors">
-            Fotografía
-          </a>
-          <a href="#asi-trabajamos" className="hover:text-white transition-colors">
-            Así Trabajamos
-          </a>
-          <a href="#ingenieria-visual" className="hover:text-white transition-colors">
-            DaVinci Resolve
-          </a>
-          <a href="#planes-edicion" className="hover:text-white transition-colors">
-            Planes
+
+          <nav className="hidden lg:flex gap-7 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+            {navLinks.slice(0, 6).map((item) => (
+              <a key={item.href} href={item.href} className="hover:text-white transition-colors">
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+              'Hola Sync Pro, vi su portafolio web y quiero cotizar un proyecto.'
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white text-zinc-950 px-3.5 sm:px-4 py-2 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider hover:bg-zinc-200 transition-all flex items-center gap-1.5"
+          >
+            <MessageCircle size={13} /> Escríbenos
           </a>
         </div>
-        <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-            'Hola Sync Pro, vi su portafolio web y quiero cotizar un proyecto.'
-          )}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-white text-zinc-950 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider hover:bg-zinc-200 transition-all flex items-center gap-2"
+
+        {/* Barra de acceso rápido deslizable solo para Smartphone / Tablet (< 1024px) */}
+        <nav
+          aria-label="Secciones móviles"
+          className="lg:hidden flex items-center gap-1.5 overflow-x-auto no-scrollbar px-4 pb-2.5 border-t border-white/[0.05] pt-2"
         >
-          <MessageCircle size={14} /> Escríbenos
-        </a>
-      </nav>
+          {navLinks.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="flex-none px-3 py-1 rounded-full bg-white/[0.06] active:bg-white active:text-zinc-950 border border-white/10 text-[10px] font-semibold uppercase tracking-wider text-zinc-300 transition-colors"
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </header>
 
       {/* =====================================================================
-          1. ESCENARIO DE INICIO EN NEGRO & GRIS CARBÓN (RESUMIDO A 3 PALABRAS
-             DIRECTAS + CARRUSEL DE TUS VIDEOS EN MOVIMIENTO)
+          1. ESCENARIO DE INICIO EN NEGRO & GRIS CARBÓN (OPTIMIZADO PARA MÓVIL Y PC)
           ===================================================================== */}
       <section
         id="inicio-videos"
-        className="sync-stage relative text-white pt-8 pb-9 md:pt-11 md:pb-11 border-b border-zinc-900"
+        className="sync-stage relative text-white pt-6 pb-7 md:pt-11 md:pb-11 border-b border-zinc-900"
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
           <div>
-            <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-white" />
-              DaVinci Resolve Studio · Motion Graphics 3D · IA
+            <span className="inline-flex items-center gap-2 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.22em] sm:tracking-[0.28em] text-zinc-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
+              DaVinci Resolve Studio · Motion 3D · IA
             </span>
-            <h1 className="mt-2 text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.94] text-white">
+            <h1 className="mt-1.5 sm:mt-2 text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.94] text-white">
               Edición <span className="text-zinc-400">que vende.</span>
             </h1>
           </div>
 
-          <div className="flex flex-wrap gap-2.5">
+          <div className="grid grid-cols-2 sm:flex gap-2.5 w-full sm:w-auto">
             <a
               href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                 'Hola Sync Pro, quiero que trabajemos juntos. ¿Me pueden dar información?'
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-white text-zinc-950 px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-zinc-200 transition-all shadow-lg"
+              className="bg-white text-zinc-950 px-4 sm:px-6 py-3 rounded-xl font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all shadow-lg"
             >
-              <MessageCircle size={15} /> Trabajemos juntos
+              <MessageCircle size={15} /> Trabajemos
             </a>
             <a
               href="#planes-edicion"
-              className="bg-white/[0.08] hover:bg-white/[0.14] text-white border border-white/15 px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all backdrop-blur-md"
+              className="bg-white/[0.08] hover:bg-white/[0.14] text-white border border-white/15 px-4 sm:px-6 py-3 rounded-xl font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all backdrop-blur-md"
             >
               Ver Planes <ArrowUpRight size={15} />
             </a>
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-3 md:mt-4">
           <InfiniteMediaCarousel items={projects} onSelectItem={(item) => setLightboxItem(item)} />
         </div>
 
-        <p className="mt-1 px-6 text-center text-[11px] font-medium tracking-wide text-zinc-400">
+        <p className="mt-1 px-4 text-center text-[10.5px] sm:text-[11px] font-medium tracking-wide text-zinc-400">
           <span className="hidden md:inline">Pasa el cursor para detener y ampliar · Arrastra o usa las flechas · </span>
           <span className="md:hidden">Desliza con el dedo · </span>
           Toca un video para verlo en grande y con sonido
@@ -1530,9 +1542,9 @@ const App = () => {
       {/* =====================================================================
           2. TRABAJAMOS CON MARCAS
           ===================================================================== */}
-      <section id="marcas" className="py-12 md:py-14 bg-zinc-50/70 border-b border-zinc-200/70">
-        <div className="max-w-7xl mx-auto px-6 mb-7 text-center">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
+      <section id="marcas" className="py-10 md:py-14 bg-zinc-50/70 border-b border-zinc-200/70">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-5 md:mb-7 text-center">
+          <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1">
             Marcas que confían en nosotros
           </span>
           <h2 className="text-2xl md:text-4xl font-extrabold uppercase tracking-tight text-zinc-900">
@@ -1540,18 +1552,18 @@ const App = () => {
           </h2>
         </div>
 
-        <div className="sync-brand-mq sync-edge-mask overflow-hidden py-2">
+        <div className="sync-brand-mq sync-edge-mask overflow-hidden py-1.5 md:py-2">
           <div className="sync-brand-track">
             {[...BRAND_LOGOS, ...BRAND_LOGOS].map((brand, idx) => (
               <span
                 key={`${brand.name}-${idx}`}
-                className="flex-none flex items-center justify-center w-[150px] h-[84px] md:w-[190px] md:h-[100px] mr-3 md:mr-4 rounded-2xl bg-white border border-zinc-200/80 shadow-sm hover:-translate-y-1 transition-all duration-300 px-4"
+                className="flex-none flex items-center justify-center w-[135px] h-[76px] sm:w-[155px] sm:h-[86px] md:w-[190px] md:h-[100px] mr-2.5 md:mr-4 rounded-2xl bg-white border border-zinc-200/80 shadow-sm hover:-translate-y-1 transition-all duration-300 px-3.5"
               >
                 <img
                   src={brand.src}
                   alt={brand.name}
                   loading="lazy"
-                  className="max-h-[52px] md:max-h-[68px] w-auto max-w-[120px] md:max-w-[148px] object-contain block"
+                  className="max-h-[46px] sm:max-h-[54px] md:max-h-[68px] w-auto max-w-[105px] sm:max-w-[122px] md:max-w-[148px] object-contain block"
                 />
               </span>
             ))}
@@ -1561,40 +1573,32 @@ const App = () => {
 
       {/* =====================================================================
           3. APARTADO DE FOTOS: FOTOGRAFÍA QUE VENDE (DE EXTREMO A EXTREMO
-             IZQUIERDA Y DERECHA + GRILLA COMPLETA)
+             IZQUIERDA Y DERECHA SIN REPETIR FOTOS EN MÓVIL)
           ===================================================================== */}
-      <section id="fotografia" className="py-16 md:py-20 border-b border-zinc-200/60 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
+      <section id="fotografia" className="py-12 md:py-20 border-b border-zinc-200/60 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-8 gap-3 md:gap-4">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
+            <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1">
               Producción Visual & Comercial
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-none">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-none">
               Fotografía que vende
             </h2>
           </div>
           <p className="text-zinc-500 text-xs md:text-sm max-w-sm font-normal leading-relaxed">
-            Producto, gastronomía, inmobiliaria y marca. Las fotografías continúan hacia ambos costados; pasa el cursor o
-            toca cualquiera para verla en grande.
+            Producto, gastronomía, inmobiliaria y marca. Toca cualquier fotografía para verla en grande.
           </p>
         </div>
 
-        {/* Cinta continua de extremo a extremo (izquierda a derecha de toda la pantalla) */}
-        <InfiniteMediaCarousel
-          items={COMMERCIAL_PHOTOS}
-          onSelectItem={(item) => setLightboxItem(item)}
-          cardHeightClass="h-[300px] md:h-[380px] lg:h-[410px]"
-        />
-
-        {/* Grilla ancha de extremo a extremo (Full-Bleed de izquierda a derecha) */}
-        <div className="w-full px-2 sm:px-4 md:px-6 mt-4">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 md:gap-3.5 grid-flow-dense">
+        {/* Grilla ancha Full-Bleed de extremo a extremo (izquierda a derecha) */}
+        <div className="w-full px-2.5 sm:px-4 md:px-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-3.5 grid-flow-dense">
             {COMMERCIAL_PHOTOS.map((shot) => (
               <figure
                 key={shot.id}
                 onClick={() => setLightboxItem(shot)}
                 className={`group relative m-0 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-200/80 shadow-sm cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl hover:z-10 ${
-                  shot.wide ? 'col-span-2 aspect-[16/9] sm:aspect-[3/2]' : 'aspect-[3/4]'
+                  shot.wide ? 'col-span-2 aspect-[16/10] sm:aspect-[3/2]' : 'aspect-[3/4]'
                 }`}
               >
                 <img
@@ -1605,25 +1609,25 @@ const App = () => {
                   className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
-                <figcaption className="absolute left-0 right-0 bottom-0 p-3.5 text-white pointer-events-none">
-                  <span className="block text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-300 mb-0.5">
+                <figcaption className="absolute left-0 right-0 bottom-0 p-3 sm:p-3.5 text-white pointer-events-none">
+                  <span className="block text-[8.5px] sm:text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-300 mb-0.5">
                     {shot.title}
                   </span>
-                  <b className="block text-xs md:text-sm font-bold tracking-tight leading-snug">{shot.subtitle}</b>
+                  <b className="block text-xs sm:text-sm font-bold tracking-tight leading-snug">{shot.subtitle}</b>
                 </figcaption>
               </figure>
             ))}
           </div>
         </div>
 
-        <div className="mt-9 flex justify-center px-6">
+        <div className="mt-7 md:mt-9 flex justify-center px-4">
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
               'Hola Sync Pro, vi su portafolio de video y fotografía y quiero algo así para mi marca.'
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-zinc-950 text-white px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2.5 hover:bg-zinc-800 transition-all shadow-md"
+            className="w-full sm:w-auto justify-center bg-zinc-950 text-white px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2.5 hover:bg-zinc-800 transition-all shadow-md"
           >
             <MessageCircle size={15} /> Quiero algo así para mi marca
           </a>
@@ -1633,13 +1637,13 @@ const App = () => {
       {/* =====================================================================
           4. ASÍ TRABAJAMOS (Carrusel infinito Detrás de Cámaras: Videos + Fotos)
           ===================================================================== */}
-      <section id="asi-trabajamos" className="py-16 md:py-20 bg-zinc-950 text-white border-b border-zinc-900">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 mb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+      <section id="asi-trabajamos" className="py-12 md:py-20 bg-zinc-950 text-white border-b border-zinc-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-3 md:mb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-3 md:gap-4">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
+            <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1">
               Backstage & Producción
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-white leading-none">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-white leading-none">
               Así trabajamos
             </h2>
           </div>
@@ -1651,43 +1655,41 @@ const App = () => {
         <InfiniteMediaCarousel
           items={BTS_ITEMS}
           onSelectItem={(item) => setLightboxItem(item)}
-          cardHeightClass="h-[320px] md:h-[400px] lg:h-[430px]"
+          cardHeightClass="h-[280px] sm:h-[340px] md:h-[400px] lg:h-[430px]"
         />
       </section>
 
       {/* =====================================================================
-          5. POR QUÉ TUS VIDEOS GENERAN CLIENTES (100% DAVINCI RESOLVE STUDIO:
-             LÍNEA DE TIEMPO FIEL + APLICACIÓN DE ARCHIVO DE COLOR + CURVAS Y
-             ANIMACIÓN DE TEXTO + TRAZADO INMOBILIARIO 3D)
+          5. POR QUÉ TUS VIDEOS GENERAN CLIENTES (100% DAVINCI RESOLVE STUDIO)
           ===================================================================== */}
       <section
         id="ingenieria-visual"
-        className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70"
+        className="py-14 md:py-20 px-4 sm:px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70"
       >
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-7 md:mb-10 gap-4 md:gap-6">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-2">
+            <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1.5">
               Ingeniería Visual · 100% DaVinci Resolve Studio
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-tight">
               Por qué tus videos generan clientes
             </h2>
           </div>
           <div className="flex flex-wrap gap-2">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-950 text-white text-[11px] font-semibold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-950 text-white text-[10px] sm:text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
               DaVinci Resolve Studio Oficial (Edit · Fusion · Color · Fairlight)
             </span>
           </div>
         </div>
 
-        {/* 1. Línea de Tiempo Auténtica de DaVinci Resolve Studio (Ancho Completo Superior) */}
-        <div className="mb-6">
+        {/* 1. Línea de Tiempo Auténtica de DaVinci Resolve Studio */}
+        <div className="mb-5 md:mb-6">
           <DaVinciResolveAuthenticTimeline />
         </div>
 
-        {/* 2. Tres Módulos Visuales en Vivo: Archivo de Color (.CUBE), Movimiento de Curvas + Animación de Texto, y Trazado Inmobiliario 3D */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 2. Tres Módulos Visuales en Vivo */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
           <DaVinciColorGradeWipe />
           <DaVinciCurvesAndTextMotion />
           <RealEstateMotionShowcase />
@@ -1697,13 +1699,16 @@ const App = () => {
       {/* =====================================================================
           6. PLANES DE EDICIÓN DE VIDEO POR DURACIÓN
           ===================================================================== */}
-      <section id="planes-edicion" className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+      <section
+        id="planes-edicion"
+        className="py-14 md:py-20 px-4 sm:px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70"
+      >
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-7 md:mb-10 gap-3 md:gap-6">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-2">
+            <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1.5">
               Inversión Transparente por Duración
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-none">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-none">
               Planes de edición
             </h2>
           </div>
@@ -1713,8 +1718,8 @@ const App = () => {
           </p>
         </div>
 
-        {/* Selector de Duración Limpio */}
-        <div className="bg-zinc-100/90 p-1.5 rounded-2xl grid grid-cols-2 lg:grid-cols-4 gap-1.5 mb-8 border border-zinc-200/80">
+        {/* Selector de Duración optimizado para Smartphone (2x2 limpio) y Escritorio (4 en línea) */}
+        <div className="bg-zinc-100/90 p-1.5 rounded-2xl grid grid-cols-2 lg:grid-cols-4 gap-1.5 mb-6 md:mb-8 border border-zinc-200/80">
           {durationPlans.map((plan, index) => {
             const isSelected = selectedDurationIndex === index;
             return (
@@ -1722,20 +1727,20 @@ const App = () => {
                 key={plan.id}
                 type="button"
                 onClick={() => setSelectedDurationIndex(index)}
-                className={`relative py-3.5 px-4 rounded-xl text-left transition-all duration-200 flex flex-col justify-between ${
+                className={`relative p-3 sm:py-3.5 sm:px-4 rounded-xl text-left transition-all duration-200 flex flex-col justify-between ${
                   isSelected
                     ? 'bg-zinc-950 text-white shadow-md'
                     : 'bg-transparent text-zinc-600 hover:bg-white/80 hover:text-zinc-900'
                 }`}
               >
-                <div className="flex items-center justify-between gap-2 mb-1">
-                  <span className="flex items-center gap-1.5 text-xs font-bold tracking-tight">
-                    <Clock size={13} className={isSelected ? 'text-white' : 'text-zinc-400'} />
+                <div className="flex items-center justify-between gap-1 mb-1">
+                  <span className="flex items-center gap-1 text-[11px] sm:text-xs font-bold tracking-tight whitespace-nowrap">
+                    <Clock size={12} className={isSelected ? 'text-white shrink-0' : 'text-zinc-400 shrink-0'} />
                     {plan.label}
                   </span>
                   {plan.popular && (
                     <span
-                      className={`text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                      className={`text-[8px] sm:text-[9px] font-semibold uppercase tracking-wider px-1.5 sm:px-2 py-0.5 rounded-full shrink-0 ${
                         isSelected ? 'bg-white text-zinc-950' : 'bg-zinc-900 text-white'
                       }`}
                     >
@@ -1743,7 +1748,11 @@ const App = () => {
                     </span>
                   )}
                 </div>
-                <span className={`text-[11px] font-normal leading-snug ${isSelected ? 'text-zinc-300' : 'text-zinc-500'}`}>
+                <span
+                  className={`text-[10px] sm:text-[11px] font-normal leading-snug line-clamp-2 ${
+                    isSelected ? 'text-zinc-300' : 'text-zinc-500'
+                  }`}
+                >
                   {plan.tag}
                 </span>
               </button>
@@ -1752,33 +1761,35 @@ const App = () => {
         </div>
 
         {/* Tarjetas Comparativas: Edición Básica vs Edición Avanzada */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6 mb-6 md:mb-8">
           {/* EDICIÓN BÁSICA */}
-          <div className="rounded-3xl bg-white border border-zinc-200/90 p-7 md:p-9 shadow-[0_12px_40px_-20px_rgba(0,0,0,0.07)] flex flex-col justify-between">
+          <div className="rounded-2xl sm:rounded-3xl bg-white border border-zinc-200/90 p-5 sm:p-7 md:p-9 shadow-[0_12px_40px_-20px_rgba(0,0,0,0.07)] flex flex-col justify-between">
             <div>
-              <div className="flex justify-between items-start gap-4 pb-6 border-b border-zinc-100">
+              <div className="flex justify-between items-start gap-3 pb-5 sm:pb-6 border-b border-zinc-100">
                 <div>
-                  <span className="inline-block px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-2.5">
+                  <span className="inline-block px-2.5 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-2">
                     Nivel 01 · Flujo Esencial
                   </span>
-                  <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900">Edición Básica</h3>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900">
+                    Edición Básica
+                  </h3>
                   <p className="text-zinc-500 text-xs md:text-sm mt-1 font-normal">
                     Ideal para contenido ágil, claro y bien musicalizado con tus tomas y guion listos.
                   </p>
                 </div>
-                <div className="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center shrink-0 text-zinc-800">
-                  <Film size={20} />
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center shrink-0 text-zinc-800">
+                  <Film size={19} />
                 </div>
               </div>
 
               {/* Precio Dinámico */}
-              <div className="my-6 p-5 rounded-2xl bg-zinc-50 border border-zinc-200/70 flex items-baseline justify-between flex-wrap gap-4">
+              <div className="my-5 sm:my-6 p-4 sm:p-5 rounded-2xl bg-zinc-50 border border-zinc-200/70 flex items-baseline justify-between flex-wrap gap-3">
                 <div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-0.5">
-                    Duración seleccionada: {activeDuration.label}
+                  <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-0.5">
+                    Duración: {activeDuration.label}
                   </span>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-sm font-bold text-zinc-500">Bs.</span>
+                    <span className="text-xs sm:text-sm font-bold text-zinc-500">Bs.</span>
                     <AnimatePresence mode="wait">
                       <motion.span
                         key={`basic-${activeDuration.id}`}
@@ -1786,21 +1797,21 @@ const App = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
                         transition={{ duration: 0.18 }}
-                        className="text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900"
+                        className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900"
                       >
                         {activeDuration.basicPrice}
                       </motion.span>
                     </AnimatePresence>
                   </div>
                 </div>
-                <span className="text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-lg bg-white border border-zinc-200 text-zinc-600">
+                <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-white border border-zinc-200 text-zinc-600">
                   Por video terminado
                 </span>
               </div>
 
               {/* Lista de entregables */}
-              <div className="space-y-3 mb-8">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-2">
+              <div className="space-y-2.5 sm:space-y-3 mb-7 sm:mb-8">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-1.5">
                   Qué incluye este plan
                 </div>
                 {[
@@ -1811,7 +1822,10 @@ const App = () => {
                   'Ajuste básico de exposición y balance de color',
                   'Incluye hasta 2 revisiones (ajustes sobre el mismo guion)'
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2.5 text-xs md:text-[13px] text-zinc-600 font-normal leading-relaxed">
+                  <div
+                    key={i}
+                    className="flex items-start gap-2.5 text-xs md:text-[13px] text-zinc-600 font-normal leading-relaxed"
+                  >
                     <CheckCircle2 size={15} className="text-zinc-900 shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </div>
@@ -1823,43 +1837,45 @@ const App = () => {
               href={getWhatsAppPlanUrl('Edición Básica', activeDuration.label, activeDuration.basicPrice)}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3.5 px-6 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm"
+              className="w-full py-3.5 px-4 sm:px-6 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm"
             >
-              <MessageCircle size={15} /> Solicitar Edición Básica ({activeDuration.label})
+              <MessageCircle size={15} /> Solicitar Básica ({activeDuration.label})
             </a>
           </div>
 
           {/* EDICIÓN AVANZADA */}
-          <div className="rounded-3xl bg-[#0b0b0e] text-white border border-zinc-800 p-7 md:p-9 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.3)] flex flex-col justify-between">
+          <div className="rounded-2xl sm:rounded-3xl bg-[#0b0b0e] text-white border border-zinc-800 p-5 sm:p-7 md:p-9 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.3)] flex flex-col justify-between">
             <div>
-              <div className="flex justify-between items-start gap-4 pb-6 border-b border-white/[0.08]">
+              <div className="flex justify-between items-start gap-3 pb-5 sm:pb-6 border-b border-white/[0.08]">
                 <div>
-                  <div className="flex items-center gap-2 mb-2.5">
-                    <span className="px-3 py-1 rounded-full bg-white text-zinc-950 text-[10px] font-bold uppercase tracking-wider">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2">
+                    <span className="px-2.5 py-1 rounded-full bg-white text-zinc-950 text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider">
                       Nivel 02 · Alto Impacto + IA
                     </span>
-                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-semibold uppercase tracking-wider">
+                    <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-wider">
                       Recomendado
                     </span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">Edición Avanzada</h3>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white">
+                    Edición Avanzada
+                  </h3>
                   <p className="text-zinc-400 text-xs md:text-sm mt-1 font-normal">
                     Producción comercial con DaVinci Resolve Fusion 3D, archivos de color e Inteligencia Artificial.
                   </p>
                 </div>
-                <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0 text-white">
-                  <Sparkles size={20} />
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0 text-white">
+                  <Sparkles size={19} />
                 </div>
               </div>
 
               {/* Precio Dinámico */}
-              <div className="my-6 p-5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-baseline justify-between flex-wrap gap-4">
+              <div className="my-5 sm:my-6 p-4 sm:p-5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-baseline justify-between flex-wrap gap-3">
                 <div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-0.5">
-                    Duración seleccionada: {activeDuration.label}
+                  <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-0.5">
+                    Duración: {activeDuration.label}
                   </span>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-sm font-bold text-zinc-300">Bs.</span>
+                    <span className="text-xs sm:text-sm font-bold text-zinc-300">Bs.</span>
                     <AnimatePresence mode="wait">
                       <motion.span
                         key={`adv-${activeDuration.id}`}
@@ -1867,21 +1883,21 @@ const App = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
                         transition={{ duration: 0.18 }}
-                        className="text-4xl md:text-5xl font-extrabold tracking-tight text-white"
+                        className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white"
                       >
                         {activeDuration.advancedPrice}
                       </motion.span>
                     </AnimatePresence>
                   </div>
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-lg bg-white text-zinc-950">
+                <span className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-white text-zinc-950">
                   Incluye Motion 3D + IA
                 </span>
               </div>
 
               {/* Lista de entregables */}
-              <div className="space-y-3 mb-8">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-2">
+              <div className="space-y-2.5 sm:space-y-3 mb-7 sm:mb-8">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-1.5">
                   Todo lo de Básica más
                 </div>
                 {[
@@ -1893,7 +1909,10 @@ const App = () => {
                   'Incluye 1 audio o locución comercial generada con IA',
                   'Incluye hasta 2 revisiones sin costo adicional'
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2.5 text-xs md:text-[13px] text-zinc-200 font-normal leading-relaxed">
+                  <div
+                    key={i}
+                    className="flex items-start gap-2.5 text-xs md:text-[13px] text-zinc-200 font-normal leading-relaxed"
+                  >
                     <CheckCircle2 size={15} className="text-emerald-400 shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </div>
@@ -1905,21 +1924,21 @@ const App = () => {
               href={getWhatsAppPlanUrl('Edición Avanzada', activeDuration.label, activeDuration.advancedPrice)}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3.5 px-6 bg-white hover:bg-zinc-200 text-zinc-950 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg"
+              className="w-full py-3.5 px-4 sm:px-6 bg-white hover:bg-zinc-200 text-zinc-950 rounded-xl font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg"
             >
-              <MessageCircle size={15} /> Solicitar Edición Avanzada ({activeDuration.label})
+              <MessageCircle size={15} /> Solicitar Avanzada ({activeDuration.label})
             </a>
           </div>
         </div>
 
-        {/* Barra de Adicionales y Extras */}
-        <div className="rounded-2xl bg-zinc-50 border border-zinc-200/80 p-6 md:p-7">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        {/* Barra de Adicionales y Extras (2x2 compacto en Smartphone, 4 en línea en Escritorio) */}
+        <div className="rounded-2xl bg-zinc-50 border border-zinc-200/80 p-4 sm:p-6 md:p-7">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6">
             <div className="max-w-xs">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-zinc-400 block mb-1">
+              <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.22em] text-zinc-400 block mb-0.5">
                 Complementos opcionales
               </span>
-              <h4 className="text-lg font-bold tracking-tight text-zinc-900 flex items-center gap-2">
+              <h4 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 flex items-center gap-2">
                 <Plus size={16} className="text-zinc-500" /> Adicionales a medida
               </h4>
               <p className="text-zinc-500 text-xs mt-1 font-normal leading-relaxed">
@@ -1927,41 +1946,49 @@ const App = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 flex-1">
-              <div className="p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 flex-1">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
                 <div className="flex items-center justify-between text-zinc-400 mb-1">
-                  <Sparkles size={14} />
-                  <span className="text-[9px] font-mono uppercase tracking-wider">EXTRA IA</span>
+                  <Sparkles size={13} />
+                  <span className="text-[8.5px] sm:text-[9px] font-mono uppercase tracking-wider">EXTRA IA</span>
                 </div>
-                <div className="text-lg font-extrabold text-zinc-900">+Bs. 50</div>
-                <div className="text-[11px] text-zinc-500 mt-0.5">Video extra generado con IA (c/u)</div>
+                <div className="text-base sm:text-lg font-extrabold text-zinc-900">+Bs. 50</div>
+                <div className="text-[10.5px] sm:text-[11px] text-zinc-500 mt-0.5 leading-snug">
+                  Video extra con IA (c/u)
+                </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
                 <div className="flex items-center justify-between text-zinc-400 mb-1">
-                  <MapPin size={14} />
-                  <span className="text-[9px] font-mono uppercase tracking-wider">INMOBILIARIA</span>
+                  <MapPin size={13} />
+                  <span className="text-[8.5px] sm:text-[9px] font-mono uppercase tracking-wider">TERRENO</span>
                 </div>
-                <div className="text-lg font-extrabold text-zinc-900">+Bs. 80</div>
-                <div className="text-[11px] text-zinc-500 mt-0.5">Marcado de terreno adicional (c/u)</div>
+                <div className="text-base sm:text-lg font-extrabold text-zinc-900">+Bs. 80</div>
+                <div className="text-[10.5px] sm:text-[11px] text-zinc-500 mt-0.5 leading-snug">
+                  Terreno adicional (c/u)
+                </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
                 <div className="flex items-center justify-between text-zinc-400 mb-1">
-                  <Mic size={14} />
-                  <span className="text-[9px] font-mono uppercase tracking-wider">REVISIONES</span>
+                  <Mic size={13} />
+                  <span className="text-[8.5px] sm:text-[9px] font-mono uppercase tracking-wider">REVISIÓN</span>
                 </div>
-                <div className="text-lg font-extrabold text-zinc-900">+Bs. 30 / 60</div>
-                <div className="text-[11px] text-zinc-500 mt-0.5">Ajuste extra (3ra revisión en adelante)</div>
+                <div className="text-base sm:text-lg font-extrabold text-zinc-900">+Bs. 30 / 60</div>
+                <div className="text-[10.5px] sm:text-[11px] text-zinc-500 mt-0.5 leading-snug">
+                  Ajuste extra (3ra rev+)
+                </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
+              <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
                 <div className="flex items-center justify-between text-zinc-400 mb-1">
-                  <Clock size={14} />
-                  <span className="text-[9px] font-mono uppercase tracking-wider">+120 SEG</span>
+                  <Clock size={13} />
+                  <span className="text-[8.5px] sm:text-[9px] font-mono uppercase tracking-wider">+120 SEG</span>
                 </div>
-                <div className="text-lg font-extrabold text-zinc-900">+Bs. 60 / 100</div>
-                <div className="text-[11px] text-zinc-500 mt-0.5">Cada +30 seg extras (Básica / Avanzada)</div>
+                <div className="text-base sm:text-lg font-extrabold text-zinc-900">+Bs. 60 / 100</div>
+                <div className="text-[10.5px] sm:text-[11px] text-zinc-500 mt-0.5 leading-snug">
+                  Cada +30 seg extras
+                </div>
               </div>
             </div>
           </div>
@@ -1971,13 +1998,13 @@ const App = () => {
       {/* =====================================================================
           7. PROCESO EN 3 PASOS
           ===================================================================== */}
-      <section className="py-16 md:py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+      <section className="py-14 md:py-20 px-4 sm:px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-7 md:mb-10 gap-3 md:gap-4">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
+            <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1">
               Flujo de Trabajo Directo
             </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-zinc-900 leading-none">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-zinc-900 leading-none">
               Cómo trabajamos tu video
             </h2>
           </div>
@@ -1986,7 +2013,7 @@ const App = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           {[
             {
               step: '01',
@@ -2009,10 +2036,10 @@ const App = () => {
           ].map((item, idx) => (
             <div
               key={idx}
-              className="rounded-2xl bg-white border border-zinc-200/90 p-6 md:p-7 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+              className="rounded-2xl bg-white border border-zinc-200/90 p-5 sm:p-6 md:p-7 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center justify-between mb-4 sm:mb-5">
                   <span className="w-8 h-8 rounded-lg bg-zinc-950 text-white text-xs font-mono font-bold flex items-center justify-center">
                     {item.step}
                   </span>
@@ -2020,11 +2047,11 @@ const App = () => {
                     {item.badge}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold tracking-tight text-zinc-900 mb-2">{item.title}</h3>
+                <h3 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 mb-2">{item.title}</h3>
                 <p className="text-zinc-500 text-xs leading-relaxed font-normal">{item.desc}</p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-zinc-100 flex items-center justify-between">
+              <div className="mt-5 sm:mt-6 pt-3.5 sm:pt-4 border-t border-zinc-100 flex items-center justify-between">
                 <div className="h-[1.5px] flex-1 bg-zinc-100 rounded-full overflow-hidden mr-3">
                   <motion.div
                     animate={{ x: ['-100%', '100%'] }}
@@ -2042,44 +2069,44 @@ const App = () => {
       {/* =====================================================================
           8. CONTACTO DIRECTO
           ===================================================================== */}
-      <section id="contacto" className="py-16 md:py-20 px-6 md:px-8 max-w-5xl mx-auto">
-        <div className="rounded-3xl bg-[#0b0b0e] text-white border border-zinc-800 p-8 md:p-12 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.28)]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-12 items-center">
+      <section id="contacto" className="py-14 md:py-20 px-4 sm:px-6 md:px-8 max-w-5xl mx-auto">
+        <div className="rounded-2xl sm:rounded-3xl bg-[#0b0b0e] text-white border border-zinc-800 p-6 sm:p-8 md:p-12 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.28)]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-2">
+              <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-2">
                 Contacto Directo
               </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-tight mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-tight mb-3.5 sm:mb-4">
                 Iniciemos tu próxima producción
               </h2>
-              <p className="text-zinc-400 text-xs md:text-sm leading-relaxed mb-6 font-normal">
+              <p className="text-zinc-400 text-xs md:text-sm leading-relaxed mb-5 sm:mb-6 font-normal">
                 Escríbenos directamente por WhatsApp para cotizar tu video en minutos o envíanos los detalles de tu
                 proyecto en el formulario.
               </p>
 
-              <div className="space-y-3.5">
+              <div className="space-y-3">
                 <a
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                     'Hola Sync Pro, quiero cotizar la edición de un video.'
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl bg-white text-zinc-950 text-xs font-bold uppercase tracking-wider hover:bg-zinc-200 transition-all"
+                  className="w-full sm:w-auto justify-center inline-flex items-center gap-2.5 px-5 py-3.5 rounded-xl bg-white text-zinc-950 text-xs font-bold uppercase tracking-wider hover:bg-zinc-200 transition-all"
                 >
                   <MessageCircle size={16} /> WhatsApp: +591 69109766
                 </a>
                 <div className="flex items-center gap-2.5 text-xs text-zinc-300 pt-1">
-                  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shrink-0" />
                   <span>Disponibilidad inmediata para proyectos comerciales</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-zinc-400">
-                  <ShieldCheck size={15} className="text-zinc-300" />
+                  <ShieldCheck size={15} className="text-zinc-300 shrink-0" />
                   <span>Postproducción 100% en DaVinci Resolve Studio Oficial</span>
                 </div>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3.5">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <input
                 type="text"
                 placeholder="Nombre completo"
@@ -2119,10 +2146,10 @@ const App = () => {
       {/* =====================================================================
           9. STUDIO SYNC PRO (HERRAMIENTAS PARA DAVINCI RESOLVE STUDIO)
           ===================================================================== */}
-      <section id="herramientas" className="py-16 px-6 md:px-8 max-w-7xl mx-auto border-t border-zinc-200/70">
-        <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <section id="herramientas" className="py-14 md:py-16 px-4 sm:px-6 md:px-8 max-w-7xl mx-auto border-t border-zinc-200/70">
+        <div className="mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-3 md:gap-4">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
+            <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1">
               Sync Pro Labs
             </span>
             <h2 className="text-2xl md:text-4xl font-extrabold uppercase tracking-tight text-zinc-900">
@@ -2134,14 +2161,14 @@ const App = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {tools.map((tool, index) => (
             <div
               key={index}
-              className="rounded-2xl bg-zinc-50/80 border border-zinc-200/90 p-7 flex flex-col justify-between hover:bg-white hover:shadow-md transition-all"
+              className="rounded-2xl bg-zinc-50/80 border border-zinc-200/90 p-5 sm:p-7 flex flex-col justify-between hover:bg-white hover:shadow-md transition-all"
             >
               <div>
-                <div className="flex justify-between items-start mb-5">
+                <div className="flex justify-between items-start mb-4 sm:mb-5">
                   <div className="w-10 h-10 rounded-xl bg-white border border-zinc-200 flex items-center justify-center shadow-sm">
                     {tool.icon}
                   </div>
@@ -2153,14 +2180,14 @@ const App = () => {
                 <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1">
                   {tool.target}
                 </span>
-                <h3 className="text-xl font-bold tracking-tight text-zinc-900 mb-2">{tool.name}</h3>
+                <h3 className="text-lg sm:text-xl font-bold tracking-tight text-zinc-900 mb-2">{tool.name}</h3>
                 <p className="text-zinc-500 text-xs leading-relaxed mb-5 font-normal">{tool.description}</p>
 
                 <div className="grid grid-cols-2 gap-2 mb-6">
                   {tool.specs.map((spec, i) => (
                     <div key={i} className="flex items-center gap-2 text-[11px] font-medium text-zinc-700">
-                      <span className="w-1 h-1 bg-zinc-900 rounded-full" />
-                      {spec}
+                      <span className="w-1 h-1 bg-zinc-900 rounded-full shrink-0" />
+                      <span className="truncate">{spec}</span>
                     </div>
                   ))}
                 </div>
@@ -2219,17 +2246,17 @@ const App = () => {
                   autoPlay
                   playsInline
                   loop
-                  className="max-h-[80vh] max-w-full w-auto rounded-2xl bg-black border border-white/15 shadow-2xl"
+                  className="max-h-[78vh] max-w-full w-auto rounded-2xl bg-black border border-white/15 shadow-2xl"
                 />
               ) : (
                 <img
                   src={lightboxItem.src}
                   alt={lightboxItem.subtitle || lightboxItem.title}
-                  className="max-h-[80vh] max-w-full w-auto rounded-2xl bg-black border border-white/15 shadow-2xl"
+                  className="max-h-[78vh] max-w-full w-auto rounded-2xl bg-black border border-white/15 shadow-2xl"
                 />
               )}
 
-              <div className="mt-3 text-center text-white">
+              <div className="mt-3 text-center text-white px-2">
                 <b className="block text-sm font-bold uppercase tracking-tight">{lightboxItem.title}</b>
                 {lightboxItem.subtitle && (
                   <span className="block text-xs text-zinc-400 font-normal mt-0.5">{lightboxItem.subtitle}</span>
@@ -2240,7 +2267,7 @@ const App = () => {
         )}
       </AnimatePresence>
 
-      {/* Botón Flotante de WhatsApp */}
+      {/* Botón Flotante de WhatsApp con soporte de Safe-Area en iPhone y Android */}
       <a
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
           'Hola Sync Pro, vi su portafolio web y quiero cotizar un video.'
@@ -2248,15 +2275,15 @@ const App = () => {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Contactar por WhatsApp"
-        className="fixed bottom-5 right-5 z-50 bg-zinc-950 text-white px-4 py-3.5 rounded-full shadow-xl border border-white/15 hover:scale-105 transition-all flex items-center gap-2"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 sm:right-5 z-50 bg-zinc-950 text-white px-4 py-3.5 rounded-full shadow-2xl border border-white/15 hover:scale-105 transition-all flex items-center gap-2"
       >
         <MessageCircle size={18} className="text-emerald-400" />
-        <span className="text-[11px] font-bold uppercase tracking-wider pr-1 hidden sm:inline">WhatsApp</span>
+        <span className="text-[11px] font-bold uppercase tracking-wider pr-0.5">WhatsApp</span>
       </a>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-zinc-200/80 text-center bg-zinc-50/50">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <footer className="py-12 pb-24 sm:pb-12 border-t border-zinc-200/80 text-center bg-zinc-50/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4">
           <div className="text-xs font-extrabold tracking-tight text-zinc-900">SYNC PRO // 2026</div>
           <p className="text-zinc-400 text-[11px] font-medium">
             Post-Producción Digital · 100% DaVinci Resolve Studio Oficial
