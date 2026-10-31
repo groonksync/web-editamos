@@ -74,6 +74,7 @@ const App = () => {
 
   const [lang, setLang] = useState('es'); 
   const [activeService, setActiveService] = useState(0);
+  const [activeDuration, setActiveDuration] = useState(1);
   const [formStatus, setFormStatus] = useState('idle');
 
   // ID de Videos de Google Drive (Sincronizado con actualizar_videos.py)
@@ -104,24 +105,141 @@ const App = () => {
       plans_p: "Suscripciones mensuales diseñadas para un crecimiento constante y presencia profesional.",
       extra_plans_h2: "PLANES EXTRA",
       editing_plans_h2: "PLANES DE EDICIÓN DE VIDEO",
-      editing_plans_p: "Soluciones de edición por proyecto único, adaptadas a la duración y complejidad de tu material.",
+      editing_plans_p: "Selecciona la duración de tu video y compara nuestras opciones de edición inmobiliaria y comercial.",
       editing_plans_data: [
         {
-          name: "LITE (30s - 2min)",
-          basic: { price: "$12", features: ["Limpieza de errores", "1 pista de fondo", "Balance de blancos", "Entrega 48h"] },
-          advanced: { price: "$20", features: ["Cortes Dinámicos (Jump-cuts)", "Subtítulos Pop-ups/Emoji", "Diseño sonoro + SFX", "Color Grading Pro", "Entrega 24-48h"] }
+          duration: "Hasta 30 seg",
+          tag: "Micro-Reel",
+          basic: {
+            name: "Edición Básica",
+            subtitle: "Ágil, directo y comercial para venta rápida",
+            price: "Bs. 120",
+            features: [
+              "Marcado de terreno: Línea perimetral sobre la toma de dron",
+              "Voz con IA: Locutor profesional leyendo tu guion",
+              "Contenido con IA: Hasta 5 imágenes + 1 video animado corto",
+              "Textos clave: Precio, tamaño en m², zona y contacto",
+              "1 cambio o ajuste incluido"
+            ]
+          },
+          advanced: {
+            name: "Edición Avanzada",
+            badge: "Alto Impacto / Recomendado",
+            subtitle: "Alta gama para preventas, urbanizaciones y proyección a futuro",
+            price: "Bs. 220",
+            features: [
+              "Marcado de precisión: Trazado del terreno con seguimiento del dron",
+              "Señaladores flotantes en el mapa para ubicar accesos clave",
+              "Títulos con relieve y estilo 3D (fáciles de leer en celulares)",
+              "Voz de locutor con IA con entonación comercial prémium",
+              "Contenido con IA: Hasta 3 videos animados + imágenes conceptuales",
+              "Color de cine: Áreas verdes vivas y cielo azul nítido",
+              "Hasta 2 cambios o ajustes incluidos"
+            ]
+          }
         },
         {
-          name: "NARRATIVE (3 - 5min)",
-          basic: { price: "$45", priceBs: "Bs. 315", features: ["Ritmo estándar", "Subtítulos estáticos", "1 pista de fondo", "Sin corrección color", "Entrega 72h"] },
-          advanced: { price: "$75", priceBs: "Bs. 525", features: ["Storytelling con ritmo", "Estilo Pro con resaltado", "Mix de audio avanzado", "Color Grading consistente", "Entrega 48-72h"] }
+          duration: "31 a 60 seg",
+          tag: "Estándar",
+          basic: {
+            name: "Edición Básica",
+            subtitle: "Ágil, directo y comercial para venta rápida",
+            price: "Bs. 180",
+            features: [
+              "Marcado de terreno con seguimiento de la toma",
+              "Voz con IA completa para explicar la oportunidad",
+              "Contenido con IA: Hasta 5 imágenes + 1 video animado corto",
+              "Textos informativos: Servicios básicos, accesos y cuotas",
+              "1 cambio o ajuste incluido"
+            ]
+          },
+          advanced: {
+            name: "Edición Avanzada",
+            badge: "Alto Impacto / Recomendado",
+            subtitle: "Alta gama para preventas, urbanizaciones y proyección a futuro",
+            price: "Bs. 320",
+            features: [
+              "Marcado de precisión y seguimiento dinámico en movimiento",
+              "Señaladores flotantes de puntos estratégicos de la zona",
+              "Títulos con relieve y estilo 3D con efectos de impacto",
+              "Voz de locutor con IA comercial y persuasiva",
+              "Contenido con IA: Hasta 3 videos animados + imágenes del proyecto a futuro",
+              "Color de cine y sonido profesional",
+              "Hasta 2 cambios o ajustes incluidos"
+            ]
+          }
         },
         {
-          name: "CINEMATIC (8 - 15min)",
-          basic: { price: "$110", priceBs: "Bs. 770", features: ["Montaje lineal limpio", "Subs (si entrega guion)", "Música básica catálogo", "Sin corrección color", "Entrega 4-5 días"] },
-          advanced: { price: "$180", priceBs: "Bs. 1.260", features: ["Montaje Pro (Pacing)", "Subtítulos estilizados", "Audio inmersivo + Licencias", "Look Cinematográfico", "Entrega 3-5 días"] }
+          duration: "61 a 90 seg",
+          tag: "Recorrido",
+          basic: {
+            name: "Edición Básica",
+            subtitle: "Ágil, directo y comercial para venta rápida",
+            price: "Bs. 250",
+            features: [
+              "Marcado de terreno + tomas del entorno cercano",
+              "Voz con IA adaptada a guiones más largos",
+              "Contenido con IA: Hasta 5 imágenes + 1 video animado corto",
+              "Textos detallados de ventajas y vías de transporte",
+              "1 cambio o ajuste incluido"
+            ]
+          },
+          advanced: {
+            name: "Edición Avanzada",
+            badge: "Alto Impacto / Recomendado",
+            subtitle: "Alta gama para preventas, urbanizaciones y proyección a futuro",
+            price: "Bs. 430",
+            features: [
+              "Marcado de precisión completo del lote y avenidas",
+              "Señaladores flotantes urbanos (escuelas, comercios, transporte)",
+              "Títulos con relieve y estilo 3D para cuotas y plusvalía",
+              "Voz de locutor con IA publicitaria de alto nivel",
+              "Contenido con IA: Hasta 3 videos animados + imágenes conceptuales",
+              "Acabado cinematográfico de lujo en tomas de dron y tierra",
+              "Hasta 2 cambios o ajustes incluidos"
+            ]
+          }
+        },
+        {
+          duration: "91 a 120 seg",
+          tag: "Master Plan",
+          basic: {
+            name: "Edición Básica",
+            subtitle: "Ágil, directo y comercial para venta rápida",
+            price: "Bs. 320",
+            features: [
+              "Recorrido completo del lote y accesos principales",
+              "Voz con IA para proyectos con información amplia",
+              "Contenido con IA: Hasta 5 imágenes + 1 video animado corto",
+              "Pantalla final de contacto con todos los datos de tu empresa",
+              "1 cambio o ajuste incluido"
+            ]
+          },
+          advanced: {
+            name: "Edición Avanzada",
+            badge: "Alto Impacto / Recomendado",
+            subtitle: "Alta gama para preventas, urbanizaciones y proyección a futuro",
+            price: "Bs. 550",
+            features: [
+              "Presentación integral de proyecto o urbanización (Master Plan)",
+              "Marcado de precisión y señaladores de todo el entorno",
+              "Títulos con relieve y estilo 3D de alta gama",
+              "Voz de locutor con IA prémium para narración comercial",
+              "Contenido con IA: Hasta 3 videos animados + imágenes de áreas sociales y casas",
+              "Color y sonido de máxima fidelidad",
+              "Hasta 2 cambios o ajustes incluidos"
+            ]
+          }
         }
       ],
+      editing_extras: [
+        { price: "+Bs. 50", label: "Video IA extra" },
+        { price: "+Bs. 80", label: "Terreno adicional" },
+        { price: "+Bs. 30 / 60", label: "Ajuste extra" },
+        { price: "+Bs. 60 / 100", label: "Cada +30 seg extras" }
+      ],
+      select_basic_btn: "Seleccionar Básica",
+      select_advanced_btn: "Seleccionar Avanzada",
       plans_data: [
         { name: "Plan Impacto", price: "$150", priceBs: "Bs. 1.400", items: ["Foco: Redes (Básico)", "4 Reels / TikToks", "Guion Estándar", "1 Jornada (4h)", "Recursos: Luces + Micro", "Edición Básica"] },
         { name: "Plan Crecimiento", price: "$210", priceBs: "Bs. 2.000", items: ["Foco: Redes (Ventas)", "8 Reels + 1 Corp.", "Viral Ingenioso", "2 Jornadas (8h)", "Luces + Mic + Modelo", "Edición Avanzada"] },
@@ -160,24 +278,141 @@ const App = () => {
       plans_p: "Monthly subscriptions designed for consistent growth and professional presence.",
       extra_plans_h2: "EXTRA PLANS",
       editing_plans_h2: "VIDEO EDITING PLANS",
-      editing_plans_p: "One-time project editing solutions, tailored to the length and complexity of your footage.",
+      editing_plans_p: "Select your video duration and compare our real estate and commercial editing options.",
       editing_plans_data: [
         {
-          name: "LITE (30s - 2min)",
-          basic: { price: "$12", features: ["Error cleaning", "1 background track", "White balance", "48h Delivery"] },
-          advanced: { price: "$20", features: ["Dynamic Cuts (Jump-cuts)", "Pop-ups/Emoji Subtitles", "Sound Design + SFX", "Pro Color Grading", "24-48h Delivery"] }
+          duration: "Up to 30 sec",
+          tag: "Micro-Reel",
+          basic: {
+            name: "Basic Editing",
+            subtitle: "Agile, direct and commercial for fast sales",
+            price: "Bs. 120",
+            features: [
+              "Land marking: Perimeter line over drone shot",
+              "AI Voice: Professional voiceover reading your script",
+              "AI Content: Up to 5 images + 1 short animated video",
+              "Key texts: Price, size in m², area and contact",
+              "1 revision or adjustment included"
+            ]
+          },
+          advanced: {
+            name: "Advanced Editing",
+            badge: "High Impact / Recommended",
+            subtitle: "High-end for pre-sales, developments and future projection",
+            price: "Bs. 220",
+            features: [
+              "Precision marking: Land tracing with drone tracking",
+              "Floating map callouts to locate key access points",
+              "Embossed & 3D-style titles (easy to read on mobile)",
+              "AI Voiceover with premium commercial tone",
+              "AI Content: Up to 3 animated videos + conceptual images",
+              "Cinema color: Vivid green areas and crisp blue sky",
+              "Up to 2 revisions or adjustments included"
+            ]
+          }
         },
         {
-          name: "NARRATIVE (3 - 5min)",
-          basic: { price: "$45", features: ["Standard pacing", "Static subtitles", "1 background track", "No color correction", "72h Delivery"] },
-          advanced: { price: "$75", features: ["Rhythmic Storytelling", "Pro Highlighted Style", "Advanced Audio Mix", "Consistent Color Grading", "48-72h Delivery"] }
+          duration: "31 to 60 sec",
+          tag: "Standard",
+          basic: {
+            name: "Basic Editing",
+            subtitle: "Agile, direct and commercial for fast sales",
+            price: "Bs. 180",
+            features: [
+              "Land marking with shot tracking",
+              "Full AI Voice to explain the opportunity",
+              "AI Content: Up to 5 images + 1 short animated video",
+              "Informative texts: Basic utilities, access and installments",
+              "1 revision or adjustment included"
+            ]
+          },
+          advanced: {
+            name: "Advanced Editing",
+            badge: "High Impact / Recommended",
+            subtitle: "High-end for pre-sales, developments and future projection",
+            price: "Bs. 320",
+            features: [
+              "Precision marking and dynamic motion tracking",
+              "Floating callouts for strategic area points",
+              "Embossed & 3D-style titles with impact effects",
+              "Commercial and persuasive AI Voiceover",
+              "AI Content: Up to 3 animated videos + future project images",
+              "Cinema color and professional sound design",
+              "Up to 2 revisions or adjustments included"
+            ]
+          }
         },
         {
-          name: "CINEMATIC (8 - 15min)",
-          basic: { price: "$110", features: ["Clean linear montage", "Subs (if script provided)", "Basic catalog music", "No color correction", "4-5 days Delivery"] },
-          advanced: { price: "$180", features: ["Pro Montage (Pacing)", "Stylized subtitles", "Immersive Audio + Licenses", "Cinematic Look", "3-5 days Delivery"] }
+          duration: "61 to 90 sec",
+          tag: "Tour",
+          basic: {
+            name: "Basic Editing",
+            subtitle: "Agile, direct and commercial for fast sales",
+            price: "Bs. 250",
+            features: [
+              "Land marking + surrounding area shots",
+              "AI Voice adapted for longer scripts",
+              "AI Content: Up to 5 images + 1 short animated video",
+              "Detailed texts of advantages and transport routes",
+              "1 revision or adjustment included"
+            ]
+          },
+          advanced: {
+            name: "Advanced Editing",
+            badge: "High Impact / Recommended",
+            subtitle: "High-end for pre-sales, developments and future projection",
+            price: "Bs. 430",
+            features: [
+              "Complete precision marking of lot and avenues",
+              "Urban floating callouts (schools, shops, transit)",
+              "Embossed & 3D-style titles for installments and value",
+              "High-level advertising AI Voiceover",
+              "AI Content: Up to 3 animated videos + conceptual images",
+              "Luxury cinematic finish on drone and ground shots",
+              "Up to 2 revisions or adjustments included"
+            ]
+          }
+        },
+        {
+          duration: "91 to 120 sec",
+          tag: "Master Plan",
+          basic: {
+            name: "Basic Editing",
+            subtitle: "Agile, direct and commercial for fast sales",
+            price: "Bs. 320",
+            features: [
+              "Complete tour of lot and main access roads",
+              "AI Voice for projects with extensive information",
+              "AI Content: Up to 5 images + 1 short animated video",
+              "Final contact screen with all your company details",
+              "1 revision or adjustment included"
+            ]
+          },
+          advanced: {
+            name: "Advanced Editing",
+            badge: "High Impact / Recommended",
+            subtitle: "High-end for pre-sales, developments and future projection",
+            price: "Bs. 550",
+            features: [
+              "Comprehensive project or development presentation (Master Plan)",
+              "Precision marking and callouts of the entire environment",
+              "High-end embossed & 3D-style titles",
+              "Premium AI Voiceover for commercial narration",
+              "AI Content: Up to 3 animated videos + social area & home images",
+              "Maximum fidelity color and sound",
+              "Up to 2 revisions or adjustments included"
+            ]
+          }
         }
       ],
+      editing_extras: [
+        { price: "+Bs. 50", label: "Extra AI Video" },
+        { price: "+Bs. 80", label: "Additional Land Lot" },
+        { price: "+Bs. 30 / 60", label: "Extra Revision" },
+        { price: "+Bs. 60 / 100", label: "Each +30 sec extra" }
+      ],
+      select_basic_btn: "Select Basic",
+      select_advanced_btn: "Select Advanced",
       workflow_h2: "THE SYNC METHOD",
       workflow_p: "Technical mastery of After Effects and Premiere Pro. From idea to high-end final render.",
       trust_h2: "Why Sync Pro?",
@@ -355,77 +590,150 @@ const App = () => {
 
 
       {/* Planes de Edición de Video */}
-      <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
-        <div className="mb-16 md:mb-20 text-center">
+      <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-6xl mx-auto">
+        <div className="mb-12 md:mb-16 text-center">
           <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-white leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 px-2">EDICIÓN DE VIDEO</span></h2>
           <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto">{t.editing_plans_p}</p>
         </div>
+
+        {/* Selector de Duración Limpio (Estilo Sync Pro, Sin Brillos Excesivos) */}
+        <div className="max-w-3xl mx-auto mb-12 md:mb-16">
+          <div className="bg-[#0a0a0a] border border-white/10 rounded-[28px] p-1.5 grid grid-cols-2 md:grid-cols-4 gap-1.5">
+            {t.editing_plans_data.map((item, idx) => {
+              const isActive = activeDuration === idx;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setActiveDuration(idx)}
+                  className={`relative py-3.5 px-4 rounded-[22px] transition-all duration-300 flex flex-col items-center justify-center text-center ${
+                    isActive
+                      ? 'bg-zinc-800/90 border border-white/15 text-white'
+                      : 'text-gray-500 hover:text-gray-300 border border-transparent'
+                  }`}
+                >
+                  <span className="text-xs md:text-sm font-black italic uppercase tracking-tight leading-none mb-1">
+                    {item.duration}
+                  </span>
+                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] ${isActive ? 'text-zinc-400' : 'text-gray-600'}`}>
+                    {item.tag}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {t.editing_plans_data.map((plan, i) => (
-            <div 
-              key={i} 
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                e.currentTarget.style.setProperty("--x", `${x}px`);
-                e.currentTarget.style.setProperty("--y", `${y}px`);
-              }}
-              className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.03] hover:z-50 shadow-2xl bg-white/5"
-              style={{ "--x": "0px", "--y": "0px" }}
-            >
-              {/* Snake Border - Active only on Hover */}
-              <div 
-                className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ animationDuration: '4s' }}
-              />
+        {/* Tarjetas Comparativas Lado a Lado con el Cuadro y Animación Original de Sync Pro */}
+        {(() => {
+          const currentTier = t.editing_plans_data[activeDuration] || t.editing_plans_data[0];
+          const cards = [
+            { key: 'basic', data: currentTier.basic, isAdvanced: false },
+            { key: 'advanced', data: currentTier.advanced, isAdvanced: true }
+          ];
 
-              {/* Card Container with Persistent Subtle Border */}
-              <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col overflow-hidden border border-white/10">
-                {/* 💡 Spotlight Tracking Effect - Soft & Wide */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                     style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
-                <div className="p-8 md:p-10 relative z-10 flex flex-col h-full">
-                  <h3 className="text-xl md:text-2xl font-black italic mb-8 uppercase tracking-tight text-center">{plan.name}</h3>
-                  
-                  {/* Básico */}
-                  <div className="mb-10">
-                    <div className="flex justify-between items-end mb-4">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Bloque A: Básico</span>
-                      <span className="text-3xl font-black text-white">{plan.basic.price}</span>
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              {cards.map(({ key, data, isAdvanced }) => (
+                <div 
+                  key={key} 
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    e.currentTarget.style.setProperty("--x", `${x}px`);
+                    e.currentTarget.style.setProperty("--y", `${y}px`);
+                  }}
+                  className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.02] hover:z-50 shadow-2xl bg-white/5"
+                  style={{ "--x": "0px", "--y": "0px" }}
+                >
+                  {/* Snake Border - Active only on Hover */}
+                  <div 
+                    className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ animationDuration: '4s' }}
+                  />
+
+                  {/* Card Container with Persistent Subtle Border */}
+                  <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col overflow-hidden border border-white/10">
+                    {/* 💡 Spotlight Tracking Effect - Soft & Wide */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                         style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
+                    
+                    <div className="p-8 md:p-10 relative z-10 flex flex-col h-full">
+                      {/* Cabecera de la Tarjeta */}
+                      <div className="flex items-center justify-between gap-3 mb-4">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+                          {currentTier.duration} · {currentTier.tag}
+                        </span>
+                        {isAdvanced && data.badge && (
+                          <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-300">
+                            {data.badge}
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 className="text-2xl md:text-3xl font-black italic uppercase tracking-tight text-white mb-2">
+                        {data.name}
+                      </h3>
+                      <p className="text-xs text-gray-500 mb-8">
+                        {data.subtitle}
+                      </p>
+
+                      {/* Precio con transición limpia */}
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={`${key}-${activeDuration}`}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.2 }}
+                          className="flex flex-col flex-grow"
+                        >
+                          <div className="mb-8 pb-8 border-b border-white/10 flex items-baseline gap-3">
+                            <span className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                              {data.price}
+                            </span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                              / video ({currentTier.duration})
+                            </span>
+                          </div>
+
+                          <ul className="space-y-3.5 flex-grow">
+                            {data.features.map((f, idx) => (
+                              <li key={idx} className="text-xs md:text-[13px] text-gray-300 flex items-start gap-3 leading-relaxed">
+                                <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isAdvanced ? 'text-zinc-300' : 'text-zinc-500'}`} />
+                                <span>{f}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </motion.div>
+                      </AnimatePresence>
+
+                      <a
+                        href={`https://wa.me/59169109766?text=${encodeURIComponent(`Hola Sync Pro, me interesa contratar la ${data.name} de ${currentTier.duration} (${data.price}).`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-5 bg-white/5 group-hover:bg-zinc-500 group-hover:text-white font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-2xl mt-10 text-center block"
+                      >
+                        {isAdvanced ? t.select_advanced_btn : t.select_basic_btn}
+                      </a>
                     </div>
-                    <ul className="space-y-2">
-                      {plan.basic.features.map((f, idx) => (
-                        <li key={idx} className="text-[11px] text-gray-400 flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-gray-600" /> {f}
-                        </li>
-                      ))}
-                    </ul>
                   </div>
-
-                  <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-8" />
-
-                  {/* Avanzado */}
-                  <div className="flex-grow">
-                    <div className="flex justify-between items-end mb-4">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Bloque B: Avanzado</span>
-                      <span className="text-3xl font-black text-zinc-500 transition-all group-hover:drop-shadow-[0_0_10px_rgba(113,113,122,0.5)]">{plan.advanced.price}</span>
-                    </div>
-                    <ul className="space-y-2">
-                      {plan.advanced.features.map((f, idx) => (
-                        <li key={idx} className="text-[11px] text-white/80 flex items-center gap-2 font-medium">
-                          <CheckCircle2 className="w-3 h-3 text-zinc-500" /> {f}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <button className="w-full py-5 bg-white/5 group-hover:bg-zinc-500 group-hover:text-white font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-2xl mt-10">Seleccionar Plan</button>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+          );
+        })()}
+
+        {/* Barra Inferior de Adicionales */}
+        <div className="mt-8 bg-[#0a0a0a] border border-white/10 rounded-[28px] p-5 md:p-6">
+          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6">
+            {t.editing_extras.map((extra, idx) => (
+              <div key={idx} className="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/[0.03] border border-white/5">
+                <span className="text-xs font-black text-white tracking-tight">{extra.price}</span>
+                <span className="text-[11px] text-gray-400 font-medium">{extra.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
