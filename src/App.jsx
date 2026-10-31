@@ -1285,6 +1285,7 @@ const App = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
   const [selectedDurationIndex, setSelectedDurationIndex] = useState(1);
+  const [activeProposalTab, setActiveProposalTab] = useState('all');
   const [lightboxItem, setLightboxItem] = useState(null);
 
   useEffect(() => {
