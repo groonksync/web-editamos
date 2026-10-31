@@ -37,33 +37,14 @@ const WHATSAPP_NUMBER = '59169109766';
    DATOS DE MARCAS, FOTOGRAFÍA COMERCIAL Y DETRÁS DE CÁMARAS ("ASÍ TRABAJAMOS")
    ============================================================================ */
 const BRAND_LOGOS = [
-  { name: 'Bodega Benjamín', src: 'https://estudiovector.com/img/clientes/bodega-benjamin.png' },
-  { name: 'Centuria Soluciones Contables', src: 'https://estudiovector.com/img/clientes/centuria.png' },
-  { name: 'Compasa', src: 'https://estudiovector.com/img/clientes/compasa.png' },
-  { name: 'Cros2Go', src: 'https://estudiovector.com/img/clientes/cros2go.png' },
-  { name: 'DIAGRO', src: 'https://estudiovector.com/img/clientes/diagro.png' },
-  { name: 'Dr. Manuel Orellana', src: 'https://estudiovector.com/img/clientes/dr-manuel-orellana.png' },
-  { name: 'Du-bai Restaurant & Bar', src: 'https://estudiovector.com/img/clientes/du-bai.png' },
-  { name: 'Fumyim', src: 'https://estudiovector.com/img/clientes/fumyim.png' },
-  { name: 'Il Romano', src: 'https://estudiovector.com/img/clientes/il-romano.png' },
-  { name: 'Importaciones HyP', src: 'https://estudiovector.com/img/clientes/importaciones-hyp.png' },
-  { name: 'Kiv Detailing', src: 'https://estudiovector.com/img/clientes/kiv-detailing.png' },
-  { name: 'La Colada', src: 'https://estudiovector.com/img/clientes/la-colada.png' },
-  { name: 'MegaTools', src: 'https://estudiovector.com/img/clientes/megatools.png' },
-  { name: 'Ornamentos Comerciales', src: 'https://estudiovector.com/img/clientes/ornamentos-comerciales.png' },
-  { name: 'Piña Loca', src: 'https://estudiovector.com/img/clientes/pina-loca.png' },
-  { name: 'Plaza Bless Coffee', src: 'https://estudiovector.com/img/clientes/plaza-bless-coffee.png' },
-  { name: 'Polarizados La Guardia', src: 'https://estudiovector.com/img/clientes/polarizados-la-guardia.png' },
-  { name: 'Pollos El Pechugón', src: 'https://estudiovector.com/img/clientes/pollos-el-pechugon.png' },
-  { name: 'Pollos Furia', src: 'https://estudiovector.com/img/clientes/pollos-furia.png' },
-  { name: 'Punto Ferretero', src: 'https://estudiovector.com/img/clientes/punto-ferretero.png' },
-  { name: 'RS', src: 'https://estudiovector.com/img/clientes/rs.png' },
-  { name: 'Slide Pizza', src: 'https://estudiovector.com/img/clientes/slide-pizza.png' },
-  { name: 'TDK', src: 'https://estudiovector.com/img/clientes/tdk.png' },
-  { name: "Toby's Pet Shop", src: 'https://estudiovector.com/img/clientes/toby-s-pet-shop.png' },
-  { name: 'Unicalza', src: 'https://estudiovector.com/img/clientes/unicalza.png' },
-  { name: 'Vivian Rivera Psicología', src: 'https://estudiovector.com/img/clientes/vivian-rivera.png' },
-  { name: 'Workafe', src: 'https://estudiovector.com/img/clientes/workafe.png' }
+  { name: 'Century 21 Home', src: '/logos/century21-home.png' },
+  { name: 'RE/MAX', src: '/logos/remax.png' },
+  { name: 'Century 21', src: '/logos/c21.png' },
+  { name: 'HouStyle Inmobiliaria', src: '/logos/houstyle.png' },
+  { name: 'Urbanización Rosario', src: '/logos/urbanizacion-rosario.png' },
+  { name: 'Sport Fit', src: '/logos/sportfit.png' },
+  { name: 'KORUM FIT', src: '/logos/korum-fit.png' },
+  { name: 'Sync Creative', src: '/logos/logo-degradado.png' }
 ];
 
 const COMMERCIAL_PHOTOS = [
@@ -1067,18 +1048,18 @@ const App = () => {
           </h2>
         </div>
 
-        <div className="sync-brand-mq sync-edge-mask overflow-hidden py-1.5 md:py-2">
+        <div className="sync-brand-mq sync-edge-mask overflow-hidden py-2 md:py-3">
           <div className="sync-brand-track">
-            {[...BRAND_LOGOS, ...BRAND_LOGOS].map((brand, idx) => (
+            {[...BRAND_LOGOS, ...BRAND_LOGOS, ...BRAND_LOGOS, ...BRAND_LOGOS].map((brand, idx) => (
               <span
                 key={`${brand.name}-${idx}`}
-                className="flex-none flex items-center justify-center w-[135px] h-[76px] sm:w-[155px] sm:h-[86px] md:w-[190px] md:h-[100px] mr-2.5 md:mr-4 rounded-2xl bg-white border border-zinc-200/80 shadow-sm hover:-translate-y-1 transition-all duration-300 px-3.5"
+                className="flex-none flex items-center justify-center w-[145px] h-[80px] sm:w-[170px] sm:h-[90px] md:w-[200px] md:h-[105px] mr-3 md:mr-5 rounded-2xl bg-white border border-zinc-200/90 shadow-xs hover:-translate-y-1 hover:shadow-md transition-all duration-300 p-3.5 sm:p-4"
               >
                 <img
                   src={brand.src}
                   alt={brand.name}
                   loading="lazy"
-                  className="max-h-[46px] sm:max-h-[54px] md:max-h-[68px] w-auto max-w-[105px] sm:max-w-[122px] md:max-w-[148px] object-contain block"
+                  className="max-h-[50px] sm:max-h-[60px] md:max-h-[72px] w-auto max-w-[115px] sm:max-w-[135px] md:max-w-[165px] object-contain block"
                 />
               </span>
             ))}
