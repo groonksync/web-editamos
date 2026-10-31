@@ -17,15 +17,12 @@ import {
   Mic,
   Film,
   Plus,
-  TrendingUp,
-  Sliders,
-  Crosshair,
   ShieldCheck,
   Zap,
   Camera,
   X
 } from 'lucide-react';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const WHATSAPP_NUMBER = '59169109766';
 
@@ -309,7 +306,6 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
   const scrollRef = useRef(null);
   const [unmutedKey, setUnmutedKey] = useState(null);
 
-  // Multiplicamos la lista para que siempre cubra más de 2 pantallas y haga bucle infinito perfecto
   const baseList = items.length < 10 ? [...items, ...items, ...items] : items;
   const loopList = [...baseList, ...baseList];
 
@@ -455,7 +451,7 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
       io.observe(box);
     }
 
-    const SPEED = 78; // píxeles por segundo
+    const SPEED = 78;
     let last = 0;
 
     const step = (now) => {
@@ -539,17 +535,14 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
                   />
                 )}
 
-                {/* Gradiente cinematográfico de lectura */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/90 pointer-events-none" />
 
-                {/* Etiqueta superior izquierda (categoría si existe) */}
                 {item.category && (
-                  <span className="absolute left-3 top-3 z-10 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/15 text-[9px] font-black uppercase tracking-[0.2em] text-zinc-200">
+                  <span className="absolute left-3 top-3 z-10 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/15 text-[9px] font-bold uppercase tracking-[0.18em] text-zinc-200">
                     {item.category}
                   </span>
                 )}
 
-                {/* Botón esquina superior derecha: Audio directo en videos o indicador de ampliación en fotos */}
                 {isVideo ? (
                   <button
                     type="button"
@@ -568,12 +561,11 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
                   </span>
                 )}
 
-                {/* Pie de tarjeta idéntico a Estudio Vector con tipografía Sync Pro */}
                 <figcaption className="absolute left-3.5 right-3.5 bottom-3.5 z-10 text-left text-white pointer-events-none">
-                  <b className="block text-sm md:text-[15px] font-black italic uppercase tracking-tight leading-tight drop-shadow">
+                  <b className="block text-sm md:text-[15px] font-extrabold uppercase tracking-tight leading-tight drop-shadow">
                     {item.title}
                   </b>
-                  <span className="block text-[11px] font-semibold text-white/75 leading-snug mt-0.5 line-clamp-2">
+                  <span className="block text-[11px] font-medium text-white/75 leading-snug mt-0.5 line-clamp-2">
                     {item.subtitle}
                   </span>
                 </figcaption>
@@ -583,7 +575,6 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
         </div>
       </div>
 
-      {/* Flechas laterales de navegación */}
       <button
         type="button"
         onClick={() => scrollByStep(-1)}
@@ -605,272 +596,498 @@ const InfiniteMediaCarousel = ({ items, onSelectItem, cardHeightClass = 'h-[340p
 };
 
 /* ============================================================================
-   MOTION GRAPHICS COMPLEMENTARIOS EN VIVO (ESTÉTICA MONOCROMÁTICA SYNC PRO)
+   SHOWCASE DE INGENIERÍA VISUAL (TRAZOS QUIRÚRGICOS DE 1PX + IMAGEN REAL +
+   DAVINCI RESOLVE STUDIO & ADOBE AFTER EFFECTS OFICIAL)
    ============================================================================ */
 
-// 1. Motion Graphic: Timeline NLE de Alta Retención & Diseño Sonoro
-const MotionTimelineGraphic = () => {
-  const waveHeights = [35, 70, 45, 95, 60, 85, 40, 100, 65, 90, 50, 80, 95, 55, 75, 45, 88, 62];
+// 1. Showcase Inmobiliario sobre Fotografía Aérea Real con Tracking 3D de 1px
+const RealEstateMotionShowcase = () => {
+  const lotVertices = [
+    [245, 232],
+    [492, 208],
+    [725, 258],
+    [545, 452],
+    [465, 455]
+  ];
+
   return (
-    <div className="relative h-44 w-full rounded-[24px] bg-zinc-950 border border-white/10 p-4 overflow-hidden flex flex-col justify-between select-none">
-      <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-[0.25em] text-zinc-500 border-b border-white/5 pb-2">
-        <span className="flex items-center gap-1.5 text-zinc-300">
-          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-          TIMELINE // 00:00:03:18
-        </span>
-        <span className="px-2 py-0.5 rounded bg-white/10 text-white">94% RETENCIÓN</span>
-      </div>
-
-      {/* Pistas NLE */}
-      <div className="relative space-y-2 my-auto py-1">
-        {/* Pista V2: Motion Graphics & Hooks */}
-        <div className="flex items-center gap-2">
-          <span className="text-[8px] font-black text-zinc-600 w-5">V2</span>
-          <div className="flex-1 h-5 rounded-md bg-white/[0.03] border border-white/5 flex items-center gap-1.5 px-1.5 overflow-hidden">
-            <motion.div
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2.2, repeat: Infinity }}
-              className="h-3 w-1/4 rounded bg-white/80 text-[7px] font-black text-zinc-950 flex items-center justify-center tracking-tighter uppercase"
-            >
-              HOOK 0-3S
-            </motion.div>
-            <div className="h-3 w-1/3 rounded bg-zinc-700/70 border border-white/20 text-[7px] font-black text-white flex items-center justify-center tracking-tighter uppercase">
-              TEXTO 3D
-            </div>
-            <div className="h-3 w-1/4 rounded bg-white/30 text-[7px] font-black text-white flex items-center justify-center tracking-tighter uppercase">
-              SFX HIT
-            </div>
-          </div>
-        </div>
-
-        {/* Pista V1: Cortes Dinámicos & Speed Ramps */}
-        <div className="flex items-center gap-2">
-          <span className="text-[8px] font-black text-zinc-600 w-5">V1</span>
-          <div className="flex-1 h-5 rounded-md bg-white/[0.03] border border-white/5 flex items-center gap-1 px-1 overflow-hidden">
-            <div className="h-3.5 w-[28%] rounded-sm bg-zinc-800 border-l-2 border-white" />
-            <div className="h-3.5 w-[22%] rounded-sm bg-zinc-700 border-l-2 border-zinc-300" />
-            <div className="h-3.5 w-[30%] rounded-sm bg-zinc-800 border-l-2 border-white" />
-            <div className="h-3.5 flex-1 rounded-sm bg-zinc-700 border-l-2 border-zinc-400" />
-          </div>
-        </div>
-
-        {/* Pista A1: Onda de Audio Masterizada */}
-        <div className="flex items-center gap-2 pt-0.5">
-          <span className="text-[8px] font-black text-zinc-600 w-5">A1</span>
-          <div className="flex-1 h-6 rounded-md bg-white/[0.02] border border-white/5 flex items-center justify-between px-2 gap-1">
-            {waveHeights.map((h, i) => (
-              <motion.span
-                key={i}
-                animate={{ height: [`${Math.max(20, h * 0.45)}%`, `${h}%`, `${Math.max(20, h * 0.45)}%`] }}
-                transition={{ duration: 1.1 + (i % 4) * 0.2, repeat: Infinity, ease: 'easeInOut' }}
-                className="w-1 rounded-full bg-zinc-400"
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Cabezal de reproducción (Playhead) animado */}
-        <motion.div
-          animate={{ left: ['12%', '92%', '12%'] }}
-          transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
-          className="absolute top-0 bottom-0 w-[1.5px] bg-white shadow-[0_0_12px_#ffffff] z-10 pointer-events-none"
-        >
-          <div className="w-2.5 h-2.5 -ml-[4px] -mt-1 rotate-45 bg-white" />
-        </motion.div>
-      </div>
-
-      <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-zinc-500">
-        <span>CORTES CADA 1.8 SEG</span>
-        <span>SPEED RAMP + SFX</span>
-      </div>
-    </div>
-  );
-};
-
-// 2. Motion Graphic: Trazado 3D de Terrenos & Callouts Flotantes
-const MotionTrackingGraphic = () => {
-  return (
-    <div className="relative h-44 w-full rounded-[24px] bg-zinc-950 border border-white/10 p-4 overflow-hidden flex flex-col justify-between select-none">
-      {/* Cuadrícula de perspectiva sutil */}
-      <div
-        className="absolute inset-0 opacity-20 pointer-events-none"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, rgba(255,255,255,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.12) 1px, transparent 1px)',
-          backgroundSize: '22px 22px'
-        }}
+    <div className="relative rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-200/80 shadow-[0_20px_50px_-22px_rgba(0,0,0,0.22)] aspect-[16/10] sm:aspect-[16/9] select-none group">
+      {/* Imagen real de dron inmobiliario */}
+      <img
+        src="/inmobiliaria-drone.jpg"
+        alt="Trazado inmobiliario 3D con Motion Graphics sobre toma aérea de dron"
+        className="absolute inset-0 w-full h-full object-cover block brightness-[0.92] contrast-[1.03] transition-transform duration-1000 group-hover:scale-[1.02]"
       />
 
-      <div className="relative z-10 flex items-center justify-between text-[9px] font-black uppercase tracking-[0.25em] text-zinc-500">
-        <span className="text-zinc-300">3D CAMERA TRACKER</span>
-        <span className="px-2 py-0.5 rounded bg-white/10 text-white">LOTE / INMUEBLE</span>
+      {/* Viñeta técnica sutil para lectura de HUD */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/45 pointer-events-none" />
+
+      {/* Barra HUD Superior con trazos de 1px */}
+      <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-950/75 backdrop-blur-md border border-white/15 text-[10px] font-medium tracking-wider text-white">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>3D CAMERA TRACKER · LOTES & INMUEBLES</span>
+        </div>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-950/75 backdrop-blur-md border border-white/15 text-[10px] font-mono text-zinc-300">
+          <span>SOLVE: 0.14 px</span>
+          <span className="text-white/30">|</span>
+          <span>4K 60FPS</span>
+        </div>
       </div>
 
-      {/* SVG Polígono de Terreno Animado + Nodos de Tracking */}
-      <div className="relative z-10 my-auto flex items-center justify-center h-24">
-        <svg viewBox="0 0 260 90" className="w-full h-full overflow-visible">
-          {/* Sombra rellena del terreno */}
-          <motion.polygon
-            points="45,68 92,22 205,28 225,74"
-            fill="rgba(255,255,255,0.07)"
-            animate={{ opacity: [0.05, 0.16, 0.05] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          />
-          {/* Borde trazado en vivo */}
-          <motion.polygon
-            points="45,68 92,22 205,28 225,74"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="2"
-            strokeDasharray="6 4"
-            animate={{ strokeDashoffset: [0, -40] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-          />
-          {/* Esquinas de tracking */}
-          {[
-            [45, 68],
-            [92, 22],
-            [205, 28],
-            [225, 74]
-          ].map(([cx, cy], idx) => (
-            <g key={idx}>
-              <circle cx={cx} cy={cy} r="4" fill="#ffffff" />
-              <circle cx={cx} cy={cy} r="8" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
-            </g>
-          ))}
-          {/* Línea de Callout Flotante */}
-          <line x1="145" y1="48" x2="168" y2="14" stroke="#ffffff" strokeWidth="1.5" />
-          <circle cx="145" cy="48" r="3.5" fill="#ffffff" />
-        </svg>
+      {/* Superposición SVG con trazos quirúrgicos (vectorEffect="non-scaling-stroke" = 1px exacto siempre) */}
+      <svg viewBox="0 0 1000 562" className="absolute inset-0 w-full h-full z-10 pointer-events-none">
+        <defs>
+          <linearGradient id="lotFillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0.08" />
+          </linearGradient>
+        </defs>
 
-        {/* Etiqueta Flotante 3D */}
-        <motion.div
-          animate={{ y: [0, -4, 0] }}
-          transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-1 right-4 px-2.5 py-1 rounded-lg bg-white text-zinc-950 text-[8px] font-black uppercase tracking-wider shadow-[0_10px_25px_rgba(255,255,255,0.25)]"
-        >
-          SEÑALADOR 3D · 500M²
-        </motion.div>
-      </div>
-
-      <div className="relative z-10 flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-zinc-500">
-        <span>DELIMITACIÓN EXACTA</span>
-        <span>TEXTOS ANCLADOS AL PISO</span>
-      </div>
-    </div>
-  );
-};
-
-// 3. Motion Graphic: Nodos DaVinci Resolve + Motor de IA Generativa
-const MotionColorAiGraphic = () => {
-  return (
-    <div className="relative h-44 w-full rounded-[24px] bg-zinc-950 border border-white/10 p-4 overflow-hidden flex flex-col justify-between select-none">
-      <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-[0.25em] text-zinc-500 border-b border-white/5 pb-2">
-        <span className="text-zinc-300">NODE GRAPH // COLOR + IA</span>
-        <span className="px-2 py-0.5 rounded bg-white/10 text-white">32-BIT FLOAT</span>
-      </div>
-
-      {/* Árbol de Nodos Animado */}
-      <div className="relative my-auto flex items-center justify-between px-2 py-2">
-        {/* Línea conectora base */}
-        <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-[1.5px] bg-white/15" />
-        {/* Pulso viajando por los nodos */}
-        <motion.div
-          animate={{ left: ['10%', '85%'] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-1/2 -translate-y-1/2 w-8 h-[2px] bg-white shadow-[0_0_10px_#fff]"
+        {/* Relleno translúcido suave del terreno */}
+        <motion.polygon
+          points="245,232 492,208 725,258 545,452 465,455"
+          fill="url(#lotFillGrad)"
+          animate={{ opacity: [0.45, 0.85, 0.45] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
         />
 
-        {/* Nodo 01: RAW LOG */}
-        <div className="relative z-10 flex flex-col items-center gap-1.5">
-          <div className="w-12 h-10 rounded-xl bg-zinc-900 border border-white/20 flex items-center justify-center text-[8px] font-black text-zinc-400 uppercase">
-            RAW / LOG
-          </div>
-          <span className="text-[7px] font-bold text-zinc-500 uppercase tracking-widest">ENTRADA</span>
-        </div>
+        {/* Contorno base de 1px exacto */}
+        <polygon
+          points="245,232 492,208 725,258 545,452 465,455"
+          fill="none"
+          stroke="rgba(255,255,255,0.45)"
+          strokeWidth="1"
+          vectorEffect="non-scaling-stroke"
+        />
 
-        {/* Nodo 02: IA & B-ROLL */}
-        <motion.div
-          animate={{ scale: [1, 1.06, 1] }}
-          transition={{ duration: 2.4, repeat: Infinity }}
-          className="relative z-10 flex flex-col items-center gap-1.5"
-        >
-          <div className="w-14 h-11 rounded-xl bg-zinc-800 border border-white/50 shadow-[0_0_20px_rgba(255,255,255,0.12)] flex flex-col items-center justify-center text-[8px] font-black text-white uppercase">
-            <Sparkles size={11} className="mb-0.5" />
-            IA GEN
-          </div>
-          <span className="text-[7px] font-bold text-zinc-300 uppercase tracking-widest">VOZ + TOMAS IA</span>
-        </motion.div>
+        {/* Haz luminoso fino (1.25px) recorriendo el perímetro del terreno */}
+        <motion.polygon
+          points="245,232 492,208 725,258 545,452 465,455"
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="1.25"
+          strokeDasharray="14 8"
+          vectorEffect="non-scaling-stroke"
+          animate={{ strokeDashoffset: [0, -88] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+        />
 
-        {/* Nodo 03: MASTER LOOK */}
-        <div className="relative z-10 flex flex-col items-center gap-1.5">
-          <div className="w-12 h-10 rounded-xl bg-white text-zinc-950 font-black text-[8px] flex items-center justify-center uppercase shadow-[0_0_20px_rgba(255,255,255,0.25)]">
-            MASTER
-          </div>
-          <span className="text-[7px] font-bold text-white uppercase tracking-widest">CINE LOOK</span>
-        </div>
-      </div>
+        {/* Guías internas de medición (1px punteado muy sutil) */}
+        <line
+          x1="245"
+          y1="232"
+          x2="545"
+          y2="452"
+          stroke="rgba(255,255,255,0.22)"
+          strokeWidth="0.75"
+          strokeDasharray="4 4"
+          vectorEffect="non-scaling-stroke"
+        />
+        <line
+          x1="492"
+          y1="208"
+          x2="465"
+          y2="455"
+          stroke="rgba(255,255,255,0.22)"
+          strokeWidth="0.75"
+          strokeDasharray="4 4"
+          vectorEffect="non-scaling-stroke"
+        />
 
-      {/* Barras de Color Wheels / Scopes */}
-      <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-zinc-500">
-        <span>DAVINCI RESOLVE STUDIO</span>
-        <span>LOCUCIÓN & B-ROLL IA</span>
-      </div>
-    </div>
-  );
-};
+        {/* Marcadores de vértice de precisión (Crosshairs finos de 1px) */}
+        {lotVertices.map(([cx, cy], idx) => (
+          <g key={idx}>
+            <circle
+              cx={cx}
+              cy={cy}
+              r="7"
+              fill="none"
+              stroke="rgba(255,255,255,0.75)"
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
+            />
+            <circle cx={cx} cy={cy} r="2.2" fill="#ffffff" />
+            <line
+              x1={cx - 11}
+              y1={cy}
+              x2={cx + 11}
+              y2={cy}
+              stroke="rgba(255,255,255,0.45)"
+              strokeWidth="0.75"
+              vectorEffect="non-scaling-stroke"
+            />
+            <line
+              x1={cx}
+              y1={cy - 11}
+              x2={cx}
+              y2={cy + 11}
+              stroke="rgba(255,255,255,0.45)"
+              strokeWidth="0.75"
+              vectorEffect="non-scaling-stroke"
+            />
+          </g>
+        ))}
 
-/* ============================================================================
-   COMPONENTE DE TARJETA CON LUZ EN EL BORDE (SNAKE BORDER) Y FOCO INTERACTIVO
-   ============================================================================ */
-const InteractiveCard = ({ children, className = '', isDark = true }) => {
-  const cardRef = useRef(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+        {/* Línea de anclaje 3D vertical desde el centro del lote */}
+        <line
+          x1="478"
+          y1="322"
+          x2="478"
+          y2="162"
+          stroke="#ffffff"
+          strokeWidth="1"
+          vectorEffect="non-scaling-stroke"
+        />
+        <circle cx="478" cy="322" r="3.5" fill="#10b981" />
+        <circle
+          cx="478"
+          cy="322"
+          r="10"
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="1"
+          vectorEffect="non-scaling-stroke"
+        />
 
-  const springConfig = { damping: 25, stiffness: 200 };
-  const smoothX = useSpring(mouseX, springConfig);
-  const smoothY = useSpring(mouseY, springConfig);
+        {/* Línea secundaria hacia avenida derecha */}
+        <line
+          x1="670"
+          y1="335"
+          x2="770"
+          y2="290"
+          stroke="rgba(255,255,255,0.8)"
+          strokeWidth="1"
+          vectorEffect="non-scaling-stroke"
+        />
+        <circle cx="670" cy="335" r="2.5" fill="#ffffff" />
+      </svg>
 
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
-  };
-
-  return (
-    <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      whileHover={{ y: -5 }}
-      className={`group relative rounded-[40px] p-[1.5px] overflow-hidden transition-all duration-500 shadow-lg hover:shadow-2xl ${className}`}
-    >
-      {/* Luz que recorre el borde (Snake Border) */}
-      <div className="absolute inset-[-1000%] animate-[spin_8s_linear_infinite] opacity-15 group-hover:opacity-45 transition-opacity duration-700 bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#a1a1aa_100%)]" />
-
-      {/* Contenedor Interior */}
-      <div
-        className={`relative h-full w-full rounded-[38.5px] z-10 overflow-hidden ${
-          isDark ? 'bg-[#0a0a0a] text-white' : 'bg-white text-zinc-900 border border-zinc-100'
-        }`}
+      {/* Callout Flotante Principal (Anclado al terreno) */}
+      <motion.div
+        animate={{ y: [0, -4, 0] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute left-[34%] sm:left-[38%] top-[14%] sm:top-[16%] z-20 bg-zinc-950/85 backdrop-blur-md text-white border border-white/25 rounded-xl px-3.5 py-2 shadow-2xl pointer-events-none"
       >
-        {/* Efecto Spotlight Interno */}
-        <motion.div
-          className="pointer-events-none absolute -inset-px rounded-[38.5px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
-          style={{
-            background: useTransform(
-              [smoothX, smoothY],
-              ([x, y]) =>
-                `radial-gradient(350px circle at ${x}px ${y}px, ${
-                  isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'
-                }, transparent 80%)`
-            )
-          }}
-        />
-        <div className="relative z-20 h-full">{children}</div>
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-300">LOTE ESQUINERO #14</span>
+        </div>
+        <div className="text-sm sm:text-base font-bold tracking-tight text-white mt-0.5">680.00 m² · Disponible</div>
+        <div className="text-[10px] text-zinc-400 font-normal">Frente: 22.5 m × Fondo: 30.2 m</div>
+      </motion.div>
+
+      {/* Callout Secundario (Avenida / Plusvalía) */}
+      <div className="hidden sm:block absolute right-[8%] top-[44%] z-20 bg-white/95 backdrop-blur-md text-zinc-900 border border-zinc-200 rounded-lg px-3 py-1.5 shadow-lg pointer-events-none">
+        <span className="block text-[8px] font-mono uppercase tracking-widest text-zinc-500">ACCESO PAVIMENTADO</span>
+        <span className="block text-[11px] font-bold tracking-tight text-zinc-900">Av. Principal · Zona Norte</span>
       </div>
-    </motion.div>
+
+      {/* Pie informativo de la toma inmobiliaria */}
+      <div className="absolute bottom-3.5 left-3.5 right-3.5 z-20 flex flex-wrap items-center justify-between gap-2 text-[11px] text-white/90 pointer-events-none">
+        <span className="font-medium">
+          Trazado 3D real anclado al movimiento del dron · Ideal para inmobiliarias, urbanizaciones y quintas.
+        </span>
+        <span className="px-2.5 py-0.5 rounded bg-white/15 backdrop-blur-md text-[10px] font-mono">
+          TRACKING 3D + CALLOUTS
+        </span>
+      </div>
+    </div>
+  );
+};
+
+// 2. Línea de Tiempo Real de DaVinci Resolve Studio (Trazos de 1px, limpia y profesional)
+const DaVinciResolveStudioTimeline = () => {
+  const audioBars = [28, 52, 74, 42, 88, 64, 92, 48, 76, 58, 84, 38, 68, 90, 54, 72, 44, 80, 62, 48, 70, 86, 50, 66];
+
+  return (
+    <div className="rounded-2xl bg-[#0c0c0f] border border-zinc-800/90 p-5 text-white shadow-sm select-none">
+      {/* Cabecera DaVinci Resolve Studio */}
+      <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-white/[0.07]">
+        <div className="flex items-center gap-2.5">
+          {/* Icono de 3 ruedas de color estilo DaVinci Resolve */}
+          <div className="w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-4 h-4">
+              <circle cx="12" cy="7.5" r="3.2" fill="none" stroke="#60a5fa" strokeWidth="1.4" />
+              <circle cx="8" cy="15" r="3.2" fill="none" stroke="#34d399" strokeWidth="1.4" />
+              <circle cx="16" cy="15" r="3.2" fill="none" stroke="#f87171" strokeWidth="1.4" />
+            </svg>
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold tracking-tight text-white">DaVinci Resolve Studio</span>
+              <span className="px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-[9px] font-mono text-emerald-300">
+                LICENCIA OFICIAL
+              </span>
+            </div>
+            <span className="block text-[10px] text-zinc-400">
+              Edición de precisión, mezcla Fairlight y colorización ACES 32-bit
+            </span>
+          </div>
+        </div>
+        <span className="text-[10px] font-mono text-zinc-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-md">
+          TC 01:00:04:12
+        </span>
+      </div>
+
+      {/* Regla de Tiempo Fina (1px) */}
+      <div className="relative bg-[#08080a] rounded-xl border border-white/[0.07] p-3.5 overflow-hidden">
+        <div className="flex justify-between text-[8px] font-mono text-zinc-500 pb-2 mb-2.5 border-b border-white/[0.06]">
+          <span>00:00</span>
+          <span>00:03 (HOOK)</span>
+          <span>00:08</span>
+          <span>00:15</span>
+          <span>00:22</span>
+          <span>00:30</span>
+        </div>
+
+        {/* Pistas de Edición con bordes de 1px */}
+        <div className="relative space-y-1.5">
+          {/* V3: Textos Flotantes & Señaladores */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-[9px] font-mono text-zinc-500 w-7">V3</span>
+            <div className="flex-1 h-6 rounded bg-white/[0.02] border border-white/[0.05] flex items-center px-1.5 gap-2">
+              <div className="h-4 w-[26%] rounded-[4px] bg-sky-500/15 border border-sky-400/35 px-2 flex items-center justify-between text-[8px] font-mono text-sky-200">
+                <span>HOOK_3D.comp</span>
+                <span className="w-1.5 h-1.5 rotate-45 bg-sky-300" />
+              </div>
+              <div className="h-4 w-[38%] rounded-[4px] bg-purple-500/15 border border-purple-400/35 px-2 flex items-center justify-between text-[8px] font-mono text-purple-200">
+                <span>CALLOUT_LOTE.fusion</span>
+                <span className="w-1.5 h-1.5 rotate-45 bg-purple-300" />
+              </div>
+              <div className="h-4 flex-1 rounded-[4px] bg-emerald-500/15 border border-emerald-400/35 px-2 flex items-center text-[8px] font-mono text-emerald-200">
+                <span>CTA_WHATSAPP</span>
+              </div>
+            </div>
+          </div>
+
+          {/* V2: Tomas B-Roll & IA */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-[9px] font-mono text-zinc-500 w-7">V2</span>
+            <div className="flex-1 h-6 rounded bg-white/[0.02] border border-white/[0.05] flex items-center px-1.5 gap-1.5">
+              <div className="h-4 w-[18%] rounded-[4px] bg-zinc-800/90 border border-white/15 px-1.5 flex items-center text-[8px] font-mono text-zinc-300">
+                DRONE_A01
+              </div>
+              <div className="h-4 w-[24%] rounded-[4px] bg-amber-500/15 border border-amber-400/35 px-1.5 flex items-center text-[8px] font-mono text-amber-200">
+                IA_BROLL_GEN
+              </div>
+              <div className="h-4 w-[28%] rounded-[4px] bg-zinc-800/90 border border-white/15 px-1.5 flex items-center text-[8px] font-mono text-zinc-300">
+                DETALLE_LOTE
+              </div>
+              <div className="h-4 flex-1 rounded-[4px] bg-zinc-800/90 border border-white/15 px-1.5 flex items-center text-[8px] font-mono text-zinc-300">
+                CIERRE_4K
+              </div>
+            </div>
+          </div>
+
+          {/* V1: Cámara Principal Colorizada */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-[9px] font-mono text-zinc-500 w-7">V1</span>
+            <div className="flex-1 h-6 rounded bg-white/[0.02] border border-white/[0.05] flex items-center px-1.5 gap-1">
+              {[22, 19, 25, 16, 18].map((w, i) => (
+                <div
+                  key={i}
+                  style={{ width: `${w}%` }}
+                  className="h-4 rounded-[4px] bg-zinc-900 border border-zinc-700/80 px-1.5 flex items-center justify-between text-[7px] font-mono text-zinc-400"
+                >
+                  <span>CAM_{i + 1}</span>
+                  <span className="w-1 h-1 rounded-full bg-emerald-400/80" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* A1: Onda de Audio Fairlight de 1px */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-[9px] font-mono text-emerald-400/80 w-7">A1</span>
+            <div className="flex-1 h-7 rounded bg-emerald-950/20 border border-emerald-500/20 flex items-center justify-between px-2 gap-[3px]">
+              {audioBars.map((h, i) => (
+                <motion.span
+                  key={i}
+                  animate={{ height: [`${Math.max(18, h * 0.45)}%`, `${h}%`, `${Math.max(18, h * 0.45)}%`] }}
+                  transition={{ duration: 1.2 + (i % 5) * 0.15, repeat: Infinity, ease: 'easeInOut' }}
+                  className="w-[1.5px] rounded-full bg-emerald-400/75"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Playhead Quirúrgico de 1px */}
+          <motion.div
+            animate={{ left: ['11%', '93%', '11%'] }}
+            transition={{ duration: 8.5, repeat: Infinity, ease: 'linear' }}
+            className="absolute -top-2 bottom-0 w-[1px] bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] z-20 pointer-events-none"
+          >
+            <div className="w-2 h-2 -ml-[3.5px] bg-rose-500 rotate-45" />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Pie Técnico de Nodos de Color */}
+      <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-400">
+        <div className="flex items-center gap-2 font-mono">
+          <span className="px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-zinc-300">01 RAW LOG</span>
+          <span>→</span>
+          <span className="px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-zinc-300">02 SKIN TONE</span>
+          <span>→</span>
+          <span className="px-2 py-0.5 rounded bg-white/[0.08] border border-white/20 text-white">03 FILM MASTER</span>
+        </div>
+        <span className="text-[10px] text-zinc-400">Colorización cinematográfica + Audio -14 LUFS</span>
+      </div>
+    </div>
+  );
+};
+
+// 3. Adobe After Effects Oficial (Curvas de Velocidad Bézier & Capas 3D con trazos de 1px)
+const AfterEffectsOfficialMotion = () => {
+  return (
+    <div className="rounded-2xl bg-[#0c0c0f] border border-zinc-800/90 p-5 text-white shadow-sm select-none">
+      {/* Cabecera After Effects Oficial */}
+      <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-white/[0.07]">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-[#1e1b4b] border border-indigo-400/30 flex items-center justify-center text-[11px] font-bold tracking-tight text-indigo-200">
+            Ae
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold tracking-tight text-white">Adobe After Effects Oficial</span>
+              <span className="px-2 py-0.5 rounded bg-indigo-500/15 border border-indigo-400/30 text-[9px] font-mono text-indigo-300">
+                CREATIVE CLOUD OFICIAL
+              </span>
+            </div>
+            <span className="block text-[10px] text-zinc-400">
+              Motion Graphics, tracking 3D de terrenos, speed-ramps y composición avanzada
+            </span>
+          </div>
+        </div>
+        <span className="text-[10px] font-mono text-zinc-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-md">
+          60 FPS · 3D COMP
+        </span>
+      </div>
+
+      {/* Graph Editor (Curva Bézier con trazo de 1px) + Capas 3D */}
+      <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 bg-[#08080a] rounded-xl border border-white/[0.07] p-3.5">
+        {/* Lista de Capas 3D */}
+        <div className="sm:col-span-5 flex flex-col justify-between space-y-1.5 border-b sm:border-b-0 sm:border-r border-white/[0.06] pb-3 sm:pb-0 sm:pr-3">
+          <div className="text-[8px] font-mono uppercase tracking-widest text-zinc-500 mb-0.5">
+            CAPAS DE COMPOSICIÓN 3D
+          </div>
+          {[
+            { id: '01', name: '3D_CAMERA_TRACK', tag: '3D', color: 'text-sky-300 border-sky-400/30 bg-sky-500/10' },
+            { id: '02', name: 'TERRENO_TRAZADO', tag: 'SHP', color: 'text-emerald-300 border-emerald-400/30 bg-emerald-500/10' },
+            { id: '03', name: 'CALLOUT_PRECIO', tag: 'TXT', color: 'text-purple-300 border-purple-400/30 bg-purple-500/10' },
+            { id: '04', name: 'IA_VOICE_SYNC', tag: 'WAV', color: 'text-amber-300 border-amber-400/30 bg-amber-500/10' }
+          ].map((layer) => (
+            <div
+              key={layer.id}
+              className="flex items-center justify-between px-2 py-1 rounded bg-white/[0.02] border border-white/[0.05] text-[9px] font-mono"
+            >
+              <span className="text-zinc-300 truncate">
+                <span className="text-zinc-600 mr-1.5">{layer.id}</span>
+                {layer.name}
+              </span>
+              <span className={`px-1.5 py-0.2 rounded border text-[8px] ${layer.color}`}>{layer.tag}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Editor de Gráficos de Velocidad (Speed Graph Bézier 1px) */}
+        <div className="sm:col-span-7 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[8px] font-mono text-zinc-500 mb-1">
+            <span>SPEED GRAPH // EASY EASE</span>
+            <span className="text-indigo-300">CURVA BÉZIER 1PX</span>
+          </div>
+
+          <div className="relative h-24 w-full rounded bg-white/[0.015] border border-white/[0.05] overflow-hidden">
+            <svg viewBox="0 0 260 90" className="w-full h-full">
+              {/* Líneas horizontales de referencia de 0.75px */}
+              <line
+                x1="0"
+                y1="22"
+                x2="260"
+                y2="22"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.75"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1="0"
+                y1="45"
+                x2="260"
+                y2="45"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.75"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1="0"
+                y1="68"
+                x2="260"
+                y2="68"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="0.75"
+                vectorEffect="non-scaling-stroke"
+              />
+
+              {/* Relleno sutil bajo la curva de velocidad */}
+              <path
+                d="M 16 74 C 85 74, 105 14, 130 14 C 155 14, 175 74, 244 74 L 244 86 L 16 86 Z"
+                fill="rgba(129, 140, 248, 0.10)"
+              />
+
+              {/* Curva Bézier de velocidad con trazo fino exacto de 1.25px */}
+              <path
+                d="M 16 74 C 85 74, 105 14, 130 14 C 155 14, 175 74, 244 74"
+                fill="none"
+                stroke="#818cf8"
+                strokeWidth="1.25"
+                vectorEffect="non-scaling-stroke"
+              />
+
+              {/* Tiradores Bézier (Handles de 1px) */}
+              <line
+                x1="16"
+                y1="74"
+                x2="72"
+                y2="74"
+                stroke="#fbbf24"
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+              <circle cx="72" cy="74" r="2.5" fill="#fbbf24" />
+
+              <line
+                x1="188"
+                y1="74"
+                x2="244"
+                y2="74"
+                stroke="#fbbf24"
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+              <circle cx="188" cy="74" r="2.5" fill="#fbbf24" />
+
+              {/* Keyframes (Rombo inicial, pico central, rombo final) */}
+              <rect x="13" y="71" width="6" height="6" fill="#fbbf24" transform="rotate(45 16 74)" />
+              <rect x="127" y="11" width="6" height="6" fill="#ffffff" transform="rotate(45 130 14)" />
+              <rect x="241" y="71" width="6" height="6" fill="#fbbf24" transform="rotate(45 244 74)" />
+            </svg>
+
+            {/* Línea de escaneo en el editor de curvas */}
+            <motion.div
+              animate={{ left: ['6%', '94%', '6%'] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute top-0 bottom-0 w-[1px] bg-indigo-400/80 pointer-events-none"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-400">
+        <span>Animaciones fluidas a 60fps · Señaladores flotantes y textos 3D</span>
+        <span className="font-mono text-zinc-300">DYNAMIC LINK + IA</span>
+      </div>
+    </div>
   );
 };
 
@@ -880,10 +1097,9 @@ const InteractiveCard = ({ children, className = '', isDark = true }) => {
 const App = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
-  const [selectedDurationIndex, setSelectedDurationIndex] = useState(0);
+  const [selectedDurationIndex, setSelectedDurationIndex] = useState(1); // 31 a 60 seg por defecto (Más pedido)
   const [lightboxItem, setLightboxItem] = useState(null);
 
-  // Cerrar el visor con Escape
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === 'Escape') setLightboxItem(null);
@@ -922,7 +1138,6 @@ const App = () => {
     '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA' // Cuadro 5
   ]);
 
-  // Tus 5 videos originales que salen directamente en el carrusel del inicio
   const projects = [
     {
       id: 'cuadro-1',
@@ -971,19 +1186,18 @@ const App = () => {
     }
   ];
 
-  // --- PLANES REALES DE EDICIÓN DE VIDEO POR DURACIÓN ---
   const durationPlans = [
     {
       id: 'hasta-30',
       label: 'Hasta 30 seg',
-      tag: 'Ideal para Reels / TikToks cortos e impacto rápido',
+      tag: 'Reels / TikToks de impacto rápido',
       basicPrice: 120,
       advancedPrice: 220
     },
     {
       id: '31-a-60',
       label: '31 a 60 seg',
-      tag: 'El formato más pedido para anuncios y ventas',
+      tag: 'Formato ideal para anuncios y ventas',
       basicPrice: 180,
       advancedPrice: 320,
       popular: true
@@ -991,14 +1205,14 @@ const App = () => {
     {
       id: '61-a-90',
       label: '61 a 90 seg',
-      tag: 'Ideal para explicaciones completas y demostraciones',
+      tag: 'Explicaciones completas y demostraciones',
       basicPrice: 250,
       advancedPrice: 430
     },
     {
       id: '91-a-120',
       label: '91 a 120 seg',
-      tag: 'Producción extensa para proyectos e inmobiliaria',
+      tag: 'Producción extensa e inmobiliaria',
       basicPrice: 320,
       advancedPrice: 550
     }
@@ -1014,35 +1228,35 @@ const App = () => {
   const tools = [
     {
       name: 'WorkFlow Sync',
-      target: 'Premiere Pro & After Effects',
+      target: 'Adobe After Effects & Premiere Pro Oficial',
       description:
-        'Optimización extrema del flujo de trabajo. Automatiza tareas repetitivas y sincroniza proyectos pesados en segundos.',
+        'Automatiza tareas repetitivas, organiza bins inteligentes y sincroniza composiciones pesadas con precisión de cuadro.',
       badge: 'Best Seller',
-      icon: <Layers className="text-white" size={24} />,
+      icon: <Layers className="text-zinc-900" size={20} />,
       specs: ['Auto-Render Queue', 'Smart Bin Organizer', 'Dynamic Link Boost', 'Frame-Accurate Sync']
     },
     {
       name: 'ColorMaster Node',
-      target: 'DaVinci Resolve',
+      target: 'DaVinci Resolve Studio',
       description:
-        'Estructuras de nodos pre-configuradas con gestión de color ACES e inteligencia artificial para balance de pieles.',
+        'Árboles de nodos pre-configurados con gestión de color ACES, aislamiento de tonos de piel y emulación cinematográfica.',
       badge: 'Nuevo',
-      icon: <Cpu className="text-white" size={24} />,
+      icon: <Cpu className="text-zinc-900" size={20} />,
       specs: ['One-Click ACES Pipeline', 'Skin Tone Isolation', 'Halation & Bloom Realista', 'LUTs de Cine Incluidos']
     }
   ];
 
   return (
     <div className="min-h-screen bg-[#ffffff] text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white overflow-x-clip">
-      {/* Navegación */}
-      <nav className="sticky top-0 w-full z-50 bg-zinc-950/90 backdrop-blur-xl border-b border-white/10 px-6 md:px-8 py-4 flex justify-between items-center text-white">
-        <a href="#" className="text-xl font-black tracking-tighter flex items-center gap-2">
-          <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
+      {/* Navegación limpia con borde de 1px */}
+      <nav className="sticky top-0 w-full z-50 bg-zinc-950/90 backdrop-blur-xl border-b border-white/[0.08] px-6 md:px-8 py-3.5 flex justify-between items-center text-white">
+        <a href="#" className="text-lg font-extrabold tracking-tight flex items-center gap-2.5">
+          <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
           <span>SYNC PRO</span>
         </a>
-        <div className="hidden lg:flex gap-7 text-[10px] font-black uppercase tracking-[0.22em] text-zinc-400">
+        <div className="hidden lg:flex gap-7 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
           <a href="#inicio-videos" className="hover:text-white transition-colors">
-            Nuestro Trabajo
+            Videos
           </a>
           <a href="#marcas" className="hover:text-white transition-colors">
             Marcas
@@ -1054,7 +1268,7 @@ const App = () => {
             Así Trabajamos
           </a>
           <a href="#ingenieria-visual" className="hover:text-white transition-colors">
-            Ingeniería Visual
+            Tecnología
           </a>
           <a href="#planes-edicion" className="hover:text-white transition-colors">
             Planes
@@ -1066,59 +1280,57 @@ const App = () => {
           )}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-white text-zinc-950 px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-zinc-200 transition-all shadow-lg flex items-center gap-2"
+          className="bg-white text-zinc-950 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider hover:bg-zinc-200 transition-all flex items-center gap-2"
         >
           <MessageCircle size={14} /> Escríbenos
         </a>
       </nav>
 
       {/* =====================================================================
-          1. ESCENARIO DE INICIO EN NEGRO & GRIS CARBÓN CON CARRUSEL EN MOVIMIENTO
-             (Inspirado en Estudio Vector: tus videos se mueven solos y al acercar
-             el cursor se detienen y se hacen grandes)
+          1. ESCENARIO DE INICIO EN NEGRO & GRIS CARBÓN (RESUMIDO A 3 PALABRAS
+             DIRECTAS + CARRUSEL DE TUS VIDEOS EN MOVIMIENTO)
           ===================================================================== */}
-      <section id="inicio-videos" className="sync-stage relative text-white pt-10 pb-10 md:pt-14 md:pb-12 border-b border-zinc-900">
-        <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <div className="max-w-4xl">
-            <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.35em] text-zinc-400">
+      <section
+        id="inicio-videos"
+        className="sync-stage relative text-white pt-8 pb-9 md:pt-11 md:pb-11 border-b border-zinc-900"
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400">
               <span className="w-1.5 h-1.5 rounded-full bg-white" />
-              Sync Pro · Digital Post-Production Studio
+              Edición · Motion Graphics 3D · IA
             </span>
-            <h1 className="mt-3 text-3xl sm:text-5xl md:text-6xl font-black italic uppercase tracking-tighter leading-[0.96] text-white">
-              Edición de video, motion graphics e IA{' '}
-              <span className="text-zinc-400">para marcas que quieren vender más.</span>
+            <h1 className="mt-2 text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.94] text-white">
+              Edición <span className="text-zinc-400">que vende.</span>
             </h1>
-            <p className="mt-4 text-zinc-400 text-sm md:text-base font-medium max-w-2xl leading-relaxed">
-              Transformamos tus grabaciones en piezas magnéticas con ritmo psicológico, señaladores 3D, trazado de
-              terrenos y acabado cinematográfico en DaVinci Resolve.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                  'Hola Sync Pro, quiero que trabajemos juntos. ¿Me pueden dar información?'
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white text-zinc-950 px-7 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2.5 hover:bg-zinc-200 transition-all shadow-[0_14px_34px_-12px_rgba(255,255,255,0.35)]"
-              >
-                <MessageCircle size={16} /> Trabajemos juntos
-              </a>
-              <a
-                href="#planes-edicion"
-                className="bg-white/10 hover:bg-white/15 text-white border border-white/20 px-7 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 transition-all backdrop-blur-md"
-              >
-                Ver Planes por Duración <ArrowUpRight size={16} />
-              </a>
-            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2.5">
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                'Hola Sync Pro, quiero que trabajemos juntos. ¿Me pueden dar información?'
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white text-zinc-950 px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-zinc-200 transition-all shadow-lg"
+            >
+              <MessageCircle size={15} /> Trabajemos juntos
+            </a>
+            <a
+              href="#planes-edicion"
+              className="bg-white/[0.08] hover:bg-white/[0.14] text-white border border-white/15 px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all backdrop-blur-md"
+            >
+              Ver Planes <ArrowUpRight size={15} />
+            </a>
           </div>
         </div>
 
         {/* Carrusel infinito de tus 5 videos que se mueve solo y se pausa + agranda al acercar el cursor */}
-        <div className="mt-6">
+        <div className="mt-4">
           <InfiniteMediaCarousel items={projects} onSelectItem={(item) => setLightboxItem(item)} />
         </div>
 
-        <p className="mt-2 px-6 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400">
+        <p className="mt-1 px-6 text-center text-[11px] font-medium tracking-wide text-zinc-400">
           <span className="hidden md:inline">Pasa el cursor para detener y ampliar · Arrastra o usa las flechas · </span>
           <span className="md:hidden">Desliza con el dedo · </span>
           Toca un video para verlo en grande y con sonido
@@ -1126,30 +1338,30 @@ const App = () => {
       </section>
 
       {/* =====================================================================
-          2. TRABAJAMOS CON MARCAS (Cintillo infinito con las marcas de referencia)
+          2. TRABAJAMOS CON MARCAS
           ===================================================================== */}
-      <section id="marcas" className="py-14 md:py-16 bg-zinc-50/70 border-b border-zinc-200/70">
-        <div className="max-w-7xl mx-auto px-6 mb-8 text-center">
-          <span className="text-[10px] font-black uppercase tracking-[0.35em] text-zinc-400 block mb-2">
+      <section id="marcas" className="py-12 md:py-14 bg-zinc-50/70 border-b border-zinc-200/70">
+        <div className="max-w-7xl mx-auto px-6 mb-7 text-center">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
             Marcas que confían en nosotros
           </span>
-          <h2 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter text-zinc-900">
-            Trabajamos con marcas.
+          <h2 className="text-2xl md:text-4xl font-extrabold uppercase tracking-tight text-zinc-900">
+            Trabajamos con marcas
           </h2>
         </div>
 
-        <div className="sync-brand-mq sync-edge-mask overflow-hidden py-3">
+        <div className="sync-brand-mq sync-edge-mask overflow-hidden py-2">
           <div className="sync-brand-track">
             {[...BRAND_LOGOS, ...BRAND_LOGOS].map((brand, idx) => (
               <span
                 key={`${brand.name}-${idx}`}
-                className="flex-none flex items-center justify-center w-[150px] h-[84px] md:w-[190px] md:h-[104px] mr-3 md:mr-4 rounded-2xl bg-white border border-zinc-200/90 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300 px-4"
+                className="flex-none flex items-center justify-center w-[150px] h-[84px] md:w-[190px] md:h-[100px] mr-3 md:mr-4 rounded-2xl bg-white border border-zinc-200/80 shadow-sm hover:-translate-y-1 transition-all duration-300 px-4"
               >
                 <img
                   src={brand.src}
                   alt={brand.name}
                   loading="lazy"
-                  className="max-h-[54px] md:max-h-[70px] w-auto max-w-[120px] md:max-w-[150px] object-contain block"
+                  className="max-h-[52px] md:max-h-[68px] w-auto max-w-[120px] md:max-w-[148px] object-contain block"
                 />
               </span>
             ))}
@@ -1160,29 +1372,27 @@ const App = () => {
       {/* =====================================================================
           3. APARTADO DE FOTOS: FOTOGRAFÍA QUE VENDE
           ===================================================================== */}
-      <section id="fotografia" className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-100">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+      <section id="fotografia" className="py-16 md:py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/60">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 block mb-3">
-              01 // PRODUCCIÓN VISUAL & COMERCIAL
+            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
+              Producción Visual & Comercial
             </span>
-            <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-zinc-900 leading-none">
-              Fotografía que vende.
+            <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-none">
+              Fotografía que vende
             </h2>
           </div>
-          <p className="text-zinc-500 text-xs md:text-sm max-w-sm font-medium leading-relaxed">
-            Producto, gastronomía, inmobiliaria y marca. Toca cualquier fotografía para inspeccionarla en pantalla
-            completa.
+          <p className="text-zinc-500 text-xs md:text-sm max-w-sm font-normal leading-relaxed">
+            Producto, gastronomía, inmobiliaria y marca. Toca una foto para verla en grande.
           </p>
         </div>
 
-        {/* Grilla densa estilo Estudio Vector (4 columnas en escritorio con tarjetas wide de 2 columnas) */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 grid-flow-dense">
           {COMMERCIAL_PHOTOS.map((shot) => (
             <figure
               key={shot.id}
               onClick={() => setLightboxItem(shot)}
-              className={`group relative m-0 rounded-[22px] overflow-hidden bg-zinc-900 border border-zinc-200/80 shadow-md cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:scale-[1.02] hover:shadow-2xl hover:z-10 ${
+              className={`group relative m-0 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-200/80 shadow-sm cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl hover:z-10 ${
                 shot.wide ? 'col-span-2 aspect-[16/9] md:aspect-[3/2]' : 'aspect-[3/4]'
               }`}
             >
@@ -1193,29 +1403,27 @@ const App = () => {
                 decoding="async"
                 className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none" />
-              <figcaption className="absolute left-0 right-0 bottom-0 p-4 md:p-5 text-white pointer-events-none">
-                <span className="block text-[9px] font-black uppercase tracking-[0.22em] text-zinc-300 mb-0.5">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+              <figcaption className="absolute left-0 right-0 bottom-0 p-3.5 md:p-4 text-white pointer-events-none">
+                <span className="block text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-300 mb-0.5">
                   {shot.title}
                 </span>
-                <b className="block text-xs md:text-sm font-black italic uppercase tracking-tight leading-snug">
-                  {shot.subtitle}
-                </b>
+                <b className="block text-xs md:text-sm font-bold tracking-tight leading-snug">{shot.subtitle}</b>
               </figcaption>
             </figure>
           ))}
         </div>
 
-        <div className="mt-10 flex justify-center">
+        <div className="mt-9 flex justify-center">
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
               'Hola Sync Pro, vi su portafolio de video y fotografía y quiero algo así para mi marca.'
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-zinc-950 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:bg-zinc-800 transition-all shadow-xl"
+            className="bg-zinc-950 text-white px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2.5 hover:bg-zinc-800 transition-all shadow-md"
           >
-            <MessageCircle size={16} /> Quiero algo así para mi marca
+            <MessageCircle size={15} /> Quiero algo así para mi marca
           </a>
         </div>
       </section>
@@ -1223,19 +1431,18 @@ const App = () => {
       {/* =====================================================================
           4. ASÍ TRABAJAMOS (Carrusel infinito Detrás de Cámaras: Videos + Fotos)
           ===================================================================== */}
-      <section id="asi-trabajamos" className="py-20 bg-zinc-950 text-white border-b border-zinc-900">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+      <section id="asi-trabajamos" className="py-16 md:py-20 bg-zinc-950 text-white border-b border-zinc-900">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 mb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 block mb-3">
-              02 // BACKSTAGE & PRODUCCIÓN EN CAMPO
+            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
+              Backstage & Producción
             </span>
-            <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-white leading-none">
-              Así trabajamos.
+            <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-white leading-none">
+              Así trabajamos
             </h2>
           </div>
-          <p className="text-zinc-400 text-xs md:text-sm max-w-md font-medium leading-relaxed">
-            Detrás de cámaras: equipo, luces, cámaras, dirección y sets de grabación de nuestras producciones. Acerca el
-            cursor para detener y ampliar cualquier toma.
+          <p className="text-zinc-400 text-xs md:text-sm max-w-md font-normal leading-relaxed">
+            Detrás de cámaras: equipo, luces y sets de grabación de nuestras producciones.
           </p>
         </div>
 
@@ -1247,135 +1454,109 @@ const App = () => {
       </section>
 
       {/* =====================================================================
-          5. INGENIERÍA VISUAL + MOTION GRAPHICS EN VIVO
+          5. POR QUÉ TUS VIDEOS GENERAN CLIENTES (DISEÑO LIMPIO DE 1PX +
+             IMAGEN INMOBILIARIA CON MOTION GRAPHICS + DAVINCI RESOLVE STUDIO
+             & ADOBE AFTER EFFECTS OFICIAL)
           ===================================================================== */}
-      <section id="ingenieria-visual" className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-100">
+      <section
+        id="ingenieria-visual"
+        className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70"
+      >
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 block mb-3">
-              03 // INGENIERÍA VISUAL & PSICOLOGÍA DE CONVERSIÓN
+            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-2">
+              Ingeniería Visual & Flujo Oficial
             </span>
-            <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-zinc-900 leading-none">
-              Por qué tus videos <br /> generan clientes.
+            <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-tight">
+              Por qué tus videos generan clientes
             </h2>
           </div>
-          <p className="text-zinc-500 text-xs md:text-sm max-w-md font-medium leading-relaxed">
-            Un buen video comercial no es cuestión de suerte. Combinamos estructura psicológica de ventas, Motion
-            Graphics en 3D e Inteligencia Artificial para que cada segundo justifique tu inversión.
-          </p>
+          <div className="flex flex-wrap gap-2">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-[11px] font-semibold text-zinc-800">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              DaVinci Resolve Studio
+            </span>
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-[11px] font-semibold text-zinc-800">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+              Adobe After Effects Oficial
+            </span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <InteractiveCard isDark={true} className="p-8 md:p-9">
-            <div className="flex flex-col h-full justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="px-3 py-1 rounded-full bg-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-300">
-                    01 // RETENCIÓN & RITMO
+        {/* Bloque Principal: Imagen Inmobiliaria Real con Trazado Motion Graphics 1px + Software Oficial */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          {/* Columna Izquierda (7 cols): Trazado Inmobiliario sobre toma aérea real */}
+          <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl bg-white border border-zinc-200/90 p-5 md:p-6 shadow-[0_12px_36px_-18px_rgba(0,0,0,0.08)]">
+            <div>
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-600 block">
+                    ESPECIALIDAD INMOBILIARIA & COMERCIAL
                   </span>
-                  <TrendingUp size={18} className="text-zinc-400" />
+                  <h3 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 mt-0.5">
+                    Motion Graphics 3D y Delimitación Exacta de Terrenos
+                  </h3>
                 </div>
-
-                <MotionTimelineGraphic />
-
-                <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mt-7 mb-3">
-                  Psicología de Retención en los Primeros 3 Segundos
-                </h3>
-                <p className="text-zinc-400 text-xs leading-relaxed font-medium">
-                  En Reels y TikTok el usuario decide en 1.8 segundos si desliza o se queda. Eliminamos tiempos muertos,
-                  aplicamos cortes dinámicos, micro-zooms y diseño sonoro (SFX) sincronizado para mantener la atención
-                  hasta el llamado a la acción.
-                </p>
+                <span className="px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-[10px] font-mono text-zinc-600">
+                  TRACKING 3D REAL
+                </span>
               </div>
 
-              <div className="mt-6 pt-5 border-t border-white/10 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-zinc-300">
-                <span>HOOK VISUAL + SONIDO</span>
-                <span className="text-white">+RETENCIÓN REAL</span>
+              {/* Imagen de dron con Motion Graphics 1px superpuestos */}
+              <RealEstateMotionShowcase />
+            </div>
+
+            <div className="mt-5 pt-4 border-t border-zinc-100 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div>
+                <b className="block text-zinc-900 font-semibold">Trazado de Lotes 3D</b>
+                <span className="text-zinc-500 text-[11px] leading-snug block mt-0.5">
+                  Líneas finas ancladas al terreno real para mostrar metrajes y colindancias.
+                </span>
+              </div>
+              <div>
+                <b className="block text-zinc-900 font-semibold">Señaladores Flotantes</b>
+                <span className="text-zinc-500 text-[11px] leading-snug block mt-0.5">
+                  Callouts de ubicación, avenidas, precios y plusvalía integrados al vuelo.
+                </span>
+              </div>
+              <div>
+                <b className="block text-zinc-900 font-semibold">Retención en 3 Segundos</b>
+                <span className="text-zinc-500 text-[11px] leading-snug block mt-0.5">
+                  Ganchos visuales e Inteligencia Artificial que detienen el scroll de inmediato.
+                </span>
               </div>
             </div>
-          </InteractiveCard>
+          </div>
 
-          <InteractiveCard isDark={true} className="p-8 md:p-9">
-            <div className="flex flex-col h-full justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="px-3 py-1 rounded-full bg-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-300">
-                    02 // MOTION GRAPHICS & TRAZADO
-                  </span>
-                  <Crosshair size={18} className="text-zinc-400" />
-                </div>
-
-                <MotionTrackingGraphic />
-
-                <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mt-7 mb-3">
-                  Señaladores 3D, Callouts y Delimitación de Terrenos
-                </h3>
-                <p className="text-zinc-400 text-xs leading-relaxed font-medium">
-                  Especialistas en bienes raíces, lotes y negocios físicos: integramos textos flotantes rastreados al
-                  movimiento de cámara y trazado exacto de terrenos para que el comprador entienda ubicaciones, metrajes
-                  y beneficios al instante.
-                </p>
-              </div>
-
-              <div className="mt-6 pt-5 border-t border-white/10 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-zinc-300">
-                <span>TRACKING DE CÁMARA 3D</span>
-                <span className="text-white">ALTO VALOR PERCIBIDO</span>
-              </div>
-            </div>
-          </InteractiveCard>
-
-          <InteractiveCard isDark={true} className="p-8 md:p-9">
-            <div className="flex flex-col h-full justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="px-3 py-1 rounded-full bg-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-300">
-                    03 // DAVINCI RESOLVE + IA
-                  </span>
-                  <Sliders size={18} className="text-zinc-400" />
-                </div>
-
-                <MotionColorAiGraphic />
-
-                <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mt-7 mb-3">
-                  Colorización Cinematográfica & Generación con IA
-                </h3>
-                <p className="text-zinc-400 text-xs leading-relaxed font-medium">
-                  ¿Te faltan tomas o no pudiste grabar voz? Complementamos tu material con videos generados por
-                  Inteligencia Artificial, locución comercial hiperrealista y corrección de color profesional en DaVinci
-                  Resolve.
-                </p>
-              </div>
-
-              <div className="mt-6 pt-5 border-t border-white/10 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-zinc-300">
-                <span>ACABADO DE ESTUDIO</span>
-                <span className="text-white">SIN LÍMITES DE RODAJE</span>
-              </div>
-            </div>
-          </InteractiveCard>
+          {/* Columna Derecha (5 cols): Línea de tiempo DaVinci Resolve Studio + After Effects Oficial */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-6">
+            <DaVinciResolveStudioTimeline />
+            <AfterEffectsOfficialMotion />
+          </div>
         </div>
       </section>
 
       {/* =====================================================================
-          6. PLANES DE EDICIÓN DE VIDEO POR DURACIÓN
+          6. PLANES DE EDICIÓN DE VIDEO POR DURACIÓN (DISEÑO ULTRA LIMPIO,
+             MODERNO Y PROFESIONAL DE 1PX)
           ===================================================================== */}
-      <section id="planes-edicion" className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-100">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+      <section id="planes-edicion" className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 block mb-3">
-              04 // INVERSIÓN TRANSPARENTE POR DURACIÓN
+            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-2">
+              Inversión Transparente por Duración
             </span>
-            <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-zinc-900 leading-none">
-              Planes de Edición.
+            <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-zinc-900 leading-none">
+              Planes de edición
             </h2>
           </div>
-          <p className="text-zinc-500 text-xs max-w-sm font-medium leading-relaxed">
-            Selecciona la duración de tu video y compara al instante qué incluye nuestra Edición Básica frente a la
-            Edición Avanzada con IA y Motion Graphics.
+          <p className="text-zinc-500 text-xs md:text-sm max-w-md font-normal leading-relaxed">
+            Elige la duración de tu video y compara al instante qué incluye cada nivel de producción.
           </p>
         </div>
 
-        {/* Selector de Duración */}
-        <div className="bg-zinc-100 p-2 rounded-[28px] grid grid-cols-2 lg:grid-cols-4 gap-2 mb-10 border border-zinc-200/80">
+        {/* Selector de Duración Limpio */}
+        <div className="bg-zinc-100/90 p-1.5 rounded-2xl grid grid-cols-2 lg:grid-cols-4 gap-1.5 mb-8 border border-zinc-200/80">
           {durationPlans.map((plan, index) => {
             const isSelected = selectedDurationIndex === index;
             return (
@@ -1383,28 +1564,28 @@ const App = () => {
                 key={plan.id}
                 type="button"
                 onClick={() => setSelectedDurationIndex(index)}
-                className={`relative py-4 px-5 rounded-[22px] text-left transition-all duration-300 flex flex-col justify-between ${
+                className={`relative py-3.5 px-4 rounded-xl text-left transition-all duration-200 flex flex-col justify-between ${
                   isSelected
-                    ? 'bg-[#0a0a0a] text-white shadow-xl scale-[1.01]'
-                    : 'bg-transparent text-zinc-600 hover:bg-white/70 hover:text-zinc-900'
+                    ? 'bg-zinc-950 text-white shadow-md'
+                    : 'bg-transparent text-zinc-600 hover:bg-white/80 hover:text-zinc-900'
                 }`}
               >
                 <div className="flex items-center justify-between gap-2 mb-1">
-                  <span className="flex items-center gap-2 text-xs font-black uppercase tracking-wider">
-                    <Clock size={14} className={isSelected ? 'text-white' : 'text-zinc-400'} />
+                  <span className="flex items-center gap-1.5 text-xs font-bold tracking-tight">
+                    <Clock size={13} className={isSelected ? 'text-white' : 'text-zinc-400'} />
                     {plan.label}
                   </span>
                   {plan.popular && (
                     <span
-                      className={`text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full ${
+                      className={`text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
                         isSelected ? 'bg-white text-zinc-950' : 'bg-zinc-900 text-white'
                       }`}
                     >
-                      Más Pedido
+                      Popular
                     </span>
                   )}
                 </div>
-                <span className={`text-[10px] font-medium leading-snug ${isSelected ? 'text-zinc-400' : 'text-zinc-400'}`}>
+                <span className={`text-[11px] font-normal leading-snug ${isSelected ? 'text-zinc-300' : 'text-zinc-500'}`}>
                   {plan.tag}
                 </span>
               </button>
@@ -1412,442 +1593,433 @@ const App = () => {
           })}
         </div>
 
-        {/* Comparativa de Planes: Básica vs Avanzada */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+        {/* Tarjetas Comparativas: Edición Básica (Blanca Editorial) vs Edición Avanzada (Obsidiana Studio) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* EDICIÓN BÁSICA */}
-          <InteractiveCard isDark={true} className="p-8 md:p-11">
-            <div className="flex flex-col h-full justify-between">
-              <div>
-                <div className="flex justify-between items-start gap-4 mb-6">
-                  <div>
-                    <span className="px-3.5 py-1.5 rounded-full bg-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-300 inline-block mb-3">
-                      NIVEL 01 · FLUJO ESENCIAL
-                    </span>
-                    <h3 className="text-3xl font-black italic uppercase tracking-tight text-white">Edición Básica</h3>
-                    <p className="text-zinc-400 text-xs mt-1 font-medium">
-                      Ideal para contenido ágil, claro y bien musicalizado con tus tomas y guion listos.
-                    </p>
-                  </div>
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                    <Film className="text-white" size={22} />
-                  </div>
-                </div>
-
-                {/* Precio Dinámico */}
-                <div className="my-8 p-6 rounded-3xl bg-white/[0.03] border border-white/10 flex items-baseline justify-between flex-wrap gap-4">
-                  <div>
-                    <span className="text-[9px] font-black uppercase tracking-[0.25em] text-zinc-500 block mb-1">
-                      DURACIÓN: {activeDuration.label.toUpperCase()}
-                    </span>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-xs font-black uppercase tracking-widest text-zinc-400">Bs.</span>
-                      <AnimatePresence mode="wait">
-                        <motion.span
-                          key={`basic-${activeDuration.id}`}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.2 }}
-                          className="text-5xl md:text-6xl font-black italic tracking-tighter text-white"
-                        >
-                          {activeDuration.basicPrice}
-                        </motion.span>
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                  <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl bg-white/10 text-zinc-300">
-                    Por video terminado
+          <div className="rounded-3xl bg-white border border-zinc-200/90 p-7 md:p-9 shadow-[0_12px_40px_-20px_rgba(0,0,0,0.07)] flex flex-col justify-between">
+            <div>
+              <div className="flex justify-between items-start gap-4 pb-6 border-b border-zinc-100">
+                <div>
+                  <span className="inline-block px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-2.5">
+                    Nivel 01 · Flujo Esencial
                   </span>
+                  <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900">Edición Básica</h3>
+                  <p className="text-zinc-500 text-xs md:text-sm mt-1 font-normal">
+                    Ideal para contenido ágil, claro y bien musicalizado con tus tomas y guion listos.
+                  </p>
                 </div>
-
-                {/* Lista de entregables */}
-                <div className="space-y-3.5 mb-8">
-                  <div className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500 mb-2">
-                    ¿QUÉ INCLUYE ESTE PLAN?
-                  </div>
-                  {[
-                    'El cliente envía sus tomas de video y el guion listo',
-                    'Selección, recorte y unión profesional de las mejores tomas',
-                    'Música de fondo acorde al ritmo del video + efectos de sonido básicos',
-                    'Títulos limpios o subtítulos dinámicos para retención',
-                    'Ajuste básico de imagen y color para un acabado limpio',
-                    'Incluye hasta 2 revisiones (ajustes sobre el mismo guion)'
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-xs text-zinc-300 font-medium leading-relaxed">
-                      <CheckCircle2 size={15} className="text-zinc-400 shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
+                <div className="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center shrink-0 text-zinc-800">
+                  <Film size={20} />
                 </div>
               </div>
 
-              <a
-                href={getWhatsAppPlanUrl('Edición Básica', activeDuration.label, activeDuration.basicPrice)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-4 px-6 bg-white/10 hover:bg-white text-white hover:text-zinc-950 border border-white/15 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2"
-              >
-                <MessageCircle size={15} /> Solicitar Edición Básica ({activeDuration.label})
-              </a>
+              {/* Precio Dinámico */}
+              <div className="my-6 p-5 rounded-2xl bg-zinc-50 border border-zinc-200/70 flex items-baseline justify-between flex-wrap gap-4">
+                <div>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-0.5">
+                    Duración seleccionada: {activeDuration.label}
+                  </span>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-sm font-bold text-zinc-500">Bs.</span>
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={`basic-${activeDuration.id}`}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.18 }}
+                        className="text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900"
+                      >
+                        {activeDuration.basicPrice}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+                </div>
+                <span className="text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-lg bg-white border border-zinc-200 text-zinc-600">
+                  Por video terminado
+                </span>
+              </div>
+
+              {/* Lista de entregables */}
+              <div className="space-y-3 mb-8">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-2">
+                  Qué incluye este plan
+                </div>
+                {[
+                  'El cliente envía sus tomas de video y el guion listo',
+                  'Selección, recorte y unión limpia en DaVinci Resolve Studio',
+                  'Música de fondo acorde al ritmo del video + efectos de sonido básicos',
+                  'Títulos limpios o subtítulos dinámicos para retención',
+                  'Ajuste básico de exposición y balance de color',
+                  'Incluye hasta 2 revisiones (ajustes sobre el mismo guion)'
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2.5 text-xs md:text-[13px] text-zinc-600 font-normal leading-relaxed">
+                    <CheckCircle2 size={15} className="text-zinc-900 shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </InteractiveCard>
+
+            <a
+              href={getWhatsAppPlanUrl('Edición Básica', activeDuration.label, activeDuration.basicPrice)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3.5 px-6 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm"
+            >
+              <MessageCircle size={15} /> Solicitar Edición Básica ({activeDuration.label})
+            </a>
+          </div>
 
           {/* EDICIÓN AVANZADA */}
-          <InteractiveCard isDark={true} className="p-8 md:p-11">
-            <div className="flex flex-col h-full justify-between">
-              <div>
-                <div className="flex justify-between items-start gap-4 mb-6">
-                  <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="px-3.5 py-1.5 rounded-full bg-white text-zinc-950 text-[9px] font-black uppercase tracking-widest inline-block">
-                        NIVEL 02 · ALTO IMPACTO + IA
-                      </span>
-                      <span className="px-3 py-1 rounded-full bg-white/10 text-white text-[9px] font-black uppercase tracking-widest">
-                        RECOMENDADO
-                      </span>
-                    </div>
-                    <h3 className="text-3xl font-black italic uppercase tracking-tight text-white">Edición Avanzada</h3>
-                    <p className="text-zinc-400 text-xs mt-1 font-medium">
-                      Producción comercial completa con Motion Graphics, trazado de terrenos e Inteligencia Artificial.
-                    </p>
-                  </div>
-                  <div className="w-12 h-12 rounded-2xl bg-white text-zinc-950 flex items-center justify-center shrink-0 shadow-lg">
-                    <Sparkles size={22} />
-                  </div>
-                </div>
-
-                {/* Precio Dinámico */}
-                <div className="my-8 p-6 rounded-3xl bg-white/[0.07] border border-white/20 flex items-baseline justify-between flex-wrap gap-4">
-                  <div>
-                    <span className="text-[9px] font-black uppercase tracking-[0.25em] text-zinc-400 block mb-1">
-                      DURACIÓN: {activeDuration.label.toUpperCase()}
+          <div className="rounded-3xl bg-[#0b0b0e] text-white border border-zinc-800 p-7 md:p-9 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.3)] flex flex-col justify-between">
+            <div>
+              <div className="flex justify-between items-start gap-4 pb-6 border-b border-white/[0.08]">
+                <div>
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <span className="px-3 py-1 rounded-full bg-white text-zinc-950 text-[10px] font-bold uppercase tracking-wider">
+                      Nivel 02 · Alto Impacto + IA
                     </span>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-xs font-black uppercase tracking-widest text-zinc-300">Bs.</span>
-                      <AnimatePresence mode="wait">
-                        <motion.span
-                          key={`adv-${activeDuration.id}`}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.2 }}
-                          className="text-5xl md:text-6xl font-black italic tracking-tighter text-white"
-                        >
-                          {activeDuration.advancedPrice}
-                        </motion.span>
-                      </AnimatePresence>
-                    </div>
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-semibold uppercase tracking-wider">
+                      Recomendado
+                    </span>
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl bg-white text-zinc-950">
-                    Incluye IA + Motion
-                  </span>
+                  <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">Edición Avanzada</h3>
+                  <p className="text-zinc-400 text-xs md:text-sm mt-1 font-normal">
+                    Producción comercial con After Effects Oficial, trazado de terrenos 3D e Inteligencia Artificial.
+                  </p>
                 </div>
-
-                {/* Lista de entregables */}
-                <div className="space-y-3.5 mb-8">
-                  <div className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 mb-2">
-                    TODO LO DE BÁSICA MÁS:
-                  </div>
-                  {[
-                    'El cliente envía sus tomas y el guion (o estructuramos el ritmo visual)',
-                    'Edición dinámica con mayor ritmo, efectos visuales y sonido trabajado',
-                    'Animaciones gráficas, señaladores y textos flotantes integrados al video',
-                    'Incluye el marcado / trazado animado de 1 terreno o lote',
-                    'Incluye hasta 2 videos generados con Inteligencia Artificial (IA)',
-                    'Incluye 1 audio o locución comercial generada con IA',
-                    'Incluye hasta 2 revisiones sin costo adicional'
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 text-xs text-zinc-200 font-medium leading-relaxed">
-                      <CheckCircle2 size={15} className="text-white shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
+                <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0 text-white">
+                  <Sparkles size={20} />
                 </div>
               </div>
 
-              <a
-                href={getWhatsAppPlanUrl('Edición Avanzada', activeDuration.label, activeDuration.advancedPrice)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-4 px-6 bg-white hover:bg-zinc-200 text-zinc-950 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 shadow-xl"
-              >
-                <MessageCircle size={15} /> Solicitar Edición Avanzada ({activeDuration.label})
-              </a>
+              {/* Precio Dinámico */}
+              <div className="my-6 p-5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-baseline justify-between flex-wrap gap-4">
+                <div>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-0.5">
+                    Duración seleccionada: {activeDuration.label}
+                  </span>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-sm font-bold text-zinc-300">Bs.</span>
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={`adv-${activeDuration.id}`}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.18 }}
+                        className="text-4xl md:text-5xl font-extrabold tracking-tight text-white"
+                      >
+                        {activeDuration.advancedPrice}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-lg bg-white text-zinc-950">
+                  Incluye Motion 3D + IA
+                </span>
+              </div>
+
+              {/* Lista de entregables */}
+              <div className="space-y-3 mb-8">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-2">
+                  Todo lo de Básica más
+                </div>
+                {[
+                  'El cliente envía sus tomas y el guion (o estructuramos el ritmo visual)',
+                  'Edición dinámica con speed-ramps, efectos visuales y diseño sonoro en DaVinci Resolve Studio',
+                  'Motion Graphics en Adobe After Effects Oficial: señaladores y textos flotantes 3D',
+                  'Incluye el marcado / trazado animado de 1 terreno o lote',
+                  'Incluye hasta 2 videos generados con Inteligencia Artificial (IA)',
+                  'Incluye 1 audio o locución comercial generada con IA',
+                  'Incluye hasta 2 revisiones sin costo adicional'
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2.5 text-xs md:text-[13px] text-zinc-200 font-normal leading-relaxed">
+                    <CheckCircle2 size={15} className="text-emerald-400 shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </InteractiveCard>
+
+            <a
+              href={getWhatsAppPlanUrl('Edición Avanzada', activeDuration.label, activeDuration.advancedPrice)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3.5 px-6 bg-white hover:bg-zinc-200 text-zinc-950 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg"
+            >
+              <MessageCircle size={15} /> Solicitar Edición Avanzada ({activeDuration.label})
+            </a>
+          </div>
         </div>
 
-        {/* Barra Inferior de Adicionales / Extras */}
-        <InteractiveCard isDark={true} className="p-7 md:p-9">
+        {/* Barra de Adicionales y Extras con diseño limpio de 1px */}
+        <div className="rounded-2xl bg-zinc-50 border border-zinc-200/80 p-6 md:p-7">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="max-w-sm">
-              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-500 block mb-1.5">
-                COMPLEMENTOS A MEDIDA
+            <div className="max-w-xs">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-zinc-400 block mb-1">
+                Complementos opcionales
               </span>
-              <h4 className="text-xl font-black italic uppercase tracking-tight text-white flex items-center gap-2">
-                <Plus size={18} className="text-zinc-400" /> Adicionales y Extras
+              <h4 className="text-lg font-bold tracking-tight text-zinc-900 flex items-center gap-2">
+                <Plus size={16} className="text-zinc-500" /> Adicionales a medida
               </h4>
-              <p className="text-zinc-400 text-xs mt-1 font-medium leading-relaxed">
-                Personaliza tu producción si tu proyecto requiere más tomas con IA, más terrenos o mayor duración.
+              <p className="text-zinc-500 text-xs mt-1 font-normal leading-relaxed">
+                Añade extras solo cuando tu producción requiera más tomas con IA o terrenos adicionales.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 flex-1">
-              <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
-                <div className="flex items-center justify-between text-zinc-400 mb-1.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 flex-1">
+              <div className="p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
+                <div className="flex items-center justify-between text-zinc-400 mb-1">
                   <Sparkles size={14} />
-                  <span className="text-[9px] font-black uppercase tracking-widest">EXTRA IA</span>
+                  <span className="text-[9px] font-mono uppercase tracking-wider">EXTRA IA</span>
                 </div>
-                <div className="text-lg font-black italic text-white">+Bs. 50</div>
-                <div className="text-[11px] text-zinc-400 font-medium mt-0.5">Video extra generado con IA (c/u)</div>
+                <div className="text-lg font-extrabold text-zinc-900">+Bs. 50</div>
+                <div className="text-[11px] text-zinc-500 mt-0.5">Video extra generado con IA (c/u)</div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
-                <div className="flex items-center justify-between text-zinc-400 mb-1.5">
+              <div className="p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
+                <div className="flex items-center justify-between text-zinc-400 mb-1">
                   <MapPin size={14} />
-                  <span className="text-[9px] font-black uppercase tracking-widest">INMOBILIARIA</span>
+                  <span className="text-[9px] font-mono uppercase tracking-wider">INMOBILIARIA</span>
                 </div>
-                <div className="text-lg font-black italic text-white">+Bs. 80</div>
-                <div className="text-[11px] text-zinc-400 font-medium mt-0.5">Marcado de terreno adicional (c/u)</div>
+                <div className="text-lg font-extrabold text-zinc-900">+Bs. 80</div>
+                <div className="text-[11px] text-zinc-500 mt-0.5">Marcado de terreno adicional (c/u)</div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
-                <div className="flex items-center justify-between text-zinc-400 mb-1.5">
+              <div className="p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
+                <div className="flex items-center justify-between text-zinc-400 mb-1">
                   <Mic size={14} />
-                  <span className="text-[9px] font-black uppercase tracking-widest">REVISIONES</span>
+                  <span className="text-[9px] font-mono uppercase tracking-wider">REVISIONES</span>
                 </div>
-                <div className="text-lg font-black italic text-white">+Bs. 30 / 60</div>
-                <div className="text-[11px] text-zinc-400 font-medium mt-0.5">Ajuste extra (3ra revisión en adelante)</div>
+                <div className="text-lg font-extrabold text-zinc-900">+Bs. 30 / 60</div>
+                <div className="text-[11px] text-zinc-500 mt-0.5">Ajuste extra (3ra revisión en adelante)</div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
-                <div className="flex items-center justify-between text-zinc-400 mb-1.5">
+              <div className="p-4 rounded-xl bg-white border border-zinc-200/80 shadow-sm">
+                <div className="flex items-center justify-between text-zinc-400 mb-1">
                   <Clock size={14} />
-                  <span className="text-[9px] font-black uppercase tracking-widest">+120 SEG</span>
+                  <span className="text-[9px] font-mono uppercase tracking-wider">+120 SEG</span>
                 </div>
-                <div className="text-lg font-black italic text-white">+Bs. 60 / 100</div>
-                <div className="text-[11px] text-zinc-400 font-medium mt-0.5">Cada +30 seg extras (Básica / Avanzada)</div>
+                <div className="text-lg font-extrabold text-zinc-900">+Bs. 60 / 100</div>
+                <div className="text-[11px] text-zinc-500 mt-0.5">Cada +30 seg extras (Básica / Avanzada)</div>
               </div>
             </div>
           </div>
-        </InteractiveCard>
+        </div>
       </section>
 
       {/* =====================================================================
-          7. PROCESO DE TRABAJO EN 3 PASOS (CERO FRICCIÓN PARA EL CLIENTE)
+          7. PROCESO EN 3 PASOS (LIMPIO Y EDITORIAL)
           ===================================================================== */}
-      <section className="py-16 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-100">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+      <section className="py-16 md:py-20 px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 block mb-3">
-              05 // FLUJO DE TRABAJO RÁPIDO
+            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
+              Flujo de Trabajo Directo
             </span>
-            <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-zinc-900 leading-none">
-              Cómo trabajamos tu video.
+            <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-zinc-900 leading-none">
+              Cómo trabajamos tu video
             </h2>
           </div>
-          <p className="text-zinc-500 text-xs max-w-sm font-medium leading-relaxed">
-            Un proceso directo en 3 pasos para que tengas tu video editado, corregido y listo para publicar o pautar en
-            tiempo récord.
+          <p className="text-zinc-500 text-xs md:text-sm max-w-sm font-normal leading-relaxed">
+            Tres pasos claros para entregar tu video listo para publicar o pautar en Meta Ads y TikTok.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
             {
-              step: 'PASO 01',
+              step: '01',
               title: 'Envía tus Tomas y Guion',
-              desc: 'Nos compartes tus grabaciones por WhatsApp o Google Drive junto con la idea o guion. Si aún no tienes guion, te ayudamos a estructurar el gancho.',
-              badge: 'Recepción inmediata'
+              desc: 'Nos compartes tus grabaciones por WhatsApp o Google Drive junto con la idea. Si aún no tienes guion, estructuramos el gancho contigo.',
+              badge: 'Recepción rápida'
             },
             {
-              step: 'PASO 02',
-              title: 'Edición, Motion Graphics e IA',
-              desc: 'Realizamos el montaje rítmico, diseño sonoro, trazado 3D de terrenos, integración de tomas/locución con IA y colorización en DaVinci Resolve.',
-              badge: 'Postproducción integral'
+              step: '02',
+              title: 'Edición, Motion 3D e IA',
+              desc: 'Montaje en DaVinci Resolve Studio, trazado 3D y gráficos en Adobe After Effects Oficial, más locución o tomas con IA.',
+              badge: 'Postproducción'
             },
             {
-              step: 'PASO 03',
-              title: 'Revisión y Entrega Lista para Publicar',
-              desc: 'Recibes el video para validar detalles (incluye 2 revisiones sin costo) y te entregamos el master en máxima calidad para Reels, TikTok o YouTube.',
-              badge: 'Master 1080p / 4K'
+              step: '03',
+              title: 'Revisión y Entrega Master',
+              desc: 'Validas el resultado (incluye 2 revisiones sin costo) y recibes el master en máxima calidad listo para redes sociales.',
+              badge: 'Entrega 1080p / 4K'
             }
           ].map((item, idx) => (
-            <InteractiveCard key={idx} isDark={true} className="p-8">
-              <div className="flex flex-col h-full justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">{item.step}</span>
-                    <span className="px-3 py-1 rounded-full bg-white/10 text-[9px] font-black uppercase tracking-widest text-white">
-                      {item.badge}
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-black italic uppercase tracking-tight text-white mb-3">{item.title}</h3>
-                  <p className="text-zinc-400 text-xs leading-relaxed font-medium">{item.desc}</p>
+            <div
+              key={idx}
+              className="rounded-2xl bg-white border border-zinc-200/90 p-6 md:p-7 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-5">
+                  <span className="w-8 h-8 rounded-lg bg-zinc-950 text-white text-xs font-mono font-bold flex items-center justify-center">
+                    {item.step}
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full bg-zinc-100 border border-zinc-200 text-[10px] font-medium text-zinc-600">
+                    {item.badge}
+                  </span>
                 </div>
-
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-                  <div className="h-1 flex-1 bg-white/10 rounded-full overflow-hidden mr-4">
-                    <motion.div
-                      animate={{ x: ['-100%', '100%'] }}
-                      transition={{ duration: 2.8, repeat: Infinity, ease: 'linear', delay: idx * 0.4 }}
-                      className="h-full w-1/2 bg-white rounded-full"
-                    />
-                  </div>
-                  <ArrowRight size={14} className="text-zinc-400" />
-                </div>
+                <h3 className="text-lg font-bold tracking-tight text-zinc-900 mb-2">{item.title}</h3>
+                <p className="text-zinc-500 text-xs leading-relaxed font-normal">{item.desc}</p>
               </div>
-            </InteractiveCard>
+
+              <div className="mt-6 pt-4 border-t border-zinc-100 flex items-center justify-between">
+                <div className="h-[1.5px] flex-1 bg-zinc-100 rounded-full overflow-hidden mr-3">
+                  <motion.div
+                    animate={{ x: ['-100%', '100%'] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'linear', delay: idx * 0.4 }}
+                    className="h-full w-1/2 bg-zinc-900 rounded-full"
+                  />
+                </div>
+                <ArrowRight size={13} className="text-zinc-400" />
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
       {/* =====================================================================
-          8. SECCIÓN DE CONTACTO DIRECTO
+          8. CONTACTO DIRECTO (DISEÑO LIMPIO Y PROFESIONAL)
           ===================================================================== */}
-      <section id="contacto" className="py-20 px-6 md:px-8 max-w-5xl mx-auto">
-        <InteractiveCard isDark={true} className="p-10 md:p-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14">
+      <section id="contacto" className="py-16 md:py-20 px-6 md:px-8 max-w-5xl mx-auto">
+        <div className="rounded-3xl bg-[#0b0b0e] text-white border border-zinc-800 p-8 md:p-12 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.28)]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-12 items-center">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500 block mb-4">
-                06 // CONTACTO DIRECTO
+              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-2">
+                Contacto Directo
               </span>
-              <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white leading-none mb-6">
-                Iniciemos una <br /> producción.
+              <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-tight mb-4">
+                Iniciemos tu próxima producción
               </h2>
-              <p className="text-zinc-400 text-xs leading-relaxed mb-8 font-medium">
-                ¿Tienes un proyecto en mente o necesitas optimizar tu flujo de post-producción? Escríbenos por WhatsApp
-                o déjanos un mensaje y te responderemos en menos de 24 horas.
+              <p className="text-zinc-400 text-xs md:text-sm leading-relaxed mb-6 font-normal">
+                Escríbenos directamente por WhatsApp para cotizar tu video en minutos o envíanos los detalles de tu
+                proyecto en el formulario.
               </p>
 
-              <div className="space-y-4">
+              <div className="space-y-3.5">
                 <a
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                     'Hola Sync Pro, quiero cotizar la edición de un video.'
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white text-zinc-950 text-[10px] font-black uppercase tracking-widest hover:bg-zinc-200 transition-all"
+                  className="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl bg-white text-zinc-950 text-xs font-bold uppercase tracking-wider hover:bg-zinc-200 transition-all"
                 >
-                  <MessageCircle size={16} /> WhatsApp Directo: +591 69109766
+                  <MessageCircle size={16} /> WhatsApp: +591 69109766
                 </a>
-                <div className="flex items-center gap-3 text-xs font-bold text-zinc-300 pt-2">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-ping" />
-                  Disponibilidad inmediata para proyectos freelance
+                <div className="flex items-center gap-2.5 text-xs text-zinc-300 pt-1">
+                  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                  <span>Disponibilidad inmediata para proyectos comerciales</span>
                 </div>
-                <div className="flex items-center gap-3 text-xs font-bold text-zinc-400">
-                  <ShieldCheck size={16} className="text-zinc-300" />
-                  Entrega puntual garantizada + 2 revisiones incluidas
+                <div className="flex items-center gap-2.5 text-xs text-zinc-400">
+                  <ShieldCheck size={15} className="text-zinc-300" />
+                  <span>DaVinci Resolve Studio & Adobe After Effects Oficial</span>
                 </div>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  placeholder="NOMBRE COMPLETO"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-white/30 transition-colors font-bold tracking-wider"
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="CORREO ELECTRÓNICO"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-white/30 transition-colors font-bold tracking-wider"
-                />
-              </div>
-              <div>
-                <textarea
-                  rows="4"
-                  placeholder="CUÉNTANOS SOBRE TU PROYECTO..."
-                  required
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-white/30 transition-colors font-bold tracking-wider resize-none"
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              <input
+                type="text"
+                placeholder="Nombre completo"
+                required
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-white/30 transition-colors font-medium"
+              />
+              <input
+                type="email"
+                placeholder="Correo electrónico"
+                required
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-white/30 transition-colors font-medium"
+              />
+              <textarea
+                rows="4"
+                placeholder="Cuéntanos sobre tu proyecto o el tipo de video que buscas..."
+                required
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-white/30 transition-colors font-medium resize-none"
+              />
               <button
                 type="submit"
-                className="w-full py-4 bg-white text-zinc-950 hover:bg-zinc-200 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-2 shadow-xl"
+                className="w-full py-3.5 bg-white text-zinc-950 hover:bg-zinc-200 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
               >
                 Enviar Mensaje <Send size={14} />
               </button>
-              {status && (
-                <p className="text-[10px] font-black uppercase tracking-widest text-center text-zinc-400 mt-4">
-                  {status}
-                </p>
-              )}
+              {status && <p className="text-[11px] font-medium text-center text-zinc-400 mt-2">{status}</p>}
             </form>
           </div>
-        </InteractiveCard>
+        </div>
       </section>
 
       {/* =====================================================================
-          9. SECCIÓN DE EXTENSIONES Y PLUGINS (STUDIO SYNC PRO)
+          9. STUDIO SYNC PRO (HERRAMIENTAS Y PLUGINS CON TRAZOS LIMPIOS 1PX)
           ===================================================================== */}
-      <section id="herramientas" className="py-20 px-6 md:px-8 max-w-7xl mx-auto border-t border-zinc-100">
-        <div className="mb-14">
-          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 block mb-3">
-            Sync Pro Labs
-          </span>
-          <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-zinc-900">
-            Studio Sync Pro.
-          </h2>
-          <p className="text-zinc-500 text-xs mt-3 max-w-lg font-medium">
-            Herramientas de software diseñadas internamente para romper los límites de velocidad y calidad en Premiere
-            Pro, After Effects y DaVinci Resolve.
+      <section id="herramientas" className="py-16 px-6 md:px-8 max-w-7xl mx-auto border-t border-zinc-200/70">
+        <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-400 block mb-1.5">
+              Sync Pro Labs
+            </span>
+            <h2 className="text-2xl md:text-4xl font-extrabold uppercase tracking-tight text-zinc-900">
+              Studio Sync Pro
+            </h2>
+          </div>
+          <p className="text-zinc-500 text-xs max-w-md font-normal">
+            Herramientas y estructuras desarrolladas internamente para acelerar el flujo en DaVinci Resolve Studio y
+            After Effects.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {tools.map((tool, index) => (
-            <InteractiveCard key={index} isDark={true} className="p-10 md:p-12">
-              <div className="flex flex-col h-full justify-between">
-                <div>
-                  <div className="flex justify-between items-start mb-10">
-                    <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                      {tool.icon}
-                    </div>
-                    <span className="px-4 py-1.5 rounded-full bg-white text-zinc-950 text-[9px] font-black uppercase tracking-widest">
-                      {tool.badge}
-                    </span>
+            <div
+              key={index}
+              className="rounded-2xl bg-zinc-50/80 border border-zinc-200/90 p-7 flex flex-col justify-between hover:bg-white hover:shadow-md transition-all"
+            >
+              <div>
+                <div className="flex justify-between items-start mb-5">
+                  <div className="w-10 h-10 rounded-xl bg-white border border-zinc-200 flex items-center justify-center shadow-sm">
+                    {tool.icon}
                   </div>
-
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 block mb-2">
-                    {tool.target}
+                  <span className="px-3 py-1 rounded-full bg-zinc-900 text-white text-[9px] font-semibold uppercase tracking-wider">
+                    {tool.badge}
                   </span>
-                  <h3 className="text-3xl font-black italic uppercase tracking-tight text-white mb-4">{tool.name}</h3>
-                  <p className="text-zinc-400 text-sm leading-relaxed mb-8 font-medium">{tool.description}</p>
-
-                  <div className="grid grid-cols-2 gap-3 mb-10">
-                    {tool.specs.map((spec, i) => (
-                      <div key={i} className="flex items-center gap-2 text-[11px] font-bold text-zinc-300">
-                        <div className="w-1.5 h-1.5 bg-white rounded-full" />
-                        {spec}
-                      </div>
-                    ))}
-                  </div>
                 </div>
 
-                <a
-                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                    `Hola Sync Pro, me interesa adquirir la herramienta ${tool.name} para ${tool.target}.`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-4 bg-white/5 hover:bg-white text-white hover:text-zinc-950 border border-white/10 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 group"
-                >
-                  Adquirir Licencia <Zap size={14} className="group-hover:fill-current" />
-                </a>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1">
+                  {tool.target}
+                </span>
+                <h3 className="text-xl font-bold tracking-tight text-zinc-900 mb-2">{tool.name}</h3>
+                <p className="text-zinc-500 text-xs leading-relaxed mb-5 font-normal">{tool.description}</p>
+
+                <div className="grid grid-cols-2 gap-2 mb-6">
+                  {tool.specs.map((spec, i) => (
+                    <div key={i} className="flex items-center gap-2 text-[11px] font-medium text-zinc-700">
+                      <span className="w-1 h-1 bg-zinc-900 rounded-full" />
+                      {spec}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </InteractiveCard>
+
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                  `Hola Sync Pro, me interesa adquirir la herramienta ${tool.name} para ${tool.target}.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 bg-white hover:bg-zinc-950 text-zinc-900 hover:text-white border border-zinc-200/90 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+              >
+                Consultar Licencia <Zap size={13} />
+              </a>
+            </div>
           ))}
         </div>
       </section>
@@ -1874,9 +2046,9 @@ const App = () => {
             </button>
 
             <motion.div
-              initial={{ scale: 0.9, y: 16 }}
+              initial={{ scale: 0.92, y: 14 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 16 }}
+              exit={{ scale: 0.92, y: 14 }}
               onClick={(e) => e.stopPropagation()}
               className={`relative flex flex-col items-center ${
                 lightboxItem.wide ? 'max-w-[min(94vw,1080px)]' : 'max-w-[min(92vw,440px)]'
@@ -1890,20 +2062,20 @@ const App = () => {
                   autoPlay
                   playsInline
                   loop
-                  className="max-h-[80vh] max-w-full w-auto rounded-[24px] bg-black border border-white/15 shadow-[0_40px_90px_-20px_rgba(0,0,0,0.95)]"
+                  className="max-h-[80vh] max-w-full w-auto rounded-2xl bg-black border border-white/15 shadow-2xl"
                 />
               ) : (
                 <img
                   src={lightboxItem.src}
                   alt={lightboxItem.subtitle || lightboxItem.title}
-                  className="max-h-[80vh] max-w-full w-auto rounded-[24px] bg-black border border-white/15 shadow-[0_40px_90px_-20px_rgba(0,0,0,0.95)]"
+                  className="max-h-[80vh] max-w-full w-auto rounded-2xl bg-black border border-white/15 shadow-2xl"
                 />
               )}
 
               <div className="mt-3 text-center text-white">
-                <b className="block text-base font-black italic uppercase tracking-tight">{lightboxItem.title}</b>
+                <b className="block text-sm font-bold uppercase tracking-tight">{lightboxItem.title}</b>
                 {lightboxItem.subtitle && (
-                  <span className="block text-xs text-zinc-400 font-medium mt-0.5">{lightboxItem.subtitle}</span>
+                  <span className="block text-xs text-zinc-400 font-normal mt-0.5">{lightboxItem.subtitle}</span>
                 )}
               </div>
             </motion.div>
@@ -1919,31 +2091,27 @@ const App = () => {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Contactar por WhatsApp"
-        className="fixed bottom-6 right-6 z-50 bg-[#0a0a0a] text-white p-4 rounded-full shadow-2xl border border-white/15 hover:scale-105 transition-all flex items-center gap-2.5 group"
+        className="fixed bottom-5 right-5 z-50 bg-zinc-950 text-white px-4 py-3.5 rounded-full shadow-xl border border-white/15 hover:scale-105 transition-all flex items-center gap-2"
       >
-        <MessageCircle size={20} className="text-emerald-400" />
-        <span className="text-[10px] font-black uppercase tracking-widest pr-1 hidden sm:inline">
-          Cotizar por WhatsApp
-        </span>
+        <MessageCircle size={18} className="text-emerald-400" />
+        <span className="text-[11px] font-bold uppercase tracking-wider pr-1 hidden sm:inline">WhatsApp</span>
       </a>
 
       {/* Footer */}
-      <footer className="py-16 border-t border-zinc-200 text-center bg-zinc-50/50">
-        <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-sm font-black tracking-tighter">SYNC PRO // 2026</div>
-          <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-[0.3em]">
-            Post-Producción Digital & Desarrollo de Herramientas
+      <footer className="py-12 border-t border-zinc-200/80 text-center bg-zinc-50/50">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-xs font-extrabold tracking-tight text-zinc-900">SYNC PRO // 2026</div>
+          <p className="text-zinc-400 text-[11px] font-medium">
+            Post-Producción Digital · DaVinci Resolve Studio · Adobe After Effects Oficial
           </p>
-          <div className="flex gap-6 text-[10px] font-black uppercase tracking-widest text-zinc-500">
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-zinc-900 transition-colors"
-            >
-              WhatsApp: +591 69109766
-            </a>
-          </div>
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[11px] font-semibold text-zinc-600 hover:text-zinc-950 transition-colors"
+          >
+            WhatsApp: +591 69109766
+          </a>
         </div>
       </footer>
     </div>
