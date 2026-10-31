@@ -13,10 +13,18 @@ import {
   Layers, 
   Repeat, 
   Clock,
-  Download
+  Download,
+  Sliders,
+  Sparkles,
+  Volume2,
+  Cpu,
+  FolderUp,
+  Send
 } from 'lucide-react';
 
-/* Componente para reproducir directamente cada video sin botón Play en el medio */
+/* -------------------------------------------------------------------------- */
+/*  COMPONENTE 1: REPRODUCCIÓN DIRECTA DE PROYECTOS (SIN BOTÓN PLAY NI REPETICIÓN) */
+/* -------------------------------------------------------------------------- */
 const DirectProjectCard = ({ proj, index }) => {
   const cardRef = useRef(null);
   const videoRef = useRef(null);
@@ -85,6 +93,190 @@ const DirectProjectCard = ({ proj, index }) => {
   );
 };
 
+/* -------------------------------------------------------------------------- */
+/*  COMPONENTE 2: MOTION GRAPHICS COMPLEMENTARIOS (TIMELINE, 3D TRACKING, COLOR) */
+/* -------------------------------------------------------------------------- */
+const MotionTimelineGraphic = () => (
+  <div className="relative h-40 w-full rounded-2xl bg-black/60 border border-white/10 p-4 overflow-hidden flex flex-col justify-between select-none">
+    {/* Cabecera de Telemetría */}
+    <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500">
+      <span>TIMELINE // RITMO & RETENCIÓN</span>
+      <span className="text-zinc-300">94% RETENCIÓN</span>
+    </div>
+
+    {/* Pistas de Edición Animadas */}
+    <div className="space-y-2 my-auto relative">
+      {/* Pista V2: Gráficos & Subtítulos */}
+      <div className="flex gap-1.5 items-center">
+        <span className="text-[8px] font-black text-zinc-600 w-6">V2</span>
+        <div className="flex-1 grid grid-cols-4 gap-1.5">
+          {[0, 1, 2, 3].map((i) => (
+            <motion.div
+              key={i}
+              animate={{ opacity: [0.35, 1, 0.35] }}
+              transition={{ duration: 2.2, repeat: Infinity, delay: i * 0.4 }}
+              className="h-3.5 rounded bg-zinc-700/80 border border-white/15 flex items-center justify-center"
+            >
+              <span className="text-[7px] font-black text-zinc-300 uppercase">HOOK {i + 1}</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Pista V1: Cortes Dinámicos */}
+      <div className="flex gap-1.5 items-center">
+        <span className="text-[8px] font-black text-zinc-600 w-6">V1</span>
+        <div className="flex-1 flex gap-1">
+          <div className="h-5 w-1/3 rounded bg-zinc-800 border border-white/10" />
+          <div className="h-5 w-1/4 rounded bg-zinc-600 border border-white/20" />
+          <div className="h-5 w-2/5 rounded bg-zinc-800 border border-white/10" />
+        </div>
+      </div>
+
+      {/* Pista A1: Onda de Audio / Voz IA & SFX */}
+      <div className="flex gap-1.5 items-center">
+        <span className="text-[8px] font-black text-zinc-600 w-6">A1</span>
+        <div className="flex-1 h-5 rounded bg-zinc-900/90 border border-white/5 px-2 flex items-center justify-between gap-0.5">
+          {[40, 85, 55, 95, 35, 75, 90, 50, 80, 60, 95, 45, 70, 85, 50, 65].map((h, idx) => (
+            <motion.span
+              key={idx}
+              animate={{ height: [`${h * 0.4}%`, `${h}%`, `${h * 0.4}%`] }}
+              transition={{ duration: 1.2, repeat: Infinity, delay: idx * 0.07 }}
+              className="w-1 bg-zinc-400 rounded-full"
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Cabezal de Reproducción (Playhead) en Movimiento */}
+      <motion.div
+        animate={{ left: ['12%', '94%', '12%'] }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+        className="absolute top-0 bottom-0 w-[1.5px] bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] z-20 pointer-events-none"
+      >
+        <div className="w-2.5 h-2.5 -ml-[4px] -mt-1 rotate-45 bg-white" />
+      </motion.div>
+    </div>
+
+    <div className="flex justify-between text-[8px] font-bold text-zinc-600 tracking-widest uppercase">
+      <span>00:00:00</span>
+      <span>JUMP CUTS + SFX</span>
+      <span>00:01:00</span>
+    </div>
+  </div>
+);
+
+const MotionTrackingGraphic = () => (
+  <div className="relative h-40 w-full rounded-2xl bg-black/60 border border-white/10 p-4 overflow-hidden select-none">
+    <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500 relative z-10">
+      <span>3D CAMERA TRACKING</span>
+      <span className="text-zinc-300">TRAZADO ACTIVO</span>
+    </div>
+
+    {/* Cuadrícula de Perspectiva y Polígono de Terreno Animado */}
+    <svg viewBox="0 0 260 110" className="w-full h-28 mt-1 overflow-visible">
+      {/* Líneas de grilla de perspectiva */}
+      <line x1="10" y1="95" x2="250" y2="95" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+      <line x1="30" y1="70" x2="230" y2="70" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+      <line x1="55" y1="45" x2="205" y2="45" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+
+      {/* Polígono del Lote / Terreno con trazado continuo */}
+      <motion.polygon
+        points="55,82 115,48 205,60 165,96"
+        fill="rgba(255,255,255,0.06)"
+        stroke="#e4e4e7"
+        strokeWidth="1.75"
+        strokeDasharray="6 3"
+        animate={{ strokeDashoffset: [0, -36] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+      />
+
+      {/* Nodos de Esquina */}
+      {[
+        { cx: 55, cy: 82 },
+        { cx: 115, cy: 48 },
+        { cx: 205, cy: 60 },
+        { cx: 165, cy: 96 }
+      ].map((pt, i) => (
+        <g key={i}>
+          <circle cx={pt.cx} cy={pt.cy} r="3" fill="#ffffff" />
+          <motion.circle
+            cx={pt.cx}
+            cy={pt.cy}
+            r="7"
+            fill="none"
+            stroke="rgba(255,255,255,0.4)"
+            strokeWidth="1"
+            animate={{ scale: [0.8, 1.5, 0.8], opacity: [0.8, 0, 0.8] }}
+            transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+          />
+        </g>
+      ))}
+
+      {/* Señalador Flotante 3D Animado */}
+      <motion.g
+        animate={{ y: [0, -4, 0] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <line x1="115" y1="48" x2="115" y2="20" stroke="#ffffff" strokeWidth="1.2" />
+        <rect x="68" y="4" width="94" height="18" rx="5" fill="#18181b" stroke="rgba(255,255,255,0.35)" strokeWidth="1" />
+        <text x="115" y="15.5" textAnchor="middle" fill="#ffffff" fontSize="7.5" fontWeight="900" letterSpacing="0.08em">
+          SEÑALADOR 3D · 500M²
+        </text>
+      </motion.g>
+    </svg>
+  </div>
+);
+
+const MotionColorAiGraphic = () => (
+  <div className="relative h-40 w-full rounded-2xl bg-black/60 border border-white/10 p-4 overflow-hidden flex flex-col justify-between select-none">
+    <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500">
+      <span>DAVINCI RESOLVE + IA</span>
+      <span className="text-zinc-300">NODOS & COLOR</span>
+    </div>
+
+    {/* Nodos Conectados Animados */}
+    <div className="my-auto flex items-center justify-between px-2 relative">
+      {[
+        { label: 'RAW / LOG', sub: 'Toma Cruda' },
+        { label: 'IA GEN', sub: 'Imágenes/Video' },
+        { label: 'MASTER', sub: 'Color Cine' }
+      ].map((node, i) => (
+        <React.Fragment key={i}>
+          <motion.div
+            animate={{ y: [0, i % 2 === 0 ? -3 : 3, 0] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: i * 0.2 }}
+            className={`px-3 py-2.5 rounded-xl border ${
+              i === 2
+                ? 'bg-zinc-800 border-white/30 text-white shadow-[0_0_20px_rgba(255,255,255,0.08)]'
+                : 'bg-zinc-900/90 border-white/10 text-zinc-300'
+            } text-center min-w-[72px] z-10`}
+          >
+            <div className="text-[8px] font-black tracking-wider uppercase">{node.label}</div>
+            <div className="text-[7px] text-zinc-500 font-bold mt-0.5">{node.sub}</div>
+          </motion.div>
+
+          {i < 2 && (
+            <div className="flex-1 h-[1.5px] bg-zinc-800 relative overflow-hidden mx-1">
+              <motion.div
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'linear', delay: i * 0.4 }}
+                className="w-1/2 h-full bg-gradient-to-r from-transparent via-white to-transparent"
+              />
+            </div>
+          )}
+        </React.Fragment>
+      ))}
+    </div>
+
+    <div className="flex justify-between text-[8px] font-bold text-zinc-600 tracking-widest uppercase">
+      <span>CURVAS HDR</span>
+      <span>LOCUCIÓN IA</span>
+      <span>RENDER 4K</span>
+    </div>
+  </div>
+);
+
 const App = () => {
   useEffect(() => {
     const style = document.createElement('style');
@@ -104,6 +296,15 @@ const App = () => {
       .no-scrollbar {
         scrollbar-width: thin;
         scrollbar-color: #a1a1aa rgba(0, 0, 0, 0.05);
+      }
+      @keyframes sync-marquee {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-50%); }
+      }
+      .animate-sync-marquee {
+        display: flex;
+        width: max-content;
+        animation: sync-marquee 28s linear infinite;
       }
       /* Parche para el texto vertical de PayPal */
       [id^="paypal-container-"] .paypal-hosted-button-label,
@@ -159,16 +360,67 @@ const App = () => {
 
   const translations = {
     es: {
-      nav: ["Proyectos", "Herramientas", "Planes", "Contacto"],
+      nav: ["Proyectos", "Método", "Planes", "Contacto"],
       cta_nav: "TRABAJAR CON NOSOTROS",
       hero_tag: "Estudio de Post-Producción & Estrategia 2026",
       hero_h1_1: "SINCRONIZA",
       hero_h1_2: "TU VISIÓN",
-      hero_p: "No solo editamos video. Diseñamos la frecuencia en la que tu marca resuena con el mundo. Edición avanzada en AE/PR, identidad visual y captura cinematográfica en cualquier formato.",
-      hero_btn_main: "INICIAR PROYECTO",
-      hero_btn_sec: "VER SHOWREEL",
+      hero_p: "Transformamos tus tomas crudas de dron, cámara o celular en piezas de alta retención que venden. Trazado inmobiliario de precisión, señaladores 3D, contenido con IA y colorización en DaVinci Resolve.",
+      hero_btn_main: "VER PLANES DE EDICIÓN",
+      hero_btn_sec: "EXPLORAR PORTAFOLIO",
+      marquee_items: [
+        "EDICIÓN DE ALTA RETENCIÓN",
+        "MARCADO Y TRAZADO DE TERRENOS",
+        "SEÑALADORES FLOTANTES & TÍTULOS 3D",
+        "CONTENIDO Y VIDEOS CON IA",
+        "LOCUCIÓN COMERCIAL CON IA",
+        "COLORIZACIÓN EN DAVINCI RESOLVE",
+        "FORMATO VERTICAL 9:16 Y HORIZONTAL 16:9"
+      ],
       projects_h2: "NUESTROS PROYECTOS",
-      projects_p: "Ediciones de alto impacto optimizadas para la retención máxima. Dominamos el formato vertical y horizontal para todas las plataformas sociales.",
+      projects_p: "Lo primero que habla por nosotros es el resultado. Reproducción directa de nuestras ediciones optimizadas para retener la atención desde el segundo cero.",
+      value_tag: "Por qué elegir un editor profesional",
+      value_h2_1: "INGENIERÍA",
+      value_h2_2: "VISUAL",
+      value_p: "Un video sin ritmo ni estructura pierde al comprador en los primeros 3 segundos. Aplicamos psicología de retención y post-producción técnica a cada toma.",
+      value_cards: [
+        {
+          tag: "01 // RETENCIÓN & RITMO",
+          title: "Montaje Dinámico que Detiene el Scroll",
+          desc: "Eliminamos tiempos muertos, aplicamos cortes precisos al ritmo de la música, efectos de sonido (SFX) y ganchos visuales en los primeros 3 segundos para mantener al espectador viendo hasta el llamado a la acción."
+        },
+        {
+          tag: "02 // MOTION GRAPHICS & TRAZADO",
+          title: "Delimitación de Terrenos y Textos 3D",
+          desc: "Guiamos la vista del comprador sobre tus tomas de dron con trazados perimetrales en movimiento, señaladores flotantes de ubicaciones clave y títulos con relieve fáciles de leer en cualquier celular."
+        },
+        {
+          tag: "03 // DAVINCI RESOLVE + IA",
+          title: "Color de Cine y Proyección con IA",
+          desc: "Reemplazamos colores apagados por áreas verdes vivas y cielos nítidos en DaVinci Resolve, integrando imágenes y videos generados con IA para que el cliente visualice el potencial real de tu proyecto."
+        }
+      ],
+      process_tag: "Flujo de trabajo sin fricción",
+      process_h2_1: "PROCESO EN",
+      process_h2_2: "3 PASOS",
+      process_p: "Tú te encargas de grabar y cerrar ventas; nosotros nos encargamos de toda la post-producción técnica.",
+      process_steps: [
+        {
+          num: "01",
+          title: "Envía tus Tomas y Guion",
+          desc: "Comparte tus videos crudos de dron, cámara o celular por Google Drive o WhatsApp junto con los datos clave que deseas destacar."
+        },
+        {
+          num: "02",
+          title: "Edición, Motion Graphics e IA",
+          desc: "Realizamos el corte rítmico, trazado del terreno, señaladores flotantes, locución con IA, videos/imágenes IA y colorización profesional."
+        },
+        {
+          num: "03",
+          title: "Revisión y Entrega Lista para Publicar",
+          desc: "Recibes tu video optimizado en máxima calidad (con tus ajustes incluidos según el plan) listo para publicar o pautar en redes."
+        }
+      ],
       plans_h2: "PLANES DE CREACIÓN DE CONTENIDO",
       plans_p: "Suscripciones mensuales diseñadas para un crecimiento constante y presencia profesional.",
       extra_plans_h2: "PLANES EXTRA",
@@ -332,16 +584,67 @@ const App = () => {
       ]
     },
     en: {
-      nav: ["Projects", "Tools", "Plans", "Contact"],
+      nav: ["Projects", "Method", "Plans", "Contact"],
       cta_nav: "WORK WITH US",
       hero_tag: "Post-Production & Strategy Studio 2026",
       hero_h1_1: "SYNC",
       hero_h1_2: "YOUR VISION",
-      hero_p: "We don't just edit video. We design the frequency where your brand resonates with the world. Advanced AE/PR editing, visual identity, and cinematic capture in any format.",
-      hero_btn_main: "START PROJECT",
-      hero_btn_sec: "WATCH REEL",
+      hero_p: "We transform your raw drone, camera, or phone footage into high-retention videos that sell. Precision land tracing, 3D callouts, AI content, and DaVinci Resolve color grading.",
+      hero_btn_main: "VIEW EDITING PLANS",
+      hero_btn_sec: "EXPLORE PORTFOLIO",
+      marquee_items: [
+        "HIGH-RETENTION EDITING",
+        "LAND TRACING & MARKING",
+        "FLOATING CALLOUTS & 3D TITLES",
+        "AI-GENERATED VIDEO & IMAGES",
+        "COMMERCIAL AI VOICEOVER",
+        "DAVINCI RESOLVE COLOR GRADING",
+        "9:16 VERTICAL & 16:9 HORIZONTAL"
+      ],
       projects_h2: "OUR PROJECTS",
-      projects_p: "High-impact edits optimized for maximum retention. We master vertical and horizontal formats for all social platforms.",
+      projects_p: "Our work speaks first. Direct playback of our edits optimized to capture attention from second zero.",
+      value_tag: "Why hire a professional video editor",
+      value_h2_1: "VISUAL",
+      value_h2_2: "ENGINEERING",
+      value_p: "A video without rhythm or visual structure loses buyers in the first 3 seconds. We apply retention psychology and technical post-production to every shot.",
+      value_cards: [
+        {
+          tag: "01 // RETENTION & RHYTHM",
+          title: "Dynamic Editing That Stops the Scroll",
+          desc: "We remove dead air, cut precisely to the beat, layer sound design (SFX), and craft visual hooks in the first 3 seconds so viewers watch until the call to action."
+        },
+        {
+          tag: "02 // MOTION GRAPHICS & TRACING",
+          title: "Land Boundary Tracing & 3D Titles",
+          desc: "We guide the buyer's eye across your drone shots with motion-tracked boundary lines, floating location callouts, and embossed 3D titles readable on any screen."
+        },
+        {
+          tag: "03 // DAVINCI RESOLVE + AI",
+          title: "Cinema Color & AI Projection",
+          desc: "We turn flat footage into vivid greens and crisp skies in DaVinci Resolve while integrating AI-generated videos and images to showcase your project's full potential."
+        }
+      ],
+      process_tag: "Frictionless workflow",
+      process_h2_1: "3-STEP",
+      process_h2_2: "PROCESS",
+      process_p: "You focus on filming and closing sales; we handle the entire technical post-production.",
+      process_steps: [
+        {
+          num: "01",
+          title: "Send Your Raw Clips & Script",
+          desc: "Share your raw drone, camera, or phone clips via Google Drive or WhatsApp along with the key details you want to highlight."
+        },
+        {
+          num: "02",
+          title: "Editing, Motion Graphics & AI",
+          desc: "We execute rhythmic cuts, land tracing, floating 3D callouts, AI voiceover, AI visuals, and professional color grading."
+        },
+        {
+          num: "03",
+          title: "Review & Ready-to-Post Delivery",
+          desc: "Receive your finished video in maximum quality (with included revisions per plan), ready to post or run as ads."
+        }
+      ],
       plans_h2: "CONTENT CREATION PLANS",
       plans_p: "Monthly subscriptions designed for consistent growth and professional presence.",
       extra_plans_h2: "EXTRA PLANS",
@@ -481,23 +784,6 @@ const App = () => {
       ],
       select_basic_btn: "Select Basic",
       select_advanced_btn: "Select Advanced",
-      workflow_h2: "THE SYNC METHOD",
-      workflow_p: "Technical mastery of After Effects and Premiere Pro. From idea to high-end final render.",
-      trust_h2: "Why Sync Pro?",
-      trust_items: [
-        { t: "After Effects Workflow", d: "Custom motion graphics, no generic stock templates." },
-        { t: "Optimized Delivery", d: "2026 codecs (AVIF/HEVC) for instant loading with zero quality loss." },
-        { t: "Retention Strategy", d: "Videos psychologically designed to keep interest at its peak." }
-      ],
-      plans_data: [
-        { name: "Impact Plan", price: "$150", priceBs: "Bs. 1,400", items: ["Focus: Social (Basic)", "4 Reels / TikToks", "Standard Scripting", "1 Session (4h)", "Lights + Mic", "Basic Editing"] },
-        { name: "Growth Plan", price: "$210", priceBs: "Bs. 2,000", items: ["Focus: Social (Sales)", "8 Reels + 1 Corp.", "Viral Scripting", "2 Sessions (8h)", "Lights + Mic + Model", "Advanced Editing"] },
-        { name: "Dominion Plan", price: "$300", priceBs: "Bs. 2,800", items: ["Focus: Social (Elite)", "12 Reels + 2 Ads", "Total Strategy", "Flexible Sessions", "Set + 2 Models", "Color + VFX"] }
-      ],
-      extra_plans_data: [
-        { name: "Photo Pro Plan", price: "$220", priceBs: "Bs. 1,500", items: ["Brand & Product", "20 Edited Photos", "Art Direction", "1 Session (3-4h)", "Lights + Backdrop", "Digital Retouching"] },
-        { name: "Events Pro Plan", price: "$360", priceBs: "Bs. 2,500", items: ["Social & Ceremonial", "Video Cine + Recap", "Narrative Script", "Coverage (Up to 6h)", "Pro Camera + Audio", "Highlights Editing"] }
-      ],
       projects_data: [
         { title: "SPORT FIT", subtitle: "Fitness", color: "from-blue-500/20", img: "/video01.jpeg" },
         { title: "ZAMBRANOS", subtitle: "Auto Service", color: "from-cyan-500/20", img: "/video02.jpeg" },
@@ -533,377 +819,513 @@ const App = () => {
   return (
     <div className="min-h-screen bg-white text-zinc-900 font-sans selection:bg-zinc-400/30 overflow-x-hidden relative">
       <div className="relative z-10">
-        <nav className="fixed top-0 w-full z-[100] px-4 md:px-10 py-4 md:py-6 flex justify-between items-center backdrop-blur-xl bg-white/80 border-b border-zinc-200">
+        {/* ==================================================================== */}
+        {/* 1. NAVBAR SUPERIOR                                                   */}
+        {/* ==================================================================== */}
+        <nav className="fixed top-0 w-full z-[100] px-4 md:px-10 py-4 md:py-6 flex justify-between items-center backdrop-blur-xl bg-white/85 border-b border-zinc-200">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 md:w-10 md:h-10 bg-zinc-900 rounded-lg md:rounded-xl flex items-center justify-center font-black text-white italic shadow-[0_0_20px_rgba(0,0,0,0.15)]">S</div>
             <span className="text-lg md:text-xl font-black tracking-tighter uppercase italic text-zinc-900">Sync Pro</span>
           </div>
           <div className="flex items-center gap-3 md:gap-6">
             <div className="hidden lg:flex gap-10 text-[11px] font-bold text-zinc-500 tracking-[0.2em] uppercase">
-              {t.nav.map((item, i) => <a key={i} href={`#${item.toLowerCase()}`} className="hover:text-zinc-900 transition-colors">{item}</a>)}
+              <a href="#proyectos" className="hover:text-zinc-900 transition-colors">{t.nav[0]}</a>
+              <a href="#ingenieria-visual" className="hover:text-zinc-900 transition-colors">{t.nav[1]}</a>
+              <a href="#planes-edicion" className="hover:text-zinc-900 transition-colors">{t.nav[2]}</a>
+              <a href="#contacto" className="hover:text-zinc-900 transition-colors">{t.nav[3]}</a>
             </div>
             <button onClick={() => setLang(lang === 'es' ? 'en' : 'es')} className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-lg bg-zinc-100 border border-zinc-200 text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-zinc-800"><Globe className="w-3 h-3 text-zinc-600" /> {lang.toUpperCase()}</button>
-            <button className="hidden sm:block bg-zinc-900 text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-[11px] font-black uppercase tracking-widest">{t.cta_nav}</button>
+            <a
+              href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20quiero%20cotizar%20un%20proyecto%20de%20edici%C3%B3n%20de%20video."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:block bg-zinc-900 hover:bg-zinc-700 transition-colors text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-[10px] md:text-[11px] font-black uppercase tracking-widest"
+            >
+              {t.cta_nav}
+            </a>
           </div>
         </nav>
 
-        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-6 text-center py-20">
+        {/* ==================================================================== */}
+        {/* 2. HERO COMPACTO + CINTA MOTION DE ESPECIALIDADES                    */}
+        {/* ==================================================================== */}
+        <section className="relative pt-32 md:pt-40 pb-14 md:pb-20 flex flex-col items-center justify-center overflow-hidden px-4 md:px-6 text-center">
           <div className="absolute inset-0 bg-gradient-to-b from-zinc-100/80 to-transparent pointer-events-none" />
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-full max-w-5xl mx-auto">
             <span className="inline-block border border-zinc-300 px-4 md:px-5 py-1.5 rounded-full text-[8px] md:text-[9px] tracking-[0.3em] md:tracking-[0.4em] uppercase text-zinc-600 mb-6 md:mb-8 bg-zinc-100 font-bold">{t.hero_tag}</span>
-            <h1 className="text-5xl sm:text-7xl md:text-9xl lg:text-[145px] font-black mb-6 md:mb-8 leading-[0.9] tracking-tighter italic uppercase px-2 text-zinc-900">
+            <h1 className="text-5xl sm:text-7xl md:text-9xl lg:text-[138px] font-black mb-6 md:mb-8 leading-[0.9] tracking-tighter italic uppercase px-2 text-zinc-900">
               {t.hero_h1_1} <br />
               <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-400 pr-4 md:pr-12">
                 {t.hero_h1_2}
               </span>
             </h1>
-            <p className="text-zinc-600 text-base md:text-xl max-w-2xl mx-auto mb-10 md:mb-12 font-light px-4">{t.hero_p}</p>
+            <p className="text-zinc-600 text-base md:text-xl max-w-2xl mx-auto mb-8 md:mb-10 font-light px-4 leading-relaxed">{t.hero_p}</p>
             <div className="flex flex-col sm:flex-row gap-4 md:gap-5 justify-center px-6">
-              <button className="bg-zinc-900 text-white font-black px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 uppercase tracking-tighter shadow-lg text-sm md:text-base w-full sm:w-auto">{t.hero_btn_main} <ArrowRight className="w-5 h-5" /></button>
-              <button className="border border-zinc-300 bg-zinc-100 px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-[10px] md:text-xs text-zinc-900 w-full sm:w-auto"><Play className="w-4 h-4 fill-current" /> {t.hero_btn_sec}</button>
+              <a
+                href="#planes-edicion"
+                className="bg-zinc-900 hover:bg-zinc-800 transition-colors text-white font-black px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 uppercase tracking-tighter shadow-lg text-sm md:text-base w-full sm:w-auto"
+              >
+                {t.hero_btn_main} <ArrowRight className="w-5 h-5" />
+              </a>
+              <a
+                href="#proyectos"
+                className="border border-zinc-300 bg-zinc-100 hover:bg-zinc-200 transition-colors px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-[10px] md:text-xs text-zinc-900 w-full sm:w-auto"
+              >
+                <Play className="w-4 h-4 fill-current" /> {t.hero_btn_sec}
+              </a>
             </div>
           </motion.div>
         </section>
 
-      {/* Galería Proyectos (5 videos únicos, reproducción directa sin botón Play en el centro) */}
-      <section id="proyectos" className="py-16 md:py-24 px-4 md:px-6 max-w-[1600px] mx-auto overflow-hidden">
-        <div className="mb-10 md:mb-16 px-2">
-          <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase mb-4 text-zinc-900">Nuestros <span className="text-zinc-400">PROYECTOS</span></h2>
-          <p className="text-zinc-500 text-base md:text-lg max-w-xl">{t.projects_p}</p>
-        </div>
-        <div className="flex overflow-x-auto gap-3 md:gap-5 pb-20 pt-10 no-scrollbar snap-x px-4 md:px-10">
-          {t.projects_data.map((proj, i) => (
-            <DirectProjectCard key={i} proj={proj} index={i} />
-          ))}
-        </div>
-      </section>
-
-      {/* Servicios Bento */}
-      {false && (
-      <section id="servicios" className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
-          <div className="lg:col-span-7 bg-[#0a0a0a] rounded-[30px] md:rounded-[40px] p-8 md:p-12 min-h-[350px] md:min-h-[450px] flex flex-col justify-end relative overflow-hidden">
-             <div className={`absolute inset-0 bg-gradient-to-br ${t.services_data[activeService].color} opacity-10`} />
-             <div className="relative z-10">
-                <span className="px-3 py-1 md:px-4 md:py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] md:text-[10px] font-black tracking-widest mb-4 md:mb-6 inline-block">{t.services_data[activeService].tag}</span>
-                <h3 className="text-3xl md:text-5xl font-black italic tracking-tighter mb-4 md:mb-6">{t.services_data[activeService].title}</h3>
-                <p className="text-base md:text-xl text-gray-500 max-w-xl">{t.services_data[activeService].desc}</p>
-             </div>
-          </div>
-          <div className="lg:col-span-5 flex flex-col gap-3 md:gap-4">
-            {t.services_data.map((s, idx) => {
-              const Icon = s.icon;
-              return (
-                <button key={idx} onClick={() => setActiveService(idx)} className={`flex items-center gap-4 md:gap-6 p-6 md:p-8 rounded-[24px] md:rounded-[32px] border transition-all text-left ${activeService === idx ? 'bg-white/5 border-white/20 ring-1 ring-zinc-400/20' : 'opacity-30'}`}>
-                   <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl bg-gradient-to-br ${s.color} text-black`}><Icon className="w-5 h-5" /></div>
-                   <div><h4 className="text-lg md:text-xl font-black italic leading-tight">{s.title}</h4><p className="text-[9px] font-black uppercase text-gray-600">{s.tag}</p></div>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-      )}
-
-
-      {/* Planes de Edición de Video */}
-      <section id="planes-edicion" className="py-20 md:py-32 px-4 md:px-6 max-w-6xl mx-auto">
-        <div className="mb-12 md:mb-16 text-center">
-          <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-zinc-900 leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-400 px-2">EDICIÓN DE VIDEO</span></h2>
-          <p className="text-zinc-500 text-lg md:text-xl max-w-2xl mx-auto">{t.editing_plans_p}</p>
-        </div>
-
-        {/* Selector de Duración Limpio */}
-        <div className="max-w-3xl mx-auto mb-12 md:mb-16">
-          <div className="bg-[#0a0a0a] border border-zinc-800 rounded-[28px] p-1.5 grid grid-cols-2 md:grid-cols-4 gap-1.5 shadow-xl">
-            {t.editing_plans_data.map((item, idx) => {
-              const isActive = activeDuration === idx;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => setActiveDuration(idx)}
-                  className={`relative py-3.5 px-4 rounded-[22px] transition-all duration-300 flex flex-col items-center justify-center text-center ${
-                    isActive
-                      ? 'bg-zinc-800/90 border border-white/15 text-white'
-                      : 'text-gray-500 hover:text-gray-300 border border-transparent'
-                  }`}
-                >
-                  <span className="text-xs md:text-sm font-black italic uppercase tracking-tight leading-none mb-1">
-                    {item.duration}
-                  </span>
-                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] ${isActive ? 'text-zinc-400' : 'text-gray-600'}`}>
-                    {item.tag}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-        
-        {/* Tarjetas Comparativas Lado a Lado con el Cuadro y Animación Original de Sync Pro */}
-        {(() => {
-          const currentTier = t.editing_plans_data[activeDuration] || t.editing_plans_data[0];
-          const cards = [
-            { key: 'basic', data: currentTier.basic, isAdvanced: false },
-            { key: 'advanced', data: currentTier.advanced, isAdvanced: true }
-          ];
-
-          return (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {cards.map(({ key, data, isAdvanced }) => (
-                <div 
-                  key={key} 
-                  onMouseMove={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    e.currentTarget.style.setProperty("--x", `${x}px`);
-                    e.currentTarget.style.setProperty("--y", `${y}px`);
-                  }}
-                  className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.02] hover:z-50 shadow-2xl bg-zinc-200"
-                  style={{ "--x": "0px", "--y": "0px" }}
-                >
-                  {/* Snake Border - Active only on Hover */}
-                  <div 
-                    className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ animationDuration: '4s' }}
-                  />
-
-                  {/* Card Container with Persistent Subtle Border */}
-                  <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col overflow-hidden border border-white/10">
-                    {/* 💡 Spotlight Tracking Effect - Soft & Wide */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                         style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
-                    
-                    <div className="p-8 md:p-10 relative z-10 flex flex-col h-full">
-                      {/* Cabecera de la Tarjeta */}
-                      <div className="flex items-center justify-between gap-3 mb-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
-                          {currentTier.duration} · {currentTier.tag}
-                        </span>
-                        {isAdvanced && data.badge && (
-                          <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-300">
-                            {data.badge}
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 className="text-2xl md:text-3xl font-black italic uppercase tracking-tight text-white mb-2">
-                        {data.name}
-                      </h3>
-                      <p className="text-xs text-gray-500 mb-8">
-                        {data.subtitle}
-                      </p>
-
-                      {/* Precio con transición limpia */}
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={`${key}-${activeDuration}`}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.2 }}
-                          className="flex flex-col flex-grow"
-                        >
-                          <div className="mb-8 pb-8 border-b border-white/10 flex items-baseline gap-3">
-                            <span className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                              {data.price}
-                            </span>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-                              / video ({currentTier.duration})
-                            </span>
-                          </div>
-
-                          <ul className="space-y-3.5 flex-grow">
-                            {data.features.map((f, idx) => (
-                              <li key={idx} className="text-xs md:text-[13px] text-gray-300 flex items-start gap-3 leading-relaxed">
-                                <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isAdvanced ? 'text-zinc-300' : 'text-zinc-500'}`} />
-                                <span>{f}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </motion.div>
-                      </AnimatePresence>
-
-                      <a
-                        href={`https://wa.me/59169109766?text=${encodeURIComponent(`Hola Sync Pro, me interesa contratar la ${data.name} de ${currentTier.duration} (${data.price}).`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-5 bg-white/5 group-hover:bg-zinc-500 group-hover:text-white text-white font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-2xl mt-10 text-center block"
-                      >
-                        {isAdvanced ? t.select_advanced_btn : t.select_basic_btn}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          );
-        })()}
-
-        {/* Barra Inferior de Adicionales */}
-        <div className="mt-8 bg-[#0a0a0a] border border-zinc-800 rounded-[28px] p-5 md:p-6 shadow-xl">
-          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6">
-            {t.editing_extras.map((extra, idx) => (
-              <div key={idx} className="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/[0.03] border border-white/5">
-                <span className="text-xs font-black text-white tracking-tight">{extra.price}</span>
-                <span className="text-[11px] text-gray-400 font-medium">{extra.label}</span>
+        {/* Cinta Dinámica de Especialidades (Motion Marquee Monocromático) */}
+        <div className="w-full bg-[#0a0a0a] border-y border-zinc-800 py-3.5 overflow-hidden select-none">
+          <div className="animate-sync-marquee items-center">
+            {[...t.marquee_items, ...t.marquee_items].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-6 mx-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
+                <span className="text-[10px] md:text-[11px] font-black italic uppercase tracking-[0.25em] text-zinc-300 whitespace-nowrap">
+                  {item}
+                </span>
               </div>
             ))}
           </div>
         </div>
-      </section>
 
-      {/* Planes de Creación de Contenido */}
-      {false && (
-      <section id="planes" className="py-20 md:py-32 px-4 md:px-6 max-w-[1600px] mx-auto">
-        <div className="mb-16 md:mb-20 text-center">
-          <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-zinc-900 leading-tight">Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-500 px-2">CREACIÓN DE CONTENIDO</span></h2>
-          <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto">{t.plans_p}</p>
-        </div>
-      </section>
-      )}
-
-      {/* 🛠️ Sección de Herramientas Premium (Extensión) */}
-      <section id="herramientas" className="py-20 px-4 max-w-6xl mx-auto border-t border-zinc-200">
-        <div className="flex flex-col lg:flex-row gap-12 items-center">
-          {/* Columna Texto */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="w-full lg:w-1/2"
-          >
-            <span className="px-4 py-1.5 rounded-full bg-zinc-100 border border-zinc-300 text-[10px] font-black tracking-widest text-zinc-600 uppercase mb-6 inline-block">
-              Sync Pro Labs / After Effects
-            </span>
-            <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 text-zinc-900 leading-[0.9]">
-              Studio Sync <br /> <span className="text-zinc-400">PRO</span>
-            </h2>
-            <p className="text-zinc-600 text-lg mb-8 font-light leading-relaxed">
-              La extensión definitiva para After Effects que optimiza tu flujo de trabajo en segundos.
-            </p>
-            
-            <div className="bg-[#0a0a0a] text-white p-6 md:p-10 rounded-[2.5rem] border border-zinc-800 w-full shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10">
-                <Fingerprint className="w-20 h-20 text-white" />
-              </div>
-
-              {/* Encabezado de Compra */}
-              <div className="space-y-8 relative z-10">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="flex items-center gap-4 text-zinc-500">
-                    <span className="h-[1px] w-8 bg-zinc-800"></span>
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em]">Software Original</span>
-                    <span className="h-[1px] w-8 bg-zinc-800"></span>
-                  </div>
-                  <div className="text-6xl font-black text-white">$9.99</div>
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="flex gap-3 items-center opacity-70">
-                       <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" className="h-4" alt="PayPal" />
-                       <div className="h-3 w-[1px] bg-zinc-700"></div>
-                       <div className="flex gap-1.5">
-                          <div className="w-6 h-4 bg-zinc-800 rounded-sm border border-white/5 flex items-center justify-center text-[6px] font-bold">VISA</div>
-                          <div className="w-6 h-4 bg-zinc-800 rounded-sm border border-white/5 flex items-center justify-center text-[6px] font-bold">MC</div>
-                       </div>
-                    </div>
-                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-2">PayPal & Tarjetas de Crédito/Débito</p>
-                  </div>
-                </div>
-
-                {/* Botón de Acción Principal (Ahora lleva al pago) */}
-                <button 
-                  onClick={() => document.getElementById('paypal-section').scrollIntoView({ behavior: 'smooth' })}
-                  className="w-full flex items-center justify-center gap-3 text-xs font-black uppercase tracking-widest text-black bg-white hover:bg-zinc-200 transition-all py-6 rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-                >
-                  <Zap className="w-5 h-5 fill-current" /> Obtener Licencia de por Vida
-                </button>
-
-                <div id="paypal-section" className="pt-10 border-t border-white/5 flex flex-col items-center">
-                  <p className="text-[10px] text-zinc-400 font-black tracking-[0.2em] mb-8 uppercase text-center">Completa tu pago seguro abajo:</p>
-                  
-                  {/* Contenedor PayPal */}
-                  <div className="w-full flex justify-center overflow-hidden min-h-[100px]">
-                    <div className="min-w-[450px] flex justify-center scale-[0.7] md:scale-100 origin-center">
-                      <div id="paypal-container-MQ99WW5GG2UN2" className="w-full" />
-                    </div>
-                  </div>
-                  
-                  <div className="mt-12 p-6 bg-white/5 rounded-2xl border border-white/5 w-full text-center">
-                     <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mb-4">¿Ya tienes tu licencia?</p>
-                     <a 
-                      href="/Studio_Sync_Pro.zxp" 
-                      download
-                      className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
-                     >
-                      <Download className="w-4 h-4" /> Descargar Instalador
-                     </a>
-                     <p className="text-[8px] text-zinc-600 mt-3 uppercase font-bold tracking-widest">Requiere activación tras la instalación</p>
-                  </div>
-                </div>
-              </div>
+        {/* ==================================================================== */}
+        {/* 3. PASO PSICOLÓGICO 1: PRUEBA VISUAL INMEDIATA (5 VIDEOS AUTO-PLAY)  */}
+        {/* ==================================================================== */}
+        <section id="proyectos" className="py-16 md:py-24 px-4 md:px-6 max-w-[1600px] mx-auto overflow-hidden">
+          <div className="mb-10 md:mb-14 px-2 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 block mb-2">
+                01 // PORTAFOLIO EN REPRODUCCIÓN DIRECTA
+              </span>
+              <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase text-zinc-900">
+                Nuestros <span className="text-zinc-400">PROYECTOS</span>
+              </h2>
             </div>
-          </motion.div>
-
-          {/* Columna Visual */}
-          <div className="hidden lg:block w-1/2 relative aspect-square bg-zinc-200 rounded-[40px] border border-zinc-300 p-1 shadow-2xl">
-             <div className="w-full h-full bg-[#0a0a0a] rounded-[39px] flex items-center justify-center">
-                <Layout className="w-32 h-32 text-zinc-800" />
-             </div>
+            <p className="text-zinc-500 text-sm md:text-base max-w-md">{t.projects_p}</p>
           </div>
-        </div>
-      </section>
+          <div className="flex overflow-x-auto gap-3 md:gap-5 pb-12 pt-4 no-scrollbar snap-x px-4 md:px-10">
+            {t.projects_data.map((proj, i) => (
+              <DirectProjectCard key={i} proj={proj} index={i} />
+            ))}
+          </div>
+        </section>
 
-      {/* Contacto */}
-      <section id="contacto" className="py-20 md:py-32 px-4 md:px-6 max-w-4xl mx-auto">
-        <div className="mb-16">
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black italic text-center uppercase tracking-tighter leading-none text-zinc-900">
-            ¿LISTO PARA EL <br /> SIGUIENTE <br /> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-400">NIVEL</span>
-            <span className="text-zinc-400">?</span>
-          </h2>
-        </div>
-        
-        <div className="bg-[#0a0a0a] text-white p-8 md:p-12 rounded-[2.5rem] md:rounded-[3rem] border border-zinc-800 text-center max-w-2xl mx-auto shadow-2xl">
-          {formStatus === 'success' ? (
-            <div className="py-16 md:py-20"><CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-zinc-400 mx-auto mb-6" /><h3 className="text-2xl md:text-3xl font-black italic uppercase">Synced / Listo</h3></div>
-          ) : (
-            <form onSubmit={handleFormSubmit} className="space-y-5 md:space-y-6 text-left">
-              <input type="text" name="nombre" required placeholder="Nombre" className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm text-white focus:border-zinc-400 outline-none transition-all" />
-              <input type="email" name="email" required placeholder="Email" className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm text-white focus:border-zinc-400 outline-none transition-all" />
-              <textarea name="vision" required placeholder="Tu visión..." rows="4" className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm text-white focus:border-zinc-400 outline-none transition-all"></textarea>
-              <button type="submit" disabled={formStatus === 'loading'} className="w-full py-5 md:py-6 bg-zinc-500 hover:bg-zinc-400 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg uppercase transition-all shadow-[0_0_20px_rgba(113,113,122,0.3)]">{formStatus === 'loading' ? '...' : 'INICIAR PROYECTO'}</button>
-            </form>
-          )}
-        </div>
-      </section>
+        {/* ==================================================================== */}
+        {/* 4. PASO PSICOLÓGICO 2: ARGUMENTOS PROFESIONALES + MOTION GRAPHICS    */}
+        {/* ==================================================================== */}
+        <section id="ingenieria-visual" className="py-16 md:py-28 px-4 md:px-6 max-w-6xl mx-auto border-t border-zinc-100">
+          <div className="mb-12 md:mb-16 text-center">
+            <span className="inline-block border border-zinc-300 px-4 py-1.5 rounded-full text-[9px] tracking-[0.3em] uppercase text-zinc-600 mb-4 bg-zinc-100 font-black">
+              02 // {t.value_tag}
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-5 text-zinc-900 leading-tight">
+              {t.value_h2_1}{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-400 px-2">
+                {t.value_h2_2}
+              </span>
+            </h2>
+            <p className="text-zinc-500 text-base md:text-xl max-w-2xl mx-auto">{t.value_p}</p>
+          </div>
 
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+            {t.value_cards.map((card, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  e.currentTarget.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                  e.currentTarget.style.setProperty('--y', `${e.clientY - rect.top}px`);
+                }}
+                className="relative rounded-[36px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.02] shadow-2xl bg-zinc-200"
+                style={{ '--x': '0px', '--y': '0px' }}
+              >
+                {/* Snake Border Original de Sync Pro */}
+                <div
+                  className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ animationDuration: '4s' }}
+                />
 
-      <footer className="py-16 md:py-20 border-t border-zinc-200 text-center text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-zinc-400 uppercase px-6">
-        © 2026 Sync Pro Studio // Bolivia // Global Reach
-      </footer>
-      {/* 📱 Botón Flotante de WhatsApp Minimalista */}
-      <motion.a
-        href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios%20de%20edici%C3%B3n."
-        target="_blank"
-        rel="noopener noreferrer"
-        initial={{ opacity: 0, scale: 0.5, y: 50 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#0a0a0a] border border-zinc-700 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] group overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-gradient-to-tr from-zinc-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <svg 
-          viewBox="0 0 24 24" 
-          className="w-7 h-7 md:w-8 md:h-8 fill-zinc-300 group-hover:fill-white transition-colors duration-300 relative z-10"
-          xmlns="http://www.w3.org/2000/svg"
+                <div className="relative bg-[#0a0a0a] rounded-[35px] h-full flex flex-col justify-between p-7 md:p-8 border border-white/10 overflow-hidden">
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                    style={{
+                      background:
+                        'radial-gradient(500px circle at var(--x) var(--y), rgba(161,161,170,0.08), transparent 40%)'
+                    }}
+                  />
+
+                  <div className="relative z-10 space-y-5">
+                    {/* Motion Graphic Complementario en Vivo */}
+                    {idx === 0 && <MotionTimelineGraphic />}
+                    {idx === 1 && <MotionTrackingGraphic />}
+                    {idx === 2 && <MotionColorAiGraphic />}
+
+                    <div className="pt-2">
+                      <span className="text-[9px] font-black uppercase tracking-[0.25em] text-zinc-500 block mb-2">
+                        {card.tag}
+                      </span>
+                      <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tight text-white mb-3 leading-tight">
+                        {card.title}
+                      </h3>
+                      <p className="text-xs md:text-[13px] text-gray-400 leading-relaxed">
+                        {card.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* ==================================================================== */}
+        {/* 5. PASO PSICOLÓGICO 3: PLANES DE EDICIÓN DE VIDEO CLAROS POR TIEMPO  */}
+        {/* ==================================================================== */}
+        <section id="planes-edicion" className="py-20 md:py-28 px-4 md:px-6 max-w-6xl mx-auto border-t border-zinc-100">
+          <div className="mb-12 md:mb-16 text-center">
+            <span className="inline-block border border-zinc-300 px-4 py-1.5 rounded-full text-[9px] tracking-[0.3em] uppercase text-zinc-600 mb-4 bg-zinc-100 font-black">
+              03 // INVERSIÓN TRANSPARENTE POR DURACIÓN
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-6 text-zinc-900 leading-tight">
+              Planes de <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-400 px-2">EDICIÓN DE VIDEO</span>
+            </h2>
+            <p className="text-zinc-500 text-lg md:text-xl max-w-2xl mx-auto">{t.editing_plans_p}</p>
+          </div>
+
+          {/* Selector de Duración Limpio */}
+          <div className="max-w-3xl mx-auto mb-12 md:mb-16">
+            <div className="bg-[#0a0a0a] border border-zinc-800 rounded-[28px] p-1.5 grid grid-cols-2 md:grid-cols-4 gap-1.5 shadow-xl">
+              {t.editing_plans_data.map((item, idx) => {
+                const isActive = activeDuration === idx;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveDuration(idx)}
+                    className={`relative py-3.5 px-4 rounded-[22px] transition-all duration-300 flex flex-col items-center justify-center text-center ${
+                      isActive
+                        ? 'bg-zinc-800/90 border border-white/15 text-white'
+                        : 'text-gray-500 hover:text-gray-300 border border-transparent'
+                    }`}
+                  >
+                    <span className="text-xs md:text-sm font-black italic uppercase tracking-tight leading-none mb-1">
+                      {item.duration}
+                    </span>
+                    <span className={`text-[9px] font-bold uppercase tracking-[0.2em] ${isActive ? 'text-zinc-400' : 'text-gray-600'}`}>
+                      {item.tag}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Tarjetas Comparativas Lado a Lado con el Cuadro y Animación Original de Sync Pro */}
+          {(() => {
+            const currentTier = t.editing_plans_data[activeDuration] || t.editing_plans_data[0];
+            const cards = [
+              { key: 'basic', data: currentTier.basic, isAdvanced: false },
+              { key: 'advanced', data: currentTier.advanced, isAdvanced: true }
+            ];
+
+            return (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                {cards.map(({ key, data, isAdvanced }) => (
+                  <div 
+                    key={key} 
+                    onMouseMove={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      const x = e.clientX - rect.left;
+                      const y = e.clientY - rect.top;
+                      e.currentTarget.style.setProperty("--x", `${x}px`);
+                      e.currentTarget.style.setProperty("--y", `${y}px`);
+                    }}
+                    className="relative rounded-[40px] overflow-hidden p-[1px] group transition-all duration-500 hover:scale-[1.02] hover:z-50 shadow-2xl bg-zinc-200"
+                    style={{ "--x": "0px", "--y": "0px" }}
+                  >
+                    {/* Snake Border - Active only on Hover */}
+                    <div 
+                      className="absolute inset-[-1000%] animate-[spin_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#a1a1aa_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{ animationDuration: '4s' }}
+                    />
+
+                    {/* Card Container with Persistent Subtle Border */}
+                    <div className="relative bg-[#0a0a0a] rounded-[39px] h-full flex flex-col overflow-hidden border border-white/10">
+                      {/* 💡 Spotlight Tracking Effect - Soft & Wide */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                           style={{ background: "radial-gradient(675px circle at var(--x) var(--y), rgba(161,161,170,0.07), transparent 40%)" }} />
+                      
+                      <div className="p-8 md:p-10 relative z-10 flex flex-col h-full">
+                        {/* Cabecera de la Tarjeta */}
+                        <div className="flex items-center justify-between gap-3 mb-4">
+                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+                            {currentTier.duration} · {currentTier.tag}
+                          </span>
+                          {isAdvanced && data.badge && (
+                            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-300">
+                              {data.badge}
+                            </span>
+                          )}
+                        </div>
+
+                        <h3 className="text-2xl md:text-3xl font-black italic uppercase tracking-tight text-white mb-2">
+                          {data.name}
+                        </h3>
+                        <p className="text-xs text-gray-500 mb-8">
+                          {data.subtitle}
+                        </p>
+
+                        {/* Precio con transición limpia */}
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={`${key}-${activeDuration}`}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -8 }}
+                            transition={{ duration: 0.2 }}
+                            className="flex flex-col flex-grow"
+                          >
+                            <div className="mb-8 pb-8 border-b border-white/10 flex items-baseline gap-3">
+                              <span className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                                {data.price}
+                              </span>
+                              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                                / video ({currentTier.duration})
+                              </span>
+                            </div>
+
+                            <ul className="space-y-3.5 flex-grow">
+                              {data.features.map((f, idx) => (
+                                <li key={idx} className="text-xs md:text-[13px] text-gray-300 flex items-start gap-3 leading-relaxed">
+                                  <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isAdvanced ? 'text-zinc-300' : 'text-zinc-500'}`} />
+                                  <span>{f}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </motion.div>
+                        </AnimatePresence>
+
+                        <a
+                          href={`https://wa.me/59169109766?text=${encodeURIComponent(`Hola Sync Pro, me interesa contratar la ${data.name} de ${currentTier.duration} (${data.price}).`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-5 bg-white/5 group-hover:bg-zinc-500 group-hover:text-white text-white font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-2xl mt-10 text-center block"
+                        >
+                          {isAdvanced ? t.select_advanced_btn : t.select_basic_btn}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
+
+          {/* Barra Inferior de Adicionales */}
+          <div className="mt-8 bg-[#0a0a0a] border border-zinc-800 rounded-[28px] p-5 md:p-6 shadow-xl">
+            <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6">
+              {t.editing_extras.map((extra, idx) => (
+                <div key={idx} className="flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/[0.03] border border-white/5">
+                  <span className="text-xs font-black text-white tracking-tight">{extra.price}</span>
+                  <span className="text-[11px] text-gray-400 font-medium">{extra.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ==================================================================== */}
+        {/* 6. PASO PSICOLÓGICO 4: FLUJO DE TRABAJO EN 3 PASOS (CONFIANZA)       */}
+        {/* ==================================================================== */}
+        <section className="py-16 md:py-24 px-4 md:px-6 max-w-6xl mx-auto border-t border-zinc-100">
+          <div className="mb-12 md:mb-16 text-center">
+            <span className="inline-block border border-zinc-300 px-4 py-1.5 rounded-full text-[9px] tracking-[0.3em] uppercase text-zinc-600 mb-4 bg-zinc-100 font-black">
+              04 // {t.process_tag}
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-4 text-zinc-900 leading-tight">
+              {t.process_h2_1}{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-400 px-2">
+                {t.process_h2_2}
+              </span>
+            </h2>
+            <p className="text-zinc-500 text-base md:text-lg max-w-2xl mx-auto">{t.process_p}</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+            {t.process_steps.map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: i * 0.12 }}
+                className="bg-[#0a0a0a] text-white rounded-[32px] p-8 border border-zinc-800 shadow-xl relative overflow-hidden group"
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <span className="text-3xl md:text-4xl font-black italic text-zinc-600 group-hover:text-white transition-colors">
+                    {step.num}
+                  </span>
+                  <div className="h-[1px] flex-1 mx-4 bg-white/10 relative overflow-hidden">
+                    <motion.div
+                      animate={{ x: ['-100%', '200%'] }}
+                      transition={{ duration: 2.4, repeat: Infinity, ease: 'linear', delay: i * 0.4 }}
+                      className="w-1/2 h-full bg-gradient-to-r from-transparent via-zinc-400 to-transparent"
+                    />
+                  </div>
+                  <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                </div>
+                <h3 className="text-xl font-black italic uppercase tracking-tight text-white mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-xs md:text-sm text-gray-400 leading-relaxed">{step.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* ==================================================================== */}
+        {/* 7. PASO PSICOLÓGICO 5: CONTACTO & CIERRE DIRECTO                     */}
+        {/* ==================================================================== */}
+        <section id="contacto" className="py-20 md:py-32 px-4 md:px-6 max-w-4xl mx-auto border-t border-zinc-100">
+          <div className="mb-14">
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black italic text-center uppercase tracking-tighter leading-none text-zinc-900">
+              ¿LISTO PARA EL <br /> SIGUIENTE <br /> 
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-400">NIVEL</span>
+              <span className="text-zinc-400">?</span>
+            </h2>
+          </div>
+          
+          <div className="bg-[#0a0a0a] text-white p-8 md:p-12 rounded-[2.5rem] md:rounded-[3rem] border border-zinc-800 text-center max-w-2xl mx-auto shadow-2xl">
+            {formStatus === 'success' ? (
+              <div className="py-16 md:py-20"><CheckCircle2 className="w-16 h-16 md:w-20 md:h-20 text-zinc-400 mx-auto mb-6" /><h3 className="text-2xl md:text-3xl font-black italic uppercase">Synced / Listo</h3></div>
+            ) : (
+              <form onSubmit={handleFormSubmit} className="space-y-5 md:space-y-6 text-left">
+                <input type="text" name="nombre" required placeholder="Nombre" className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm text-white focus:border-zinc-400 outline-none transition-all" />
+                <input type="email" name="email" required placeholder="Email" className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm text-white focus:border-zinc-400 outline-none transition-all" />
+                <textarea name="vision" required placeholder="Cuéntanos sobre tu video (duración, terreno, marca o idea)..." rows="4" className="w-full bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-5 md:px-6 py-4 md:py-5 text-sm text-white focus:border-zinc-400 outline-none transition-all"></textarea>
+                <button type="submit" disabled={formStatus === 'loading'} className="w-full py-5 md:py-6 bg-zinc-500 hover:bg-zinc-400 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg uppercase transition-all shadow-[0_0_20px_rgba(113,113,122,0.3)]">{formStatus === 'loading' ? '...' : 'INICIAR PROYECTO'}</button>
+              </form>
+            )}
+          </div>
+        </section>
+
+        {/* 🛠️ Sección de Herramientas Premium (Al final para no distraer del embudo de edición) */}
+        <section id="herramientas" className="py-20 px-4 max-w-6xl mx-auto border-t border-zinc-200">
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="w-full lg:w-1/2"
+            >
+              <span className="px-4 py-1.5 rounded-full bg-zinc-100 border border-zinc-300 text-[10px] font-black tracking-widest text-zinc-600 uppercase mb-6 inline-block">
+                Sync Pro Labs / After Effects
+              </span>
+              <h2 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase mb-6 text-zinc-900 leading-[0.9]">
+                Studio Sync <br /> <span className="text-zinc-400">PRO</span>
+              </h2>
+              <p className="text-zinc-600 text-lg mb-8 font-light leading-relaxed">
+                La extensión definitiva para After Effects que optimiza tu flujo de trabajo en segundos.
+              </p>
+              
+              <div className="bg-[#0a0a0a] text-white p-6 md:p-10 rounded-[2.5rem] border border-zinc-800 w-full shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <Fingerprint className="w-20 h-20 text-white" />
+                </div>
+
+                <div className="space-y-8 relative z-10">
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="flex items-center gap-4 text-zinc-500">
+                      <span className="h-[1px] w-8 bg-zinc-800"></span>
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em]">Software Original</span>
+                      <span className="h-[1px] w-8 bg-zinc-800"></span>
+                    </div>
+                    <div className="text-6xl font-black text-white">$9.99</div>
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="flex gap-3 items-center opacity-70">
+                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" className="h-4" alt="PayPal" />
+                         <div className="h-3 w-[1px] bg-zinc-700"></div>
+                         <div className="flex gap-1.5">
+                            <div className="w-6 h-4 bg-zinc-800 rounded-sm border border-white/5 flex items-center justify-center text-[6px] font-bold">VISA</div>
+                            <div className="w-6 h-4 bg-zinc-800 rounded-sm border border-white/5 flex items-center justify-center text-[6px] font-bold">MC</div>
+                         </div>
+                      </div>
+                      <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-2">PayPal & Tarjetas de Crédito/Débito</p>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => document.getElementById('paypal-section').scrollIntoView({ behavior: 'smooth' })}
+                    className="w-full flex items-center justify-center gap-3 text-xs font-black uppercase tracking-widest text-black bg-white hover:bg-zinc-200 transition-all py-6 rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                  >
+                    <Zap className="w-5 h-5 fill-current" /> Obtener Licencia de por Vida
+                  </button>
+
+                  <div id="paypal-section" className="pt-10 border-t border-white/5 flex flex-col items-center">
+                    <p className="text-[10px] text-zinc-400 font-black tracking-[0.2em] mb-8 uppercase text-center">Completa tu pago seguro abajo:</p>
+                    
+                    <div className="w-full flex justify-center overflow-hidden min-h-[100px]">
+                      <div className="min-w-[450px] flex justify-center scale-[0.7] md:scale-100 origin-center">
+                        <div id="paypal-container-MQ99WW5GG2UN2" className="w-full" />
+                      </div>
+                    </div>
+                    
+                    <div className="mt-12 p-6 bg-white/5 rounded-2xl border border-white/5 w-full text-center">
+                       <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mb-4">¿Ya tienes tu licencia?</p>
+                       <a 
+                        href="/Studio_Sync_Pro.zxp" 
+                        download
+                        className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
+                       >
+                        <Download className="w-4 h-4" /> Descargar Instalador
+                       </a>
+                       <p className="text-[8px] text-zinc-600 mt-3 uppercase font-bold tracking-widest">Requiere activación tras la instalación</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <div className="hidden lg:block w-1/2 relative aspect-square bg-zinc-200 rounded-[40px] border border-zinc-300 p-1 shadow-2xl">
+               <div className="w-full h-full bg-[#0a0a0a] rounded-[39px] flex items-center justify-center">
+                  <Layout className="w-32 h-32 text-zinc-800" />
+               </div>
+            </div>
+          </div>
+        </section>
+
+        <footer className="py-16 md:py-20 border-t border-zinc-200 text-center text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-zinc-400 uppercase px-6">
+          © 2026 Sync Pro Studio // Bolivia // Global Reach
+        </footer>
+
+        {/* 📱 Botón Flotante de WhatsApp Minimalista */}
+        <motion.a
+          href="https://wa.me/59169109766?text=Hola%20Sync%20Pro,%20me%20gustar%C3%ADa%20solicitar%20informaci%C3%B3n%20sobre%20sus%20servicios%20de%20edici%C3%B3n."
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, scale: 0.5, y: 50 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileTap={{ scale: 0.9 }}
+          className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#0a0a0a] border border-zinc-700 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] group overflow-hidden"
         >
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-        </svg>
-        <span className="absolute right-20 bg-zinc-900 text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden md:block border border-white/10 backdrop-blur-md">
-          Hablemos
-        </span>
-      </motion.a>
+          <div className="absolute inset-0 bg-gradient-to-tr from-zinc-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <svg 
+            viewBox="0 0 24 24" 
+            className="w-7 h-7 md:w-8 md:h-8 fill-zinc-300 group-hover:fill-white transition-colors duration-300 relative z-10"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          <span className="absolute right-20 bg-zinc-900 text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden md:block border border-white/10 backdrop-blur-md">
+            Hablemos
+          </span>
+        </motion.a>
       </div>
     </div>
   );
