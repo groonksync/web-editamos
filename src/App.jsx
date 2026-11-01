@@ -1197,10 +1197,11 @@ const App = () => {
         id="inicio-videos"
         className="sync-stage relative text-white pt-6 pb-7 md:pt-11 md:pb-11 border-b border-zinc-900"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        {/* Contenedor ancho total: elimina los espacios vacíos gigantes a los costados y ancla textos a la izquierda y botones a la derecha */}
+        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2">
-            {/* LADO IZQUIERDO: Badges técnicos, Título Editorial y Subtítulo */}
-            <div className="max-w-2xl">
+            {/* LADO IZQUIERDO: Badges técnicos, Título Editorial y Subtítulo - Anclado al costado izquierdo */}
+            <div className="max-w-3xl">
               <div className="flex flex-wrap items-center gap-2 mb-3 sm:mb-3.5">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] border border-white/15 text-[10px] sm:text-[11px] font-semibold tracking-wider text-zinc-200 backdrop-blur-md shadow-xs">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
@@ -1214,31 +1215,31 @@ const App = () => {
                 </span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-black uppercase tracking-tight leading-[0.92] text-white">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.90] text-white">
                 Edición <span className="bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-500 bg-clip-text text-transparent">que vende.</span>
               </h1>
-              <p className="mt-2.5 text-xs sm:text-sm md:text-base text-zinc-400 font-normal leading-relaxed max-w-xl">
+              <p className="mt-3 text-xs sm:text-sm md:text-base lg:text-lg text-zinc-400 font-normal leading-relaxed max-w-2xl lg:max-w-3xl">
                 Flujo cinematográfico de alto impacto para marcas y creadores. Retención magnética, ritmo ágil y conversión comercial.
               </p>
             </div>
 
-            {/* LADO DERECHO: Botones de Acción en el costado */}
-            <div className="flex flex-row items-center gap-3 shrink-0 lg:mb-1 w-full sm:w-auto">
+            {/* LADO DERECHO: Botones de Acción - Anclados al costado derecho */}
+            <div className="flex flex-row items-center gap-3 shrink-0 lg:mb-1 w-full sm:w-auto justify-end">
               <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                   'Hola Sync Pro, quiero que trabajemos juntos. ¿Me pueden dar información?'
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial bg-white text-zinc-950 px-5 sm:px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all shadow-[0_10px_25px_-5px_rgba(255,255,255,0.3)] hover:scale-[1.02] active:scale-95"
+                className="flex-1 sm:flex-initial bg-white text-zinc-950 px-6 sm:px-8 py-4 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2.5 hover:bg-zinc-200 transition-all shadow-[0_12px_30px_-5px_rgba(255,255,255,0.35)] hover:scale-[1.02] active:scale-95"
               >
-                <MessageCircle size={16} /> Trabajemos
+                <MessageCircle size={17} /> Trabajemos
               </a>
               <a
                 href="#planes-edicion"
-                className="flex-1 sm:flex-initial bg-white/[0.08] hover:bg-white/[0.14] text-white border border-white/15 px-5 sm:px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all backdrop-blur-md hover:scale-[1.02] active:scale-95"
+                className="flex-1 sm:flex-initial bg-white/[0.08] hover:bg-white/[0.14] text-white border border-white/15 px-6 sm:px-8 py-4 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all backdrop-blur-md hover:scale-[1.02] active:scale-95"
               >
-                Ver Planes <ArrowUpRight size={16} />
+                Ver Planes <ArrowUpRight size={17} />
               </a>
             </div>
           </div>
