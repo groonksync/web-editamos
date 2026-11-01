@@ -925,81 +925,31 @@ const App = () => {
   // --- CONFIGURACIÓN DE VIDEOS ---
   // Mantenemos intacto el arreglo videoIds para compatibilidad con actualizar_videos.py
   const [videoIds] = useState([
-    '19tLxlkE8-hy H2-2UULa87X2Niu2X2-vA', // Cuadro 1
-    '1-hA022vE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 2
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 3
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 4
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 5
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 6
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 7
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 8
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 9
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 10
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 11
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 12
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA'  // Cuadro 13
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 12 (Departamento de Lujo)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 7 (Terreno 13.000 m²)
+    '19tLxlkE8-hy H2-2UULa87X2Niu2X2-vA', // Cuadro 1 (Sport Fit)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 9 (Propiedad Comercial 3D)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 6 (Promo Comercial)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 11 (Casa en Venta)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 10 (Santa Cruz Inmobiliaria)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 3 (Chino Barber)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 8 (Loteo Campestre)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 13 (Buzón de Quejas Viral)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 4 (Novafit)
+    '1-hA022vE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 2 (Zambranos)
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA'  // Cuadro 5 (Yoja Hair Lounge)
   ]);
 
   const projects = [
     {
-      id: 'cuadro-1',
+      id: 'cuadro-12',
       type: 'video',
-      title: 'SPORT FIT',
-      category: 'Fitness & Suplementos',
-      subtitle: 'Edición comercial rítmica de alto impacto',
-      poster: '/cuadro-1-poster.jpg',
-      videoSrc: '/cuadro-1.mp4',
-      fullVideoSrc: '/cuadro-1.mp4'
-    },
-    {
-      id: 'cuadro-2',
-      type: 'video',
-      title: 'ZAMBRANOS',
-      category: 'Comercial & Marca',
-      subtitle: 'Storytelling visual y retención para redes',
-      poster: '/cuadro-2-poster.jpg',
-      videoSrc: '/cuadro-2.mp4',
-      fullVideoSrc: '/cuadro-2.mp4'
-    },
-    {
-      id: 'cuadro-3',
-      type: 'video',
-      title: 'CHINO BARBER',
-      category: 'Estilo & Lifestyle',
-      subtitle: 'Cortes dinámicos, speed ramps y diseño sonoro',
-      poster: '/cuadro-3-poster.jpg',
-      videoSrc: '/cuadro-3.mp4',
-      fullVideoSrc: '/cuadro-3.mp4'
-    },
-    {
-      id: 'cuadro-4',
-      type: 'video',
-      title: 'NOVAFIT',
-      category: 'Entrenamiento & Energía',
-      subtitle: 'Colorización cinematográfica y ritmo publicitario',
-      poster: '/cuadro-4-poster.jpg',
-      videoSrc: '/cuadro-4.mp4',
-      fullVideoSrc: '/cuadro-4.mp4'
-    },
-    {
-      id: 'cuadro-5',
-      type: 'video',
-      title: 'YOJA HAIR LOUNGE',
-      category: 'Belleza & Estética',
-      subtitle: 'Acabado visual limpio y estética de marca',
-      poster: '/cuadro-5-poster.jpg',
-      videoSrc: '/cuadro-5.mp4',
-      fullVideoSrc: '/cuadro-5.mp4'
-    },
-    {
-      id: 'cuadro-6',
-      type: 'video',
-      title: 'PROMO COMERCIAL',
-      category: 'Comercio & Retail',
-      subtitle: 'Gancho directo, ritmo acelerado y llamado a la acción',
-      poster: '/cuadro-6-poster.jpg',
-      videoSrc: '/cuadro-6.mp4',
-      fullVideoSrc: '/cuadro-6.mp4'
+      title: 'DEPARTAMENTO DE LUJO',
+      category: 'Condominios & Torres',
+      subtitle: 'Exclusividad 240 m², garajes y vista panorámica',
+      poster: '/cuadro-12-poster.jpg',
+      videoSrc: '/cuadro-12.mp4',
+      fullVideoSrc: '/cuadro-12.mp4'
     },
     {
       id: 'cuadro-7',
@@ -1012,14 +962,14 @@ const App = () => {
       fullVideoSrc: '/cuadro-7.mp4'
     },
     {
-      id: 'cuadro-8',
+      id: 'cuadro-1',
       type: 'video',
-      title: 'LOTEO CAMPESTRE',
-      category: 'Desarrollo Inmobiliario',
-      subtitle: 'Toma aérea cinematográfica, tipografía y escala de terreno',
-      poster: '/cuadro-8-poster.jpg',
-      videoSrc: '/cuadro-8.mp4',
-      fullVideoSrc: '/cuadro-8.mp4'
+      title: 'SPORT FIT',
+      category: 'Fitness & Suplementos',
+      subtitle: 'Edición comercial rítmica de alto impacto',
+      poster: '/cuadro-1-poster.jpg',
+      videoSrc: '/cuadro-1.mp4',
+      fullVideoSrc: '/cuadro-1.mp4'
     },
     {
       id: 'cuadro-9',
@@ -1032,14 +982,14 @@ const App = () => {
       fullVideoSrc: '/cuadro-9.mp4'
     },
     {
-      id: 'cuadro-10',
+      id: 'cuadro-6',
       type: 'video',
-      title: 'SANTA CRUZ INMOBILIARIA',
-      category: 'Storytelling & Contenido',
-      subtitle: 'Narrativa con orador, subtítulos dinámicos e identidad cruceña',
-      poster: '/cuadro-10-poster.jpg',
-      videoSrc: '/cuadro-10.mp4',
-      fullVideoSrc: '/cuadro-10.mp4'
+      title: 'PROMO COMERCIAL',
+      category: 'Comercio & Retail',
+      subtitle: 'Gancho directo, ritmo acelerado y llamado a la acción',
+      poster: '/cuadro-6-poster.jpg',
+      videoSrc: '/cuadro-6.mp4',
+      fullVideoSrc: '/cuadro-6.mp4'
     },
     {
       id: 'cuadro-11',
@@ -1052,14 +1002,34 @@ const App = () => {
       fullVideoSrc: '/cuadro-11.mp4'
     },
     {
-      id: 'cuadro-12',
+      id: 'cuadro-10',
       type: 'video',
-      title: 'DEPARTAMENTO DE LUJO',
-      category: 'Condominios & Torres',
-      subtitle: 'Exclusividad 240 m², garajes y vista panorámica',
-      poster: '/cuadro-12-poster.jpg',
-      videoSrc: '/cuadro-12.mp4',
-      fullVideoSrc: '/cuadro-12.mp4'
+      title: 'SANTA CRUZ INMOBILIARIA',
+      category: 'Storytelling & Contenido',
+      subtitle: 'Narrativa con orador, subtítulos dinámicos e identidad cruceña',
+      poster: '/cuadro-10-poster.jpg',
+      videoSrc: '/cuadro-10.mp4',
+      fullVideoSrc: '/cuadro-10.mp4'
+    },
+    {
+      id: 'cuadro-3',
+      type: 'video',
+      title: 'CHINO BARBER',
+      category: 'Estilo & Lifestyle',
+      subtitle: 'Cortes dinámicos, speed ramps y diseño sonoro',
+      poster: '/cuadro-3-poster.jpg',
+      videoSrc: '/cuadro-3.mp4',
+      fullVideoSrc: '/cuadro-3.mp4'
+    },
+    {
+      id: 'cuadro-8',
+      type: 'video',
+      title: 'LOTEO CAMPESTRE',
+      category: 'Desarrollo Inmobiliario',
+      subtitle: 'Toma aérea cinematográfica, tipografía y escala de terreno',
+      poster: '/cuadro-8-poster.jpg',
+      videoSrc: '/cuadro-8.mp4',
+      fullVideoSrc: '/cuadro-8.mp4'
     },
     {
       id: 'cuadro-13',
@@ -1070,6 +1040,36 @@ const App = () => {
       poster: '/cuadro-13-poster.jpg',
       videoSrc: '/cuadro-13.mp4',
       fullVideoSrc: '/cuadro-13.mp4'
+    },
+    {
+      id: 'cuadro-4',
+      type: 'video',
+      title: 'NOVAFIT',
+      category: 'Entrenamiento & Energía',
+      subtitle: 'Colorización cinematográfica y ritmo publicitario',
+      poster: '/cuadro-4-poster.jpg',
+      videoSrc: '/cuadro-4.mp4',
+      fullVideoSrc: '/cuadro-4.mp4'
+    },
+    {
+      id: 'cuadro-2',
+      type: 'video',
+      title: 'ZAMBRANOS',
+      category: 'Comercial & Marca',
+      subtitle: 'Storytelling visual y retención para redes',
+      poster: '/cuadro-2-poster.jpg',
+      videoSrc: '/cuadro-2.mp4',
+      fullVideoSrc: '/cuadro-2.mp4'
+    },
+    {
+      id: 'cuadro-5',
+      type: 'video',
+      title: 'YOJA HAIR LOUNGE',
+      category: 'Belleza & Estética',
+      subtitle: 'Acabado visual limpio y estética de marca',
+      poster: '/cuadro-5-poster.jpg',
+      videoSrc: '/cuadro-5.mp4',
+      fullVideoSrc: '/cuadro-5.mp4'
     }
   ];
 
