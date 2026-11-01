@@ -37,13 +37,13 @@ const WHATSAPP_NUMBER = '59169109766';
    DATOS DE MARCAS, FOTOGRAFÍA COMERCIAL Y DETRÁS DE CÁMARAS ("ASÍ TRABAJAMOS")
    ============================================================================ */
 const BRAND_LOGOS = [
-  { name: 'Century 21 Home', src: '/logos/century21-home.png', scale: 'scale-[1.08]' },
-  { name: 'RE/MAX', src: '/logos/remax.png', scale: 'scale-[1.18]' },
-  { name: 'Century 21', src: '/logos/c21.png', scale: 'scale-[1.12]' },
-  { name: 'HouStyle Inmobiliaria', src: '/logos/houstyle.png', scale: 'scale-[1.08]' },
-  { name: 'Urbanización Rosario', src: '/logos/urbanizacion-rosario.png', scale: 'scale-[1.12]' },
+  { name: 'Century 21 Home', src: '/logos/century21-home.png', scale: 'scale-[1.03]' },
+  { name: 'RE/MAX', src: '/logos/remax.png', scale: 'scale-[1.08]' },
+  { name: 'Century 21', src: '/logos/c21.png', scale: 'scale-[1.05]' },
+  { name: 'HouStyle Inmobiliaria', src: '/logos/houstyle.png', scale: 'scale-[1.02]' },
+  { name: 'Urbanización Rosario', src: '/logos/urbanizacion-rosario.png', scale: 'scale-[1.05]' },
   { name: 'Sport Fit', src: '/logos/sportfit.png', scale: 'scale-100' },
-  { name: 'KORUM FIT', src: '/logos/korum-fit.png', scale: 'scale-[1.06]' },
+  { name: 'KORUM FIT', src: '/logos/korum-fit.png', scale: 'scale-[1.02]' },
   { name: 'Sync Creative', src: '/logos/logo-degradado.png', scale: 'scale-100' }
 ];
 
@@ -1048,18 +1048,18 @@ const App = () => {
           </h2>
         </div>
 
-        <div className="sync-brand-mq sync-edge-mask overflow-hidden py-2 md:py-3.5">
+        <div className="sync-brand-mq sync-edge-mask overflow-hidden py-2 md:py-3">
           <div className="sync-brand-track">
             {[...BRAND_LOGOS, ...BRAND_LOGOS, ...BRAND_LOGOS, ...BRAND_LOGOS].map((brand, idx) => (
               <span
                 key={`${brand.name}-${idx}`}
-                className="flex-none flex items-center justify-center w-[160px] h-[86px] sm:w-[190px] sm:h-[98px] md:w-[220px] md:h-[110px] mr-3 md:mr-5 rounded-2xl bg-white border border-zinc-200/90 shadow-xs hover:-translate-y-1 hover:shadow-md transition-all duration-300 p-3 sm:p-4 overflow-hidden"
+                className="flex-none flex items-center justify-center w-[155px] h-[82px] sm:w-[180px] sm:h-[92px] md:w-[205px] md:h-[102px] mr-3 md:mr-4 rounded-2xl bg-white border border-zinc-200/90 shadow-xs hover:-translate-y-1 hover:shadow-md transition-all duration-300 p-3 sm:p-3.5 overflow-hidden"
               >
                 <img
                   src={brand.src}
                   alt={brand.name}
                   loading="lazy"
-                  className={`max-h-[56px] sm:max-h-[66px] md:max-h-[78px] w-auto max-w-[130px] sm:max-w-[155px] md:max-w-[185px] object-contain block transition-transform duration-300 ${
+                  className={`max-h-[48px] sm:max-h-[58px] md:max-h-[68px] w-auto max-w-[120px] sm:max-w-[145px] md:max-w-[170px] object-contain block transition-transform duration-300 ${
                     brand.scale || ''
                   }`}
                 />
