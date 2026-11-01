@@ -43,6 +43,7 @@ const BRAND_LOGOS = [
   { name: 'HouStyle Inmobiliaria', src: '/logos/houstyle.png', scale: 'scale-[1.02]' },
   { name: 'Urbanización Rosario', src: '/logos/urbanizacion-rosario.png', scale: 'scale-[1.05]' },
   { name: 'Sport Fit', src: '/logos/sportfit.png', scale: 'scale-100' },
+  { name: 'NOVAFIT', src: '/logos/novafit.png', scale: 'scale-[1.02]' },
   { name: 'KORUM FIT', src: '/logos/korum-fit.png', scale: 'scale-[1.02]' },
   { name: 'Sync Creative', src: '/logos/logo-degradado.png', scale: 'scale-100' }
 ];
