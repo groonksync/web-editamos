@@ -824,7 +824,10 @@ const App = () => {
     '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 7
     '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 8
     '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 9
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA'  // Cuadro 10
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 10
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 11
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 12
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA'  // Cuadro 13
   ]);
 
   const projects = [
@@ -927,6 +930,36 @@ const App = () => {
       poster: '/cuadro-10-poster.jpg',
       videoSrc: '/cuadro-10.mp4',
       fullVideoSrc: '/cuadro-10.mp4'
+    },
+    {
+      id: 'cuadro-11',
+      type: 'video',
+      title: 'CASA EN VENTA',
+      category: 'Inmobiliaria & Casas',
+      subtitle: 'Recorrido dinámico de propiedad con agente en cámara',
+      poster: '/cuadro-11-poster.jpg',
+      videoSrc: '/cuadro-11.mp4',
+      fullVideoSrc: '/cuadro-11.mp4'
+    },
+    {
+      id: 'cuadro-12',
+      type: 'video',
+      title: 'DEPARTAMENTO DE LUJO',
+      category: 'Condominios & Torres',
+      subtitle: 'Exclusividad 240 m², garajes y vista panorámica',
+      poster: '/cuadro-12-poster.jpg',
+      videoSrc: '/cuadro-12.mp4',
+      fullVideoSrc: '/cuadro-12.mp4'
+    },
+    {
+      id: 'cuadro-13',
+      type: 'video',
+      title: 'BUZÓN DE QUEJAS',
+      category: 'Storytelling & Humor Viral',
+      subtitle: 'Edición ágil de alta retención, efectos sonoros y dinamismo',
+      poster: '/cuadro-13-poster.jpg',
+      videoSrc: '/cuadro-13.mp4',
+      fullVideoSrc: '/cuadro-13.mp4'
     }
   ];
 
