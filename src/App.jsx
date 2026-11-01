@@ -819,7 +819,12 @@ const App = () => {
     '1-hA022vE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 2
     '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 3
     '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 4
-    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA' // Cuadro 5
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 5
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 6
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 7
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 8
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA', // Cuadro 9
+    '19tLxlkE8-hyH2-2UULa87X2Niu2X2-vA'  // Cuadro 10
   ]);
 
   const projects = [
@@ -867,6 +872,51 @@ const App = () => {
       subtitle: 'Acabado visual limpio y estética de marca',
       videoSrc: '/cuadro-5.mp4',
       fullVideoSrc: '/cuadro-5.mp4'
+    },
+    {
+      id: 'cuadro-6',
+      type: 'video',
+      title: 'PROMO COMERCIAL',
+      category: 'Comercio & Retail',
+      subtitle: 'Gancho directo, ritmo acelerado y llamado a la acción',
+      videoSrc: '/cuadro-6.mp4',
+      fullVideoSrc: '/cuadro-6.mp4'
+    },
+    {
+      id: 'cuadro-7',
+      type: 'video',
+      title: 'TERRENO 13.000 M²',
+      category: 'Inmobiliaria & Loteos',
+      subtitle: 'Tracking 3D, delimitación de perímetro y visualización con dron',
+      videoSrc: '/cuadro-7.mp4',
+      fullVideoSrc: '/cuadro-7.mp4'
+    },
+    {
+      id: 'cuadro-8',
+      type: 'video',
+      title: 'LOTEO CAMPESTRE',
+      category: 'Desarrollo Inmobiliario',
+      subtitle: 'Toma aérea cinematográfica, tipografía y escala de terreno',
+      videoSrc: '/cuadro-8.mp4',
+      fullVideoSrc: '/cuadro-8.mp4'
+    },
+    {
+      id: 'cuadro-9',
+      type: 'video',
+      title: 'PROPIEDAD COMERCIAL',
+      category: 'Inversiones Inmobiliarias',
+      subtitle: 'Motion graphics 3D, visualización de avenidas y plusvalía',
+      videoSrc: '/cuadro-9.mp4',
+      fullVideoSrc: '/cuadro-9.mp4'
+    },
+    {
+      id: 'cuadro-10',
+      type: 'video',
+      title: 'SANTA CRUZ INMOBILIARIA',
+      category: 'Storytelling & Contenido',
+      subtitle: 'Narrativa con orador, subtítulos dinámicos e identidad cruceña',
+      videoSrc: '/cuadro-10.mp4',
+      fullVideoSrc: '/cuadro-10.mp4'
     }
   ];
 
