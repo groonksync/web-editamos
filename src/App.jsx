@@ -680,183 +680,138 @@ const VideoEditsThatStandOutSection = () => {
             </div>
           </div>
 
-          {/* COLUMNA DERECHA: Cuatro Tarjetas de Comentarios Flotantes con Curva Suave */}
-          <div className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center pt-6 lg:pt-0 space-y-4 sm:space-y-5">
-            {/* Tarjeta 1: @tomas (Curva de Flotación Orgánica Eje Superior) */}
+          {/* COLUMNA DERECHA: Tres Tarjetas Flotantes Compactas y Desordenadas con Curva Suave */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center pt-6 lg:pt-0 space-y-3 sm:space-y-4 relative w-full">
+            {/* Tarjeta 1: @tomas (Desplazada hacia la izquierda y más compacta) */}
             <motion.div
               animate={{
-                y: [0, -12, 0, 8, 0],
-                rotate: [3, 4.5, 3, 1.8, 3]
+                y: [0, -10, 0, 7, 0],
+                rotate: [4, 5.5, 4, 2.5, 4]
               }}
               transition={{
                 duration: 7.2,
                 repeat: Infinity,
                 ease: [0.45, 0.05, 0.55, 0.95]
               }}
-              whileHover={{ scale: 1.03, rotate: 0 }}
-              className="w-full max-w-[340px] sm:max-w-[370px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_22px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 cursor-default"
+              whileHover={{ scale: 1.04, rotate: 0 }}
+              className="w-full max-w-[280px] sm:max-w-[310px] bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_18px_38px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 self-start sm:-translate-x-4 md:-translate-x-8 cursor-default"
             >
-              <div className="flex items-center gap-3 mb-2.5">
+              <div className="flex items-center gap-2.5 mb-2">
                 <img
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
                   alt="@tomas"
-                  className="w-10 h-10 rounded-full object-cover border border-zinc-200 shrink-0"
+                  className="w-8 h-8 rounded-full object-cover border border-zinc-200 shrink-0"
                 />
-                <div>
-                  <div className="text-sm font-bold text-zinc-900 leading-tight">@tomas</div>
-                  <div className="text-[11px] font-medium text-zinc-400">Canal YouTube · 240K</div>
+                <div className="min-w-0">
+                  <div className="text-xs sm:text-[13px] font-bold text-zinc-900 leading-tight">@tomas</div>
+                  <div className="text-[10px] font-medium text-zinc-400">Canal YouTube · 240K</div>
                 </div>
               </div>
-              <p className="text-sm text-zinc-800 font-medium leading-relaxed mb-4">
+              <p className="text-xs sm:text-[13px] text-zinc-800 font-medium leading-snug mb-3">
                 La mejor edición en 48 horas. La retención del canal subió de inmediato.
               </p>
-              <div className="flex items-center gap-4 text-zinc-400 text-xs font-medium">
+              <div className="flex items-center gap-3 text-zinc-400 text-[11px] font-medium">
                 <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsUp size={15} /> <span className="text-[11px]">18</span>
+                  <ThumbsUp size={13} /> <span>18</span>
                 </button>
                 <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsDown size={15} />
+                  <ThumbsDown size={13} />
                 </button>
                 <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
-                  <span className="w-5 h-5 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
-                    <Sparkles size={10} />
+                  <span className="w-4 h-4 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
+                    <Sparkles size={9} />
                   </span>
-                  <span className="text-xs">Responder</span>
+                  <span className="text-[11px]">Responder</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Tarjeta 2: @mark_locus */}
+            {/* Tarjeta 2: @mark_locus (Desplazada hacia la derecha, inclinación opuesta) */}
             <motion.div
               animate={{
-                y: [0, 11, 0, -13, 0],
-                rotate: [-3, -1.5, -3, -4.5, -3]
+                y: [0, 9, 0, -11, 0],
+                rotate: [-4, -2.5, -4, -5.5, -4]
               }}
               transition={{
-                duration: 8.5,
+                duration: 8.4,
                 repeat: Infinity,
                 ease: [0.45, 0.05, 0.55, 0.95],
-                delay: 0.5
+                delay: 0.6
               }}
-              whileHover={{ scale: 1.03, rotate: 0 }}
-              className="w-full max-w-[340px] sm:max-w-[370px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_22px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 sm:mr-6 cursor-default"
+              whileHover={{ scale: 1.04, rotate: 0 }}
+              className="w-full max-w-[280px] sm:max-w-[310px] bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_18px_38px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 self-end sm:translate-x-6 md:translate-x-10 cursor-default"
             >
-              <div className="flex items-center gap-3 mb-2.5">
+              <div className="flex items-center gap-2.5 mb-2">
                 <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
                   alt="@mark_locus"
-                  className="w-10 h-10 rounded-full object-cover border border-zinc-200 shrink-0"
+                  className="w-8 h-8 rounded-full object-cover border border-zinc-200 shrink-0"
                 />
-                <div>
-                  <div className="text-sm font-bold text-zinc-900 leading-tight">@mark_locus</div>
-                  <div className="text-[11px] font-medium text-zinc-400">Creador & Podcaster</div>
+                <div className="min-w-0">
+                  <div className="text-xs sm:text-[13px] font-bold text-zinc-900 leading-tight">@mark_locus</div>
+                  <div className="text-[10px] font-medium text-zinc-400">Creador & Podcaster</div>
                 </div>
               </div>
-              <p className="text-sm text-zinc-800 font-medium leading-relaxed mb-4">
+              <p className="text-xs sm:text-[13px] text-zinc-800 font-medium leading-snug mb-3">
                 ¡Esta edición aumentó mi tasa de retención un 35%! 100% recomendados.
               </p>
-              <div className="flex items-center gap-4 text-zinc-400 text-xs font-medium">
+              <div className="flex items-center gap-3 text-zinc-400 text-[11px] font-medium">
                 <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsUp size={15} /> <span className="text-[11px]">42</span>
+                  <ThumbsUp size={13} /> <span>42</span>
                 </button>
                 <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsDown size={15} />
+                  <ThumbsDown size={13} />
                 </button>
                 <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
-                  <span className="w-5 h-5 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
-                    <Sparkles size={10} />
+                  <span className="w-4 h-4 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
+                    <Sparkles size={9} />
                   </span>
-                  <span className="text-xs">Responder</span>
+                  <span className="text-[11px]">Responder</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Tarjeta 3: @carla_growth */}
+            {/* Tarjeta 3: @david_realestate (Posición intermedia desordenada) */}
             <motion.div
               animate={{
-                y: [0, -10, 0, 12, 0],
-                rotate: [2.5, 1, 2.5, 3.8, 2.5]
+                y: [0, -8, 0, 10, 0],
+                rotate: [2.5, 1, 2.5, 4, 2.5]
               }}
               transition={{
                 duration: 7.8,
                 repeat: Infinity,
                 ease: [0.45, 0.05, 0.55, 0.95],
-                delay: 1.2
+                delay: 1.3
               }}
-              whileHover={{ scale: 1.03, rotate: 0 }}
-              className="w-full max-w-[340px] sm:max-w-[370px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_22px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 sm:mr-2 cursor-default"
+              whileHover={{ scale: 1.04, rotate: 0 }}
+              className="w-full max-w-[280px] sm:max-w-[310px] bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_18px_38px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 self-center sm:self-start sm:translate-x-2 md:-translate-x-2 cursor-default"
             >
-              <div className="flex items-center gap-3 mb-2.5">
-                <img
-                  src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80"
-                  alt="@carla_growth"
-                  className="w-10 h-10 rounded-full object-cover border border-zinc-200 shrink-0"
-                />
-                <div>
-                  <div className="text-sm font-bold text-zinc-900 leading-tight">@carla_growth</div>
-                  <div className="text-[11px] font-medium text-zinc-400">Marca Fitness & E-com</div>
-                </div>
-              </div>
-              <p className="text-sm text-zinc-800 font-medium leading-relaxed mb-4">
-                El ritmo y los subtítulos son de otro nivel. Pasamos de 3K a 140K reproducciones orgánicas 🔥
-              </p>
-              <div className="flex items-center gap-4 text-zinc-400 text-xs font-medium">
-                <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsUp size={15} /> <span className="text-[11px]">89</span>
-                </button>
-                <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsDown size={15} />
-                </button>
-                <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
-                  <span className="w-5 h-5 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
-                    <Sparkles size={10} />
-                  </span>
-                  <span className="text-xs">Responder</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Tarjeta 4: @david_realestate */}
-            <motion.div
-              animate={{
-                y: [0, 13, 0, -9, 0],
-                rotate: [-2, -3.5, -2, -0.8, -2]
-              }}
-              transition={{
-                duration: 9.2,
-                repeat: Infinity,
-                ease: [0.45, 0.05, 0.55, 0.95],
-                delay: 1.8
-              }}
-              whileHover={{ scale: 1.03, rotate: 0 }}
-              className="w-full max-w-[340px] sm:max-w-[370px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_22px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 sm:mr-7 cursor-default"
-            >
-              <div className="flex items-center gap-3 mb-2.5">
+              <div className="flex items-center gap-2.5 mb-2">
                 <img
                   src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80"
                   alt="@david_realestate"
-                  className="w-10 h-10 rounded-full object-cover border border-zinc-200 shrink-0"
+                  className="w-8 h-8 rounded-full object-cover border border-zinc-200 shrink-0"
                 />
-                <div>
-                  <div className="text-sm font-bold text-zinc-900 leading-tight">@david_realestate</div>
-                  <div className="text-[11px] font-medium text-zinc-400">Inversiones Inmobiliarias</div>
+                <div className="min-w-0">
+                  <div className="text-xs sm:text-[13px] font-bold text-zinc-900 leading-tight">@david_realestate</div>
+                  <div className="text-[10px] font-medium text-zinc-400">Inversiones Inmobiliarias</div>
                 </div>
               </div>
-              <p className="text-sm text-zinc-800 font-medium leading-relaxed mb-4">
-                El tracking 3D y la toma de dron vendieron el loteo en menos de 2 semanas. Impresionante trabajo 🏆
+              <p className="text-xs sm:text-[13px] text-zinc-800 font-medium leading-snug mb-3">
+                El tracking 3D y la toma de dron vendieron el loteo en menos de 2 semanas 🏆
               </p>
-              <div className="flex items-center gap-4 text-zinc-400 text-xs font-medium">
+              <div className="flex items-center gap-3 text-zinc-400 text-[11px] font-medium">
                 <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsUp size={15} /> <span className="text-[11px]">63</span>
+                  <ThumbsUp size={13} /> <span>63</span>
                 </button>
                 <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsDown size={15} />
+                  <ThumbsDown size={13} />
                 </button>
                 <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
-                  <span className="w-5 h-5 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
-                    <Sparkles size={10} />
+                  <span className="w-4 h-4 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
+                    <Sparkles size={9} />
                   </span>
-                  <span className="text-xs">Responder</span>
+                  <span className="text-[11px]">Responder</span>
                 </div>
               </div>
             </motion.div>
@@ -1197,28 +1152,26 @@ const App = () => {
         id="inicio-videos"
         className="sync-stage relative text-white pt-6 pb-7 md:pt-11 md:pb-11 border-b border-zinc-900"
       >
-        {/* Contenedor ancho total: elimina los espacios vacíos gigantes a los costados y ancla textos a la izquierda y botones a la derecha */}
+        {/* Contenedor ancho total: textos anclados a la izquierda y botones a la derecha en una sola línea */}
         <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2">
-            {/* LADO IZQUIERDO: Badges técnicos, Título Editorial y Subtítulo - Anclado al costado izquierdo */}
-            <div className="max-w-3xl">
-              <div className="flex flex-wrap items-center gap-2 mb-3 sm:mb-3.5">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] border border-white/15 text-[10px] sm:text-[11px] font-semibold tracking-wider text-zinc-200 backdrop-blur-md shadow-xs">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
-                  DaVinci Resolve Studio 21
-                </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[10px] sm:text-[11px] font-medium text-zinc-300">
-                  Motion 3D
-                </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30 text-[10px] sm:text-[11px] font-semibold text-orange-300">
-                  IA Avanzada
-                </span>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5 lg:gap-8 pb-2">
+            {/* LADO IZQUIERDO: Badge minimalista limpio y Título en una sola línea */}
+            <div className="flex-1 min-w-0 pr-0 lg:pr-6">
+              {/* Badge limpio monocromático sin colores llamativos */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-300 backdrop-blur-md mb-2.5 sm:mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
+                <span>DaVinci Resolve Studio</span>
+                <span className="text-zinc-600">·</span>
+                <span>Motion 3D</span>
+                <span className="text-zinc-600">·</span>
+                <span>IA</span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[0.90] text-white">
+              {/* Título estrictamente en una sola línea */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-tight leading-none text-white whitespace-nowrap">
                 Edición <span className="bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-500 bg-clip-text text-transparent">que vende.</span>
               </h1>
-              <p className="mt-3 text-xs sm:text-sm md:text-base lg:text-lg text-zinc-400 font-normal leading-relaxed max-w-2xl lg:max-w-3xl">
+              <p className="mt-2.5 text-xs sm:text-sm md:text-base text-zinc-400 font-normal leading-relaxed max-w-xl lg:max-w-2xl">
                 Flujo cinematográfico de alto impacto para marcas y creadores. Retención magnética, ritmo ágil y conversión comercial.
               </p>
             </div>
@@ -1231,15 +1184,15 @@ const App = () => {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial bg-white text-zinc-950 px-6 sm:px-8 py-4 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2.5 hover:bg-zinc-200 transition-all shadow-[0_12px_30px_-5px_rgba(255,255,255,0.35)] hover:scale-[1.02] active:scale-95"
+                className="flex-1 sm:flex-initial bg-white text-zinc-950 px-5 sm:px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all shadow-[0_10px_25px_-5px_rgba(255,255,255,0.3)] hover:scale-[1.02] active:scale-95 whitespace-nowrap"
               >
-                <MessageCircle size={17} /> Trabajemos
+                <MessageCircle size={16} /> Trabajemos
               </a>
               <a
                 href="#planes-edicion"
-                className="flex-1 sm:flex-initial bg-white/[0.08] hover:bg-white/[0.14] text-white border border-white/15 px-6 sm:px-8 py-4 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all backdrop-blur-md hover:scale-[1.02] active:scale-95"
+                className="flex-1 sm:flex-initial bg-white/[0.08] hover:bg-white/[0.14] text-white border border-white/15 px-5 sm:px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all backdrop-blur-md hover:scale-[1.02] active:scale-95 whitespace-nowrap"
               >
-                Ver Planes <ArrowUpRight size={17} />
+                Ver Planes <ArrowUpRight size={16} />
               </a>
             </div>
           </div>
