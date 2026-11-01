@@ -570,21 +570,22 @@ const InfiniteMediaCarousel = ({
         </div>
       </div>
 
+      {/* Botones de navegación en los costados laterales del carrusel */}
       <button
         type="button"
         onClick={() => scrollByStep(-1)}
-        aria-label="Anterior"
-        className="hidden md:grid place-items-center absolute left-3 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-zinc-950/75 hover:bg-white text-white hover:text-zinc-950 border border-white/25 backdrop-blur-md shadow-xl transition-all duration-200 hover:scale-105"
+        aria-label="Anterior video"
+        className="grid place-items-center absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-zinc-950/85 hover:bg-white text-white hover:text-zinc-950 border border-white/25 hover:border-white shadow-[0_15px_35px_rgba(0,0,0,0.85)] backdrop-blur-xl transition-all duration-300 hover:scale-110 active:scale-95 group/arrow"
       >
-        <ChevronLeft size={22} />
+        <ChevronLeft size={24} className="group-hover/arrow:-translate-x-0.5 transition-transform" />
       </button>
       <button
         type="button"
         onClick={() => scrollByStep(1)}
-        aria-label="Siguiente"
-        className="hidden md:grid place-items-center absolute right-3 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-zinc-950/75 hover:bg-white text-white hover:text-zinc-950 border border-white/25 backdrop-blur-md shadow-xl transition-all duration-200 hover:scale-105"
+        aria-label="Siguiente video"
+        className="grid place-items-center absolute right-2 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 z-30 w-12 h-12 md:w-14 md:h-14 rounded-full bg-zinc-950/85 hover:bg-white text-white hover:text-zinc-950 border border-white/25 hover:border-white shadow-[0_15px_35px_rgba(0,0,0,0.85)] backdrop-blur-xl transition-all duration-300 hover:scale-110 active:scale-95 group/arrow"
       >
-        <ChevronRight size={22} />
+        <ChevronRight size={24} className="group-hover/arrow:translate-x-0.5 transition-transform" />
       </button>
     </div>
   );
@@ -679,13 +680,21 @@ const VideoEditsThatStandOutSection = () => {
             </div>
           </div>
 
-          {/* COLUMNA DERECHA: Dos Tarjetas de Comentarios Flotantes */}
-          <div className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center pt-4 lg:pt-0 space-y-4 sm:space-y-6">
-            {/* Tarjeta 1: @tomas (inclinada hacia la derecha) */}
+          {/* COLUMNA DERECHA: Cuatro Tarjetas de Comentarios Flotantes con Curva Suave */}
+          <div className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center pt-6 lg:pt-0 space-y-4 sm:space-y-5">
+            {/* Tarjeta 1: @tomas (Curva de Flotación Orgánica Eje Superior) */}
             <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              className="w-full max-w-[340px] sm:max-w-[360px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_20px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 rotate-[3deg] hover:rotate-0 hover:scale-[1.02] transition-all duration-300"
+              animate={{
+                y: [0, -12, 0, 8, 0],
+                rotate: [3, 4.5, 3, 1.8, 3]
+              }}
+              transition={{
+                duration: 7.2,
+                repeat: Infinity,
+                ease: [0.45, 0.05, 0.55, 0.95]
+              }}
+              whileHover={{ scale: 1.03, rotate: 0 }}
+              className="w-full max-w-[340px] sm:max-w-[370px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_22px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 cursor-default"
             >
               <div className="flex items-center gap-3 mb-2.5">
                 <img
@@ -695,14 +704,15 @@ const VideoEditsThatStandOutSection = () => {
                 />
                 <div>
                   <div className="text-sm font-bold text-zinc-900 leading-tight">@tomas</div>
+                  <div className="text-[11px] font-medium text-zinc-400">Canal YouTube · 240K</div>
                 </div>
               </div>
               <p className="text-sm text-zinc-800 font-medium leading-relaxed mb-4">
-                La mejor edición en 48 horas.
+                La mejor edición en 48 horas. La retención del canal subió de inmediato.
               </p>
               <div className="flex items-center gap-4 text-zinc-400 text-xs font-medium">
                 <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsUp size={15} />
+                  <ThumbsUp size={15} /> <span className="text-[11px]">18</span>
                 </button>
                 <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
                   <ThumbsDown size={15} />
@@ -716,11 +726,20 @@ const VideoEditsThatStandOutSection = () => {
               </div>
             </motion.div>
 
-            {/* Tarjeta 2: @mark_locus (inclinada hacia la izquierda) */}
+            {/* Tarjeta 2: @mark_locus */}
             <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-              className="w-full max-w-[340px] sm:max-w-[360px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_20px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 -rotate-[3deg] hover:rotate-0 hover:scale-[1.02] transition-all duration-300 sm:mr-4"
+              animate={{
+                y: [0, 11, 0, -13, 0],
+                rotate: [-3, -1.5, -3, -4.5, -3]
+              }}
+              transition={{
+                duration: 8.5,
+                repeat: Infinity,
+                ease: [0.45, 0.05, 0.55, 0.95],
+                delay: 0.5
+              }}
+              whileHover={{ scale: 1.03, rotate: 0 }}
+              className="w-full max-w-[340px] sm:max-w-[370px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_22px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 sm:mr-6 cursor-default"
             >
               <div className="flex items-center gap-3 mb-2.5">
                 <img
@@ -730,14 +749,105 @@ const VideoEditsThatStandOutSection = () => {
                 />
                 <div>
                   <div className="text-sm font-bold text-zinc-900 leading-tight">@mark_locus</div>
+                  <div className="text-[11px] font-medium text-zinc-400">Creador & Podcaster</div>
                 </div>
               </div>
               <p className="text-sm text-zinc-800 font-medium leading-relaxed mb-4">
-                ¡Esta edición aumentó mi tasa de retención un 35%!
+                ¡Esta edición aumentó mi tasa de retención un 35%! 100% recomendados.
               </p>
               <div className="flex items-center gap-4 text-zinc-400 text-xs font-medium">
                 <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsUp size={15} />
+                  <ThumbsUp size={15} /> <span className="text-[11px]">42</span>
+                </button>
+                <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
+                  <ThumbsDown size={15} />
+                </button>
+                <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
+                  <span className="w-5 h-5 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
+                    <Sparkles size={10} />
+                  </span>
+                  <span className="text-xs">Responder</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Tarjeta 3: @carla_growth */}
+            <motion.div
+              animate={{
+                y: [0, -10, 0, 12, 0],
+                rotate: [2.5, 1, 2.5, 3.8, 2.5]
+              }}
+              transition={{
+                duration: 7.8,
+                repeat: Infinity,
+                ease: [0.45, 0.05, 0.55, 0.95],
+                delay: 1.2
+              }}
+              whileHover={{ scale: 1.03, rotate: 0 }}
+              className="w-full max-w-[340px] sm:max-w-[370px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_22px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 sm:mr-2 cursor-default"
+            >
+              <div className="flex items-center gap-3 mb-2.5">
+                <img
+                  src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80"
+                  alt="@carla_growth"
+                  className="w-10 h-10 rounded-full object-cover border border-zinc-200 shrink-0"
+                />
+                <div>
+                  <div className="text-sm font-bold text-zinc-900 leading-tight">@carla_growth</div>
+                  <div className="text-[11px] font-medium text-zinc-400">Marca Fitness & E-com</div>
+                </div>
+              </div>
+              <p className="text-sm text-zinc-800 font-medium leading-relaxed mb-4">
+                El ritmo y los subtítulos son de otro nivel. Pasamos de 3K a 140K reproducciones orgánicas 🔥
+              </p>
+              <div className="flex items-center gap-4 text-zinc-400 text-xs font-medium">
+                <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
+                  <ThumbsUp size={15} /> <span className="text-[11px]">89</span>
+                </button>
+                <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
+                  <ThumbsDown size={15} />
+                </button>
+                <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
+                  <span className="w-5 h-5 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
+                    <Sparkles size={10} />
+                  </span>
+                  <span className="text-xs">Responder</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Tarjeta 4: @david_realestate */}
+            <motion.div
+              animate={{
+                y: [0, 13, 0, -9, 0],
+                rotate: [-2, -3.5, -2, -0.8, -2]
+              }}
+              transition={{
+                duration: 9.2,
+                repeat: Infinity,
+                ease: [0.45, 0.05, 0.55, 0.95],
+                delay: 1.8
+              }}
+              whileHover={{ scale: 1.03, rotate: 0 }}
+              className="w-full max-w-[340px] sm:max-w-[370px] bg-white rounded-2xl p-4 sm:p-5 shadow-[0_22px_45px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 sm:mr-7 cursor-default"
+            >
+              <div className="flex items-center gap-3 mb-2.5">
+                <img
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80"
+                  alt="@david_realestate"
+                  className="w-10 h-10 rounded-full object-cover border border-zinc-200 shrink-0"
+                />
+                <div>
+                  <div className="text-sm font-bold text-zinc-900 leading-tight">@david_realestate</div>
+                  <div className="text-[11px] font-medium text-zinc-400">Inversiones Inmobiliarias</div>
+                </div>
+              </div>
+              <p className="text-sm text-zinc-800 font-medium leading-relaxed mb-4">
+                El tracking 3D y la toma de dron vendieron el loteo en menos de 2 semanas. Impresionante trabajo 🏆
+              </p>
+              <div className="flex items-center gap-4 text-zinc-400 text-xs font-medium">
+                <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
+                  <ThumbsUp size={15} /> <span className="text-[11px]">63</span>
                 </button>
                 <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
                   <ThumbsDown size={15} />
@@ -1087,34 +1197,50 @@ const App = () => {
         id="inicio-videos"
         className="sync-stage relative text-white pt-6 pb-7 md:pt-11 md:pb-11 border-b border-zinc-900"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
-          <div>
-            <span className="inline-flex items-center gap-2 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.22em] sm:tracking-[0.28em] text-zinc-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
-              DaVinci Resolve Studio · Motion 3D · IA
-            </span>
-            <h1 className="mt-1.5 sm:mt-2 text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[0.94] text-white">
-              Edición <span className="text-zinc-400">que vende.</span>
-            </h1>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2">
+            {/* LADO IZQUIERDO: Badges técnicos, Título Editorial y Subtítulo */}
+            <div className="max-w-2xl">
+              <div className="flex flex-wrap items-center gap-2 mb-3 sm:mb-3.5">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] border border-white/15 text-[10px] sm:text-[11px] font-semibold tracking-wider text-zinc-200 backdrop-blur-md shadow-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+                  DaVinci Resolve Studio 21
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[10px] sm:text-[11px] font-medium text-zinc-300">
+                  Motion 3D
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30 text-[10px] sm:text-[11px] font-semibold text-orange-300">
+                  IA Avanzada
+                </span>
+              </div>
 
-          <div className="grid grid-cols-2 sm:flex gap-2.5 w-full sm:w-auto">
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                'Hola Sync Pro, quiero que trabajemos juntos. ¿Me pueden dar información?'
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white text-zinc-950 px-4 sm:px-6 py-3 rounded-xl font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all shadow-lg"
-            >
-              <MessageCircle size={15} /> Trabajemos
-            </a>
-            <a
-              href="#planes-edicion"
-              className="bg-white/[0.08] hover:bg-white/[0.14] text-white border border-white/15 px-4 sm:px-6 py-3 rounded-xl font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all backdrop-blur-md"
-            >
-              Ver Planes <ArrowUpRight size={15} />
-            </a>
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-black uppercase tracking-tight leading-[0.92] text-white">
+                Edición <span className="bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-500 bg-clip-text text-transparent">que vende.</span>
+              </h1>
+              <p className="mt-2.5 text-xs sm:text-sm md:text-base text-zinc-400 font-normal leading-relaxed max-w-xl">
+                Flujo cinematográfico de alto impacto para marcas y creadores. Retención magnética, ritmo ágil y conversión comercial.
+              </p>
+            </div>
+
+            {/* LADO DERECHO: Botones de Acción en el costado */}
+            <div className="flex flex-row items-center gap-3 shrink-0 lg:mb-1 w-full sm:w-auto">
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                  'Hola Sync Pro, quiero que trabajemos juntos. ¿Me pueden dar información?'
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial bg-white text-zinc-950 px-5 sm:px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all shadow-[0_10px_25px_-5px_rgba(255,255,255,0.3)] hover:scale-[1.02] active:scale-95"
+              >
+                <MessageCircle size={16} /> Trabajemos
+              </a>
+              <a
+                href="#planes-edicion"
+                className="flex-1 sm:flex-initial bg-white/[0.08] hover:bg-white/[0.14] text-white border border-white/15 px-5 sm:px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all backdrop-blur-md hover:scale-[1.02] active:scale-95"
+              >
+                Ver Planes <ArrowUpRight size={16} />
+              </a>
+            </div>
           </div>
         </div>
 
