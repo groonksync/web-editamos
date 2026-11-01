@@ -834,6 +834,7 @@ const App = () => {
       title: 'SPORT FIT',
       category: 'Fitness & Suplementos',
       subtitle: 'Edición comercial rítmica de alto impacto',
+      poster: '/cuadro-1-poster.jpg',
       videoSrc: '/cuadro-1.mp4',
       fullVideoSrc: '/cuadro-1.mp4'
     },
@@ -843,6 +844,7 @@ const App = () => {
       title: 'ZAMBRANOS',
       category: 'Comercial & Marca',
       subtitle: 'Storytelling visual y retención para redes',
+      poster: '/cuadro-2-poster.jpg',
       videoSrc: '/cuadro-2.mp4',
       fullVideoSrc: '/cuadro-2.mp4'
     },
@@ -852,6 +854,7 @@ const App = () => {
       title: 'CHINO BARBER',
       category: 'Estilo & Lifestyle',
       subtitle: 'Cortes dinámicos, speed ramps y diseño sonoro',
+      poster: '/cuadro-3-poster.jpg',
       videoSrc: '/cuadro-3.mp4',
       fullVideoSrc: '/cuadro-3.mp4'
     },
@@ -861,6 +864,7 @@ const App = () => {
       title: 'NOVAFIT',
       category: 'Entrenamiento & Energía',
       subtitle: 'Colorización cinematográfica y ritmo publicitario',
+      poster: '/cuadro-4-poster.jpg',
       videoSrc: '/cuadro-4.mp4',
       fullVideoSrc: '/cuadro-4.mp4'
     },
@@ -870,6 +874,7 @@ const App = () => {
       title: 'YOJA HAIR LOUNGE',
       category: 'Belleza & Estética',
       subtitle: 'Acabado visual limpio y estética de marca',
+      poster: '/cuadro-5-poster.jpg',
       videoSrc: '/cuadro-5.mp4',
       fullVideoSrc: '/cuadro-5.mp4'
     },
@@ -879,6 +884,7 @@ const App = () => {
       title: 'PROMO COMERCIAL',
       category: 'Comercio & Retail',
       subtitle: 'Gancho directo, ritmo acelerado y llamado a la acción',
+      poster: '/cuadro-6-poster.jpg',
       videoSrc: '/cuadro-6.mp4',
       fullVideoSrc: '/cuadro-6.mp4'
     },
@@ -888,6 +894,7 @@ const App = () => {
       title: 'TERRENO 13.000 M²',
       category: 'Inmobiliaria & Loteos',
       subtitle: 'Tracking 3D, delimitación de perímetro y visualización con dron',
+      poster: '/cuadro-7-poster.jpg',
       videoSrc: '/cuadro-7.mp4',
       fullVideoSrc: '/cuadro-7.mp4'
     },
@@ -897,6 +904,7 @@ const App = () => {
       title: 'LOTEO CAMPESTRE',
       category: 'Desarrollo Inmobiliario',
       subtitle: 'Toma aérea cinematográfica, tipografía y escala de terreno',
+      poster: '/cuadro-8-poster.jpg',
       videoSrc: '/cuadro-8.mp4',
       fullVideoSrc: '/cuadro-8.mp4'
     },
@@ -906,6 +914,7 @@ const App = () => {
       title: 'PROPIEDAD COMERCIAL',
       category: 'Inversiones Inmobiliarias',
       subtitle: 'Motion graphics 3D, visualización de avenidas y plusvalía',
+      poster: '/cuadro-9-poster.jpg',
       videoSrc: '/cuadro-9.mp4',
       fullVideoSrc: '/cuadro-9.mp4'
     },
@@ -915,6 +924,7 @@ const App = () => {
       title: 'SANTA CRUZ INMOBILIARIA',
       category: 'Storytelling & Contenido',
       subtitle: 'Narrativa con orador, subtítulos dinámicos e identidad cruceña',
+      poster: '/cuadro-10-poster.jpg',
       videoSrc: '/cuadro-10.mp4',
       fullVideoSrc: '/cuadro-10.mp4'
     }
