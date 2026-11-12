@@ -70,6 +70,76 @@ html, body {
   animation-play-state: paused;
 }
 
+/* Cintillo de insignias (sección "Edición que destaca"): animación CSS en el compositor,
+   mucho más ligera que animar por JavaScript en equipos de gama baja */
+@keyframes syncTapeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.sync-tape-track {
+  display: flex;
+  width: max-content;
+  animation: syncTapeScroll 38s linear infinite;
+  will-change: transform;
+}
+
+/* Entrada escalonada y limpia del encabezado principal (solo transform/opacity) */
+@keyframes syncRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.sync-rise {
+  animation: syncRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* Aparición suave de la imagen/video sobre su carátula, sin parpadeos en negro */
+.sync-media-fade {
+  opacity: 0;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sync-media-fade[data-ready='true'] {
+  opacity: 1;
+}
+
+/* Insignia "toca para reproducir" cuando el ahorro de datos o una red muy lenta está activo */
+.sync-play-badge {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease;
+}
+
+.sync-reel-card:hover .sync-play-badge {
+  transform: scale(1.1);
+}
+
+/* Respeto total a "reducir movimiento": sin animaciones decorativas */
+@media (prefers-reduced-motion: reduce) {
+  .sync-rise,
+  .sync-brand-track,
+  .sync-tape-track {
+    animation: none !important;
+  }
+
+  .sync-media-fade {
+    transition: none;
+  }
+
+  .sync-reel-card {
+    transition: none;
+  }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

@@ -27,11 +27,243 @@ import {
   Scissors,
   ThumbsUp,
   ThumbsDown,
+  Play,
   X
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useInView, useReducedMotion } from 'framer-motion';
 
 const WHATSAPP_NUMBER = '59169109766';
+
+/* ============================================================================
+   RENDIMIENTO ADAPTATIVO (teléfonos y PCs de gama baja, internet lento)
+   ----------------------------------------------------------------------------
+   - Los videos solo se descargan y reproducen cuando están cerca de la pantalla.
+   - Cada tarjeta muestra primero su carátula liviana y el video aparece encima.
+   - Si el visitante usa "Ahorro de datos" o una red 2G, no se autorreproduce nada:
+     se muestra la carátula con botón de play y el video carga solo al tocarlo.
+   ============================================================================ */
+
+// Sube este número cada vez que reemplaces un video o imagen local con el mismo nombre,
+// así los visitantes descargan la versión nueva en lugar de la guardada en su caché.
+const ASSET_V = '2';
+const asset = (path) => (path && path.startsWith('/') ? `${path}?v=${ASSET_V}` : path);
+
+const getPerfProfile = () => {
+  if (typeof navigator === 'undefined') return { still: false, lite: false, slow: false };
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const type = (conn && conn.effectiveType) || '';
+  const saveData = Boolean(conn && conn.saveData);
+  const verySlow = type === 'slow-2g' || type === '2g';
+  const slowNet = type === '3g';
+  const weakDevice =
+    Boolean(navigator.deviceMemory && navigator.deviceMemory <= 2) ||
+    Boolean(navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+
+  return {
+    // Sin autorreproducción: solo carátula + botón de play
+    still: saveData || verySlow,
+    // Precarga mínima fuera de pantalla
+    lite: saveData || verySlow || slowNet || weakDevice,
+    // El visor ampliado usa la versión liviana del video
+    slow: saveData || verySlow || slowNet
+  };
+};
+
+const PERF = getPerfProfile();
+
+/* Video perezoso: solo existe en el DOM mientras está cerca de la zona visible.
+   Al salir de pantalla se libera el decodificador (clave en equipos con poca memoria). */
+const LazyVideo = ({ src, poster, muted = true, enabled = true, priority = false, label, onForceMute }) => {
+  const wrapRef = useRef(null);
+  const videoRef = useRef(null);
+  const [near, setNear] = useState(false);
+  const [ready, setReady] = useState(false);
+  const active = enabled && near && !PERF.still;
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return undefined;
+    if (!('IntersectionObserver' in window)) {
+      setNear(true);
+      return undefined;
+    }
+    // Se observa respecto al carrusel (scroll horizontal) para poder precargar la tarjeta siguiente
+    const root = el.closest('[data-sync-scroller]');
+    const io = new IntersectionObserver(([entry]) => setNear(entry.isIntersecting), {
+      root: root || null,
+      rootMargin: PERF.lite ? '0px 100px' : '0px 280px'
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!active) setReady(false);
+  }, [active]);
+
+  // React no actualiza el atributo "muted" después del montaje: se controla de forma imperativa
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = muted;
+    if (!muted) {
+      const p = v.play();
+      if (p && p.catch) {
+        p.catch(() => {
+          v.muted = true;
+          if (onForceMute) onForceMute();
+          v.play().catch(() => {});
+        });
+      }
+    }
+  }, [muted, active]);
+
+  return (
+    <div ref={wrapRef} className="absolute inset-0">
+      {poster && (
+        <img
+          src={asset(poster)}
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+          decoding="async"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchpriority={priority ? 'high' : undefined}
+          className="absolute inset-0 w-full h-full object-cover block pointer-events-none"
+        />
+      )}
+      {active && (
+        <video
+          ref={videoRef}
+          src={asset(src)}
+          aria-label={label}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          disablePictureInPicture
+          data-ready={ready}
+          onLoadedData={() => setReady(true)}
+          onPlaying={() => setReady(true)}
+          className="sync-media-fade absolute inset-0 w-full h-full object-cover block pointer-events-none"
+        />
+      )}
+      {PERF.still && (
+        <span className="sync-play-badge absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-black/55 border border-white/30 backdrop-blur-md flex items-center justify-center text-white pointer-events-none">
+          <Play size={18} className="ml-0.5 fill-white" />
+        </span>
+      )}
+    </div>
+  );
+};
+
+/* Aparición suave al hacer scroll (solo opacity + transform, respeta "reducir movimiento") */
+const Reveal = ({ children, className = '', delay = 0, y = 22 }) => {
+  const reduce = useReducedMotion();
+  if (reduce) return <div className={className}>{children}</div>;
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '0px 0px -8% 0px' }}
+      transition={{ duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+/* Comentarios flotantes: solo se animan mientras están visibles en pantalla */
+const FLOATING_COMMENTS = [
+  {
+    user: '@tomas',
+    role: 'Canal YouTube · 240K',
+    text: 'La mejor edición en 48 horas. La retención del canal subió de inmediato.',
+    likes: 18,
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+    y: [0, -10, 0, 7, 0],
+    rotate: [4, 5.5, 4, 2.5, 4],
+    duration: 7.2,
+    delay: 0,
+    position: 'self-start'
+  },
+  {
+    user: '@mark_locus',
+    role: 'Creador & Podcaster',
+    text: '¡Esta edición aumentó mi tasa de retención un 35%! 100% recomendados.',
+    likes: 42,
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
+    y: [0, 9, 0, -11, 0],
+    rotate: [-4, -2.5, -4, -5.5, -4],
+    duration: 8.4,
+    delay: 0.6,
+    position: 'self-end'
+  },
+  {
+    user: '@david_realestate',
+    role: 'Inversiones Inmobiliarias',
+    text: 'El tracking 3D y la toma de dron vendieron el loteo en menos de 2 semanas 🏆',
+    likes: 63,
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80',
+    y: [0, -8, 0, 10, 0],
+    rotate: [2.5, 1, 2.5, 4, 2.5],
+    duration: 7.8,
+    delay: 1.3,
+    position: 'self-center'
+  }
+];
+
+const FloatingComment = ({ comment }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: '120px' });
+  const reduce = useReducedMotion();
+  const floating = inView && !reduce;
+
+  return (
+    <motion.div
+      ref={ref}
+      animate={floating ? { y: comment.y, rotate: comment.rotate } : { y: 0, rotate: comment.rotate[0] }}
+      transition={
+        floating
+          ? { duration: comment.duration, repeat: Infinity, ease: [0.45, 0.05, 0.55, 0.95], delay: comment.delay }
+          : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+      }
+      whileHover={{ scale: 1.04, rotate: 0 }}
+      className={`w-full max-w-[280px] sm:max-w-[310px] bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_18px_38px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-shadow duration-300 hover:shadow-[0_26px_48px_-14px_rgba(0,0,0,0.14)] cursor-default ${comment.position}`}
+    >
+      <div className="flex items-center gap-2.5 mb-2">
+        <img
+          src={comment.avatar}
+          alt={comment.user}
+          loading="lazy"
+          decoding="async"
+          className="w-8 h-8 rounded-full object-cover border border-zinc-200 shrink-0"
+        />
+        <div className="min-w-0">
+          <div className="text-xs sm:text-[13px] font-bold text-zinc-900 leading-tight">{comment.user}</div>
+          <div className="text-[10px] font-medium text-zinc-400">{comment.role}</div>
+        </div>
+      </div>
+      <p className="text-xs sm:text-[13px] text-zinc-800 font-medium leading-snug mb-3">{comment.text}</p>
+      <div className="flex items-center gap-3 text-zinc-400 text-[11px] font-medium">
+        <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
+          <ThumbsUp size={13} /> <span>{comment.likes}</span>
+        </button>
+        <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
+          <ThumbsDown size={13} />
+        </button>
+        <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
+          <span className="w-4 h-4 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
+            <Sparkles size={9} />
+          </span>
+          <span className="text-[11px]">Responder</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 /* ============================================================================
    DATOS DE MARCAS, FOTOGRAFÍA COMERCIAL Y DETRÁS DE CÁMARAS ("ASÍ TRABAJAMOS")
@@ -297,7 +529,24 @@ const InfiniteMediaCarousel = ({
   cardHeightClass = 'h-[300px] sm:h-[360px] md:h-[430px] lg:h-[460px]'
 }) => {
   const scrollRef = useRef(null);
+  const sectionRef = useRef(null);
   const [unmutedKey, setUnmutedKey] = useState(null);
+  // Los videos del carrusel solo se activan cuando la sección está cerca de la pantalla
+  const [sectionNear, setSectionNear] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return undefined;
+    if (!('IntersectionObserver' in window)) {
+      setSectionNear(true);
+      return undefined;
+    }
+    const io = new IntersectionObserver(([entry]) => setSectionNear(entry.isIntersecting), {
+      rootMargin: '260px 0px'
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   // En móvil y escritorio duplicamos lo justo para bucle continuo sin sobrecargar decodificadores móviles
   const baseList = items.length < 8 ? [...items, ...items] : items;
@@ -491,9 +740,10 @@ const InfiniteMediaCarousel = ({
   };
 
   return (
-    <div className="relative group/carousel">
+    <div ref={sectionRef} className="relative group/carousel">
       <div
         ref={scrollRef}
+        data-sync-scroller
         className="flex overflow-x-auto no-scrollbar sync-edge-mask py-4 md:py-6 px-3 sm:px-6 md:px-10 cursor-grab select-none"
       >
         <div className="flex w-max items-center">
@@ -510,15 +760,14 @@ const InfiniteMediaCarousel = ({
                 className={`sync-reel-card relative flex-none ${cardHeightClass} ${aspectClass} mr-3 md:mr-4 rounded-[20px] md:rounded-[22px] overflow-hidden bg-[#0a0a0a] border border-white/10 shadow-[0_20px_44px_-20px_rgba(0,0,0,0.85)] cursor-pointer isolate`}
               >
                 {isVideo ? (
-                  <video
+                  <LazyVideo
                     src={item.videoSrc}
-                    poster={item.poster || undefined}
-                    autoPlay
+                    poster={item.poster}
+                    label={`${item.title}: ${item.subtitle}`}
                     muted={!isUnmuted}
-                    loop
-                    playsInline
-                    preload="metadata"
-                    className="absolute inset-0 w-full h-full object-cover block pointer-events-none"
+                    enabled={sectionNear}
+                    priority={idx < 3 && Boolean(item.priority)}
+                    onForceMute={() => setUnmutedKey(null)}
                   />
                 ) : (
                   <img
@@ -539,17 +788,19 @@ const InfiniteMediaCarousel = ({
                 )}
 
                 {isVideo ? (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setUnmutedKey(isUnmuted ? null : instanceKey);
-                    }}
-                    title={isUnmuted ? 'Silenciar audio' : 'Activar audio'}
-                    className="absolute right-2.5 top-2.5 md:right-3 md:top-3 z-20 w-9 h-9 rounded-full bg-black/60 hover:bg-white hover:text-zinc-950 text-white border border-white/25 backdrop-blur-md flex items-center justify-center transition-all duration-300"
-                  >
-                    {isUnmuted ? <Volume2 size={15} /> : <VolumeX size={15} />}
-                  </button>
+                  !PERF.still && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setUnmutedKey(isUnmuted ? null : instanceKey);
+                      }}
+                      title={isUnmuted ? 'Silenciar audio' : 'Activar audio'}
+                      className="absolute right-2.5 top-2.5 md:right-3 md:top-3 z-20 w-9 h-9 rounded-full bg-black/60 hover:bg-white hover:text-zinc-950 text-white border border-white/25 backdrop-blur-md flex items-center justify-center transition-all duration-300"
+                    >
+                      {isUnmuted ? <Volume2 size={15} /> : <VolumeX size={15} />}
+                    </button>
+                  )
                 ) : (
                   <span className="absolute right-2.5 top-2.5 md:right-3 md:top-3 z-10 w-8 h-8 rounded-full bg-black/45 border border-white/20 text-white/80 backdrop-blur-md flex items-center justify-center">
                     <Camera size={14} />
@@ -680,164 +931,31 @@ const VideoEditsThatStandOutSection = () => {
             </div>
           </div>
 
-          {/* COLUMNA DERECHA: Tres Tarjetas Flotantes Compactas y Desordenadas con Curva Suave */}
+          {/* COLUMNA DERECHA: Tres tarjetas flotantes compactas y escalonadas (se animan solo si están visibles) */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center pt-6 lg:pt-0 space-y-3 sm:space-y-4 relative w-full">
-            {/* Tarjeta 1: @tomas (Desplazada hacia la izquierda y más compacta) */}
-            <motion.div
-              animate={{
-                y: [0, -10, 0, 7, 0],
-                rotate: [4, 5.5, 4, 2.5, 4]
-              }}
-              transition={{
-                duration: 7.2,
-                repeat: Infinity,
-                ease: [0.45, 0.05, 0.55, 0.95]
-              }}
-              whileHover={{ scale: 1.04, rotate: 0 }}
-              className="w-full max-w-[280px] sm:max-w-[310px] bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_18px_38px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 self-start sm:-translate-x-4 md:-translate-x-8 cursor-default"
-            >
-              <div className="flex items-center gap-2.5 mb-2">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-                  alt="@tomas"
-                  className="w-8 h-8 rounded-full object-cover border border-zinc-200 shrink-0"
-                />
-                <div className="min-w-0">
-                  <div className="text-xs sm:text-[13px] font-bold text-zinc-900 leading-tight">@tomas</div>
-                  <div className="text-[10px] font-medium text-zinc-400">Canal YouTube · 240K</div>
-                </div>
-              </div>
-              <p className="text-xs sm:text-[13px] text-zinc-800 font-medium leading-snug mb-3">
-                La mejor edición en 48 horas. La retención del canal subió de inmediato.
-              </p>
-              <div className="flex items-center gap-3 text-zinc-400 text-[11px] font-medium">
-                <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsUp size={13} /> <span>18</span>
-                </button>
-                <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsDown size={13} />
-                </button>
-                <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
-                  <span className="w-4 h-4 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
-                    <Sparkles size={9} />
-                  </span>
-                  <span className="text-[11px]">Responder</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Tarjeta 2: @mark_locus (Desplazada hacia la derecha, inclinación opuesta) */}
-            <motion.div
-              animate={{
-                y: [0, 9, 0, -11, 0],
-                rotate: [-4, -2.5, -4, -5.5, -4]
-              }}
-              transition={{
-                duration: 8.4,
-                repeat: Infinity,
-                ease: [0.45, 0.05, 0.55, 0.95],
-                delay: 0.6
-              }}
-              whileHover={{ scale: 1.04, rotate: 0 }}
-              className="w-full max-w-[280px] sm:max-w-[310px] bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_18px_38px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 self-end sm:translate-x-6 md:translate-x-10 cursor-default"
-            >
-              <div className="flex items-center gap-2.5 mb-2">
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
-                  alt="@mark_locus"
-                  className="w-8 h-8 rounded-full object-cover border border-zinc-200 shrink-0"
-                />
-                <div className="min-w-0">
-                  <div className="text-xs sm:text-[13px] font-bold text-zinc-900 leading-tight">@mark_locus</div>
-                  <div className="text-[10px] font-medium text-zinc-400">Creador & Podcaster</div>
-                </div>
-              </div>
-              <p className="text-xs sm:text-[13px] text-zinc-800 font-medium leading-snug mb-3">
-                ¡Esta edición aumentó mi tasa de retención un 35%! 100% recomendados.
-              </p>
-              <div className="flex items-center gap-3 text-zinc-400 text-[11px] font-medium">
-                <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsUp size={13} /> <span>42</span>
-                </button>
-                <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsDown size={13} />
-                </button>
-                <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
-                  <span className="w-4 h-4 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
-                    <Sparkles size={9} />
-                  </span>
-                  <span className="text-[11px]">Responder</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Tarjeta 3: @david_realestate (Posición intermedia desordenada) */}
-            <motion.div
-              animate={{
-                y: [0, -8, 0, 10, 0],
-                rotate: [2.5, 1, 2.5, 4, 2.5]
-              }}
-              transition={{
-                duration: 7.8,
-                repeat: Infinity,
-                ease: [0.45, 0.05, 0.55, 0.95],
-                delay: 1.3
-              }}
-              whileHover={{ scale: 1.04, rotate: 0 }}
-              className="w-full max-w-[280px] sm:max-w-[310px] bg-white rounded-2xl p-3.5 sm:p-4 shadow-[0_18px_38px_-12px_rgba(0,0,0,0.08)] border border-zinc-200/90 transition-all duration-300 self-center sm:self-start sm:translate-x-2 md:-translate-x-2 cursor-default"
-            >
-              <div className="flex items-center gap-2.5 mb-2">
-                <img
-                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80"
-                  alt="@david_realestate"
-                  className="w-8 h-8 rounded-full object-cover border border-zinc-200 shrink-0"
-                />
-                <div className="min-w-0">
-                  <div className="text-xs sm:text-[13px] font-bold text-zinc-900 leading-tight">@david_realestate</div>
-                  <div className="text-[10px] font-medium text-zinc-400">Inversiones Inmobiliarias</div>
-                </div>
-              </div>
-              <p className="text-xs sm:text-[13px] text-zinc-800 font-medium leading-snug mb-3">
-                El tracking 3D y la toma de dron vendieron el loteo en menos de 2 semanas 🏆
-              </p>
-              <div className="flex items-center gap-3 text-zinc-400 text-[11px] font-medium">
-                <button type="button" aria-label="Me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsUp size={13} /> <span>63</span>
-                </button>
-                <button type="button" aria-label="No me gusta" className="hover:text-zinc-900 transition-colors flex items-center gap-1">
-                  <ThumbsDown size={13} />
-                </button>
-                <div className="flex items-center gap-1.5 ml-auto text-zinc-700 hover:text-zinc-950 font-semibold cursor-pointer">
-                  <span className="w-4 h-4 rounded-full bg-[#ff4e00] text-white flex items-center justify-center shrink-0">
-                    <Sparkles size={9} />
-                  </span>
-                  <span className="text-[11px]">Responder</span>
-                </div>
-              </div>
-            </motion.div>
+            {FLOATING_COMMENTS.map((comment) => (
+              <FloatingComment key={comment.user} comment={comment} />
+            ))}
           </div>
         </div>
       </div>
 
-      {/* TAPE / MARQUEE INFERIOR CON DESPLAZAMIENTO HACIA LA IZQUIERDA */}
-      <div className="relative w-full overflow-hidden py-3 border-t border-zinc-200/60 bg-white/70 backdrop-blur-xs select-none">
-        <motion.div
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
-          className="flex items-center gap-3 w-max"
-        >
+
+      {/* CINTILLO INFERIOR: desplazamiento CSS (compositor) hacia la izquierda */}
+      <div className="relative w-full overflow-hidden py-3 border-t border-zinc-200/60 bg-white/70 select-none">
+        <div className="sync-tape-track items-center">
           {[...marqueeItems, ...marqueeItems].map((badge, idx) => (
             <div
               key={idx}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-zinc-200/90 shadow-2xs text-xs sm:text-[13px] font-semibold text-zinc-800 shrink-0 hover:border-zinc-300 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 mr-3 rounded-full bg-white border border-zinc-200/90 shadow-2xs text-xs sm:text-[13px] font-semibold text-zinc-800 shrink-0 hover:border-zinc-300 transition-colors"
             >
-              <svg className="w-3.5 h-3.5 fill-zinc-950 shrink-0" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 fill-zinc-950 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
               </svg>
               <span>{badge}</span>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -902,8 +1020,10 @@ const App = () => {
       title: 'DEPARTAMENTO DE LUJO',
       category: 'Condominios & Torres',
       subtitle: 'Exclusividad 240 m², garajes y vista panorámica',
-      poster: '/cuadro-12-poster.jpg',
-      videoSrc: '/cuadro-12.mp4',
+      poster: '/cuadro-12-poster-sm.jpg',
+      posterFull: '/cuadro-12-poster.jpg',
+      priority: true,
+      videoSrc: '/cuadro-12-lite.mp4',
       fullVideoSrc: '/cuadro-12.mp4'
     },
     {
@@ -912,8 +1032,10 @@ const App = () => {
       title: 'TERRENO 13.000 M²',
       category: 'Inmobiliaria & Loteos',
       subtitle: 'Tracking 3D, delimitación de perímetro y visualización con dron',
-      poster: '/cuadro-7-poster.jpg',
-      videoSrc: '/cuadro-7.mp4',
+      poster: '/cuadro-7-poster-sm.jpg',
+      posterFull: '/cuadro-7-poster.jpg',
+      priority: true,
+      videoSrc: '/cuadro-7-lite.mp4',
       fullVideoSrc: '/cuadro-7.mp4'
     },
     {
@@ -922,8 +1044,10 @@ const App = () => {
       title: 'SPORT FIT',
       category: 'Fitness & Suplementos',
       subtitle: 'Edición comercial rítmica de alto impacto',
-      poster: '/cuadro-1-poster.jpg',
-      videoSrc: '/cuadro-1.mp4',
+      poster: '/cuadro-1-poster-sm.jpg',
+      posterFull: '/cuadro-1-poster.jpg',
+      priority: true,
+      videoSrc: '/cuadro-1-lite.mp4',
       fullVideoSrc: '/cuadro-1.mp4'
     },
     {
@@ -932,8 +1056,9 @@ const App = () => {
       title: 'PROPIEDAD COMERCIAL',
       category: 'Inversiones Inmobiliarias',
       subtitle: 'Motion graphics 3D, visualización de avenidas y plusvalía',
-      poster: '/cuadro-9-poster.jpg',
-      videoSrc: '/cuadro-9.mp4',
+      poster: '/cuadro-9-poster-sm.jpg',
+      posterFull: '/cuadro-9-poster.jpg',
+      videoSrc: '/cuadro-9-lite.mp4',
       fullVideoSrc: '/cuadro-9.mp4'
     },
     {
@@ -942,8 +1067,9 @@ const App = () => {
       title: 'PROMO COMERCIAL',
       category: 'Comercio & Retail',
       subtitle: 'Gancho directo, ritmo acelerado y llamado a la acción',
-      poster: '/cuadro-6-poster.jpg',
-      videoSrc: '/cuadro-6.mp4',
+      poster: '/cuadro-6-poster-sm.jpg',
+      posterFull: '/cuadro-6-poster.jpg',
+      videoSrc: '/cuadro-6-lite.mp4',
       fullVideoSrc: '/cuadro-6.mp4'
     },
     {
@@ -952,8 +1078,9 @@ const App = () => {
       title: 'CASA EN VENTA',
       category: 'Inmobiliaria & Casas',
       subtitle: 'Recorrido dinámico de propiedad con agente en cámara',
-      poster: '/cuadro-11-poster.jpg',
-      videoSrc: '/cuadro-11.mp4',
+      poster: '/cuadro-11-poster-sm.jpg',
+      posterFull: '/cuadro-11-poster.jpg',
+      videoSrc: '/cuadro-11-lite.mp4',
       fullVideoSrc: '/cuadro-11.mp4'
     },
     {
@@ -962,8 +1089,9 @@ const App = () => {
       title: 'SANTA CRUZ INMOBILIARIA',
       category: 'Storytelling & Contenido',
       subtitle: 'Narrativa con orador, subtítulos dinámicos e identidad cruceña',
-      poster: '/cuadro-10-poster.jpg',
-      videoSrc: '/cuadro-10.mp4',
+      poster: '/cuadro-10-poster-sm.jpg',
+      posterFull: '/cuadro-10-poster.jpg',
+      videoSrc: '/cuadro-10-lite.mp4',
       fullVideoSrc: '/cuadro-10.mp4'
     },
     {
@@ -972,8 +1100,9 @@ const App = () => {
       title: 'CHINO BARBER',
       category: 'Estilo & Lifestyle',
       subtitle: 'Cortes dinámicos, speed ramps y diseño sonoro',
-      poster: '/cuadro-3-poster.jpg',
-      videoSrc: '/cuadro-3.mp4',
+      poster: '/cuadro-3-poster-sm.jpg',
+      posterFull: '/cuadro-3-poster.jpg',
+      videoSrc: '/cuadro-3-lite.mp4',
       fullVideoSrc: '/cuadro-3.mp4'
     },
     {
@@ -982,8 +1111,9 @@ const App = () => {
       title: 'LOTEO CAMPESTRE',
       category: 'Desarrollo Inmobiliario',
       subtitle: 'Toma aérea cinematográfica, tipografía y escala de terreno',
-      poster: '/cuadro-8-poster.jpg',
-      videoSrc: '/cuadro-8.mp4',
+      poster: '/cuadro-8-poster-sm.jpg',
+      posterFull: '/cuadro-8-poster.jpg',
+      videoSrc: '/cuadro-8-lite.mp4',
       fullVideoSrc: '/cuadro-8.mp4'
     },
     {
@@ -992,8 +1122,9 @@ const App = () => {
       title: 'BUZÓN DE QUEJAS',
       category: 'Storytelling & Humor Viral',
       subtitle: 'Edición ágil de alta retención, efectos sonoros y dinamismo',
-      poster: '/cuadro-13-poster.jpg',
-      videoSrc: '/cuadro-13.mp4',
+      poster: '/cuadro-13-poster-sm.jpg',
+      posterFull: '/cuadro-13-poster.jpg',
+      videoSrc: '/cuadro-13-lite.mp4',
       fullVideoSrc: '/cuadro-13.mp4'
     },
     {
@@ -1002,8 +1133,9 @@ const App = () => {
       title: 'NOVAFIT',
       category: 'Entrenamiento & Energía',
       subtitle: 'Colorización cinematográfica y ritmo publicitario',
-      poster: '/cuadro-4-poster.jpg',
-      videoSrc: '/cuadro-4.mp4',
+      poster: '/cuadro-4-poster-sm.jpg',
+      posterFull: '/cuadro-4-poster.jpg',
+      videoSrc: '/cuadro-4-lite.mp4',
       fullVideoSrc: '/cuadro-4.mp4'
     },
     {
@@ -1012,8 +1144,9 @@ const App = () => {
       title: 'ZAMBRANOS',
       category: 'Comercial & Marca',
       subtitle: 'Storytelling visual y retención para redes',
-      poster: '/cuadro-2-poster.jpg',
-      videoSrc: '/cuadro-2.mp4',
+      poster: '/cuadro-2-poster-sm.jpg',
+      posterFull: '/cuadro-2-poster.jpg',
+      videoSrc: '/cuadro-2-lite.mp4',
       fullVideoSrc: '/cuadro-2.mp4'
     },
     {
@@ -1022,8 +1155,9 @@ const App = () => {
       title: 'YOJA HAIR LOUNGE',
       category: 'Belleza & Estética',
       subtitle: 'Acabado visual limpio y estética de marca',
-      poster: '/cuadro-5-poster.jpg',
-      videoSrc: '/cuadro-5.mp4',
+      poster: '/cuadro-5-poster-sm.jpg',
+      posterFull: '/cuadro-5-poster.jpg',
+      videoSrc: '/cuadro-5-lite.mp4',
       fullVideoSrc: '/cuadro-5.mp4'
     }
   ];
@@ -1158,7 +1292,10 @@ const App = () => {
             {/* LADO IZQUIERDO: Badge minimalista limpio y Título en una sola línea */}
             <div className="flex-1 min-w-0 pr-0 lg:pr-6">
               {/* Badge limpio monocromático sin colores llamativos */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-300 backdrop-blur-md mb-2.5 sm:mb-3">
+              <div
+                className="sync-rise inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-300 backdrop-blur-md mb-2.5 sm:mb-3"
+                style={{ animationDelay: '0.05s' }}
+              >
                 <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
                 <span>DaVinci Resolve Studio</span>
                 <span className="text-zinc-600">·</span>
@@ -1168,16 +1305,25 @@ const App = () => {
               </div>
 
               {/* Título estrictamente en una sola línea */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-tight leading-none text-white whitespace-nowrap">
+              <h1
+                className="sync-rise text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-tight leading-none text-white whitespace-nowrap"
+                style={{ animationDelay: '0.15s' }}
+              >
                 Edición <span className="bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-500 bg-clip-text text-transparent">que vende.</span>
               </h1>
-              <p className="mt-2.5 text-xs sm:text-sm md:text-base text-zinc-400 font-normal leading-relaxed max-w-xl lg:max-w-2xl">
+              <p
+                className="sync-rise mt-2.5 text-xs sm:text-sm md:text-base text-zinc-400 font-normal leading-relaxed max-w-xl lg:max-w-2xl"
+                style={{ animationDelay: '0.28s' }}
+              >
                 Flujo cinematográfico de alto impacto para marcas y creadores. Retención magnética, ritmo ágil y conversión comercial.
               </p>
             </div>
 
             {/* LADO DERECHO: Botones de Acción - Anclados al costado derecho */}
-            <div className="flex flex-row items-center gap-3 shrink-0 lg:mb-1 w-full sm:w-auto justify-end">
+            <div
+              className="sync-rise flex flex-row items-center gap-3 shrink-0 lg:mb-1 w-full sm:w-auto justify-end"
+              style={{ animationDelay: '0.4s' }}
+            >
               <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                   'Hola Sync Pro, quiero que trabajemos juntos. ¿Me pueden dar información?'
@@ -1213,14 +1359,14 @@ const App = () => {
           2. TRABAJAMOS CON MARCAS
           ===================================================================== */}
       <section id="marcas" className="py-10 md:py-14 bg-zinc-50/70 border-b border-zinc-200/70">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-5 md:mb-7 text-center">
+        <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 mb-5 md:mb-7 text-center">
           <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1">
             Marcas que confían en nosotros
           </span>
           <h2 className="text-2xl md:text-4xl font-extrabold uppercase tracking-tight text-zinc-900">
             Trabajamos con marcas
           </h2>
-        </div>
+        </Reveal>
 
         <div className="sync-brand-mq sync-edge-mask overflow-hidden py-2 md:py-3">
           <div className="sync-brand-track">
@@ -1248,7 +1394,7 @@ const App = () => {
              IZQUIERDA Y DERECHA SIN REPETIR FOTOS EN MÓVIL)
           ===================================================================== */}
       <section id="fotografia" className="py-12 md:py-20 border-b border-zinc-200/60 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-8 gap-3 md:gap-4">
+        <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-8 gap-3 md:gap-4">
           <div>
             <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1">
               Producción Visual & Comercial
@@ -1260,17 +1406,17 @@ const App = () => {
           <p className="text-zinc-500 text-xs md:text-sm max-w-sm font-normal leading-relaxed">
             Producto, gastronomía, inmobiliaria y marca. Toca cualquier fotografía para verla en grande.
           </p>
-        </div>
+        </Reveal>
 
         {/* Grilla ancha Full-Bleed de extremo a extremo (izquierda a derecha) */}
         <div className="w-full px-2.5 sm:px-4 md:px-6">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-3.5 grid-flow-dense">
-            {COMMERCIAL_PHOTOS.map((shot) => (
+            {COMMERCIAL_PHOTOS.map((shot, shotIdx) => (
+              <Reveal key={shot.id} className={shot.wide ? 'col-span-2' : ''} delay={(shotIdx % 6) * 0.06} y={18}>
               <figure
-                key={shot.id}
                 onClick={() => setLightboxItem(shot)}
                 className={`group relative m-0 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-200/80 shadow-sm cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl hover:z-10 ${
-                  shot.wide ? 'col-span-2 aspect-[16/10] sm:aspect-[3/2]' : 'aspect-[3/4]'
+                  shot.wide ? 'aspect-[16/10] sm:aspect-[3/2]' : 'aspect-[3/4]'
                 }`}
               >
                 <img
@@ -1288,6 +1434,7 @@ const App = () => {
                   <b className="block text-xs sm:text-sm font-bold tracking-tight leading-snug">{shot.subtitle}</b>
                 </figcaption>
               </figure>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -1310,7 +1457,7 @@ const App = () => {
           4. ASÍ TRABAJAMOS (Carrusel infinito Detrás de Cámaras: Videos + Fotos)
           ===================================================================== */}
       <section id="asi-trabajamos" className="py-12 md:py-20 bg-zinc-950 text-white border-b border-zinc-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-3 md:mb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-3 md:gap-4">
+        <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-3 md:mb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-3 md:gap-4">
           <div>
             <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1">
               Backstage & Producción
@@ -1322,7 +1469,7 @@ const App = () => {
           <p className="text-zinc-400 text-xs md:text-sm max-w-md font-normal leading-relaxed">
             Detrás de cámaras: equipo, luces y sets de grabación de nuestras producciones.
           </p>
-        </div>
+        </Reveal>
 
         <InfiniteMediaCarousel
           items={BTS_ITEMS}
@@ -1343,7 +1490,7 @@ const App = () => {
         id="planes-edicion"
         className="py-14 md:py-20 px-4 sm:px-6 md:px-8 max-w-7xl mx-auto border-b border-zinc-200/70"
       >
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-7 md:mb-10 gap-3 md:gap-6">
+        <Reveal className="flex flex-col md:flex-row justify-between items-start md:items-end mb-7 md:mb-10 gap-3 md:gap-6">
           <div>
             <span className="text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.26em] text-zinc-400 block mb-1.5">
               Inversión Transparente por Duración
@@ -1356,7 +1503,7 @@ const App = () => {
             Elige la duración de tu video y compara al instante qué incluye cada nivel de producción en DaVinci Resolve
             Studio.
           </p>
-        </div>
+        </Reveal>
 
         {/* Selector de Duración optimizado para Smartphone (2x2 limpio) y Escritorio (4 en línea) */}
         <div className="bg-zinc-100/90 p-1.5 rounded-2xl grid grid-cols-2 lg:grid-cols-4 gap-1.5 mb-6 md:mb-8 border border-zinc-200/80">
@@ -1880,12 +2027,18 @@ const App = () => {
             >
               {lightboxItem.type === 'video' ? (
                 <video
-                  src={lightboxItem.fullVideoSrc || lightboxItem.videoSrc}
-                  poster={lightboxItem.poster || undefined}
+                  key={lightboxItem.id}
+                  src={asset(
+                    PERF.slow
+                      ? lightboxItem.videoSrc
+                      : lightboxItem.fullVideoSrc || lightboxItem.videoSrc
+                  )}
+                  poster={asset(lightboxItem.posterFull || lightboxItem.poster) || undefined}
                   controls
                   autoPlay
                   playsInline
                   loop
+                  preload="auto"
                   className="max-h-[78vh] max-w-full w-auto rounded-2xl bg-black border border-white/15 shadow-2xl"
                 />
               ) : (
