@@ -81,7 +81,7 @@ const MARQUEE_SPECS = [
   'Gestión Cromática ACEScct 10-Bit',
   'Masterización Sonora Fairlight -14 LUFS',
   'Flujo Optimizado para Meta Ads & Reels',
-  'Entrega Prioritaria 24–48h en Retainer',
+  'Entrega Rápida en 24–48h',
   'Cero Plantillas Genéricas de CapCut',
   'Ganchos Visuales en Primeros 2 Segundos'
 ];
@@ -118,14 +118,14 @@ const AuthoritySection = () => {
                 href="#planes-edicion"
                 className="inline-flex items-center gap-3 px-6 py-3.5 rounded-xl bg-zinc-950 text-white font-bold text-xs uppercase tracking-wider hover:bg-zinc-800 transition-all shadow-lg group"
               >
-                <span>Ver Niveles de Servicio</span>
+                <span>Ver Planes y Precios</span>
                 <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
               </a>
               <a
                 href="#contacto"
                 className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 font-bold text-xs uppercase tracking-wider hover:bg-zinc-100 transition-all"
               >
-                Aplicar para Cupo
+                Cotizar Proyecto
               </a>
             </div>
           </Reveal>

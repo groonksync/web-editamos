@@ -1,292 +1,232 @@
 import React, { useState } from 'react';
-import { Sliders, Layers, Volume2, Sparkles, Maximize2, MessageCircle } from 'lucide-react';
+import { Sliders, Layers, Volume2, Sparkles, CheckCircle2, Maximize2 } from 'lucide-react';
 import Reveal from './Reveal';
 
 const PIPELINE_MODULES = [
   {
     id: 'fusion',
-    code: 'FUSION // 01',
-    name: 'Planar Tracking 3D',
-    metric: 'ANCLAJE SUB-PÍXEL',
+    step: '01',
+    name: 'Tracking 3D & Señalética',
+    shortBenefit: 'Delimitamos lotes, calles y detalles sobre el movimiento del dron.',
     icon: Layers,
+    headline: 'Que el comprador entienda dimensiones, accesos y ubicaciones al instante',
     summary:
-      'Traqueamos avenidas, lotes y fachadas directamente al movimiento del dron o cámara para que los textos, cotas y perímetros pertenezcan físicamente a la escena.',
+      'En lugar de textos planos que tapan la imagen, anclamos perímetros, medidas, nombres de avenidas e íconos directamente al terreno o fachada con cámara en movimiento.',
+    benefits: [
+      'Delimitación luminosa de terrenos, lotes o propiedades comerciales',
+      'Carteles con superficie en m², precios y referencias clave pegados al plano real',
+      'Trazado animado de rutas y avenidas principales desde toma aérea',
+      'Separación de persona en primer plano para textos con profundidad'
+    ],
+    idealFor: 'Inmobiliarias, loteos, condominios y constructoras',
+    deliveryTag: 'Motion Graphics en Fusion Studio',
     still: '/stills/still-346m2.jpg',
-    projectRef: 'Propiedad Comercial · 346,98 m²',
-    details: ['Camera & Planar Tracker', 'Rotoscopía detrás del sujeto', 'Sombras y profundidad Z']
+    projectRef: 'Propiedad Comercial · 346,98 m²'
   },
   {
     id: 'color',
-    code: 'COLOR // 02',
-    name: 'Gestión ACEScct & LUT',
-    metric: '10-BIT PIPELINE',
+    step: '02',
+    name: 'Color Cinematográfico',
+    shortBenefit: 'Corregimos luz, tonos de piel y acabado de película comercial.',
     icon: Sliders,
+    headline: 'Tu video pasa de lucir como grabación casera a pieza publicitaria de alto nivel',
     summary:
-      'Árboles de nodos estructurados por capas para normalizar perfiles Log de dron y cámara, equilibrar tonos de piel y construir un look cinematográfico exclusivo por marca.',
+      'Balanceamos luces quemadas, sombras y diferencias entre cámaras o celulares para entregar una paleta fiel, natural y atractiva que eleva el valor percibido de tu oferta.',
+    benefits: [
+      'Corrección de cielos lavados y recuperación de detalles en exteriores',
+      'Tonos de piel naturales para agentes, entrenadores o presentadores',
+      'Unificación visual cuando combinas grabaciones de dron, cámara y celular',
+      'Look cromático consistente pensado para pantallas móviles y pauta digital'
+    ],
+    idealFor: 'Marcas de lujo, arquitectura, belleza y salud',
+    deliveryTag: 'Colorimetría ACEScct en DaVinci Resolve',
     still: '/stills/still-santacruz.jpg',
-    projectRef: 'Santa Cruz Inmobiliaria · Grading',
-    details: ['Matching multicámara', 'Aislamiento selectivo de color', 'Halation y contraste fílmico']
+    projectRef: 'Santa Cruz Inmobiliaria · Grading Pro'
   },
   {
     id: 'fairlight',
-    code: 'FAIRLIGHT // 03',
-    name: 'Masterización Sonora',
-    metric: '-14 LUFS BROADCAST',
+    step: '03',
+    name: 'Audio Limpio y con Fuerza',
+    shortBenefit: 'Voz clara sin ruido de calle ni viento, con música que acompaña sin tapar.',
     icon: Volume2,
+    headline: 'Más de la mitad de la retención en redes ocurre porque el video se escucha bien',
     summary:
-      'El 50% de la retención ocurre en los oídos: limpiamos viento/ruido en locación, nivelamos voz con compresión broadcast y sincronizamos risers y sub-drops al fotograma exacto.',
+      'Limpiamos ecos, ruido de gimnasio, aire o tráfico, nivelamos tu voz con compresión profesional y añadimos efectos sonoros precisos en cada transición clave.',
+    benefits: [
+      'Limpieza de ruido ambiental, viento en exteriores y eco de interiores',
+      'Voz principal al frente con volumen parejo y presencia profesional',
+      'Ajuste automático de música para nunca opacar lo que estás explicando',
+      'Efectos sonoros sutiles que refuerzan ganchos y textos importantes'
+    ],
+    idealFor: 'Presentadores, tiendas físicas, fitness y marca personal',
+    deliveryTag: 'Mezcla Fairlight -14 LUFS para Reels/TikTok',
     still: '/stills/still-sportfit.jpg',
-    projectRef: 'Sport Fit · Ritmo & SFX',
-    details: ['De-noise & De-reverb de voz', 'Ducking musical automatizado', 'Foley y whooshes frame-exact']
+    projectRef: 'Sport Fit · Ritmo & Diseño Sonoro'
   },
   {
     id: 'ia',
-    code: 'IA + RITMO // 04',
-    name: 'Speed Ramps & IA Visual',
-    metric: 'OPTICAL FLOW PRO',
+    step: '04',
+    name: 'Ritmo Ágil e IA Visual',
+    shortBenefit: 'Cortes fluidos, ganchos en los primeros 3 segundos y escenas creadas con IA.',
     icon: Sparkles,
+    headline: 'Cero segundos aburridos y soluciones visuales cuando faltan tomas reales',
     summary:
-      'Combinamos curvas de velocidad fluidas con generación visual y locución comercial asistida por IA cuando el guion exige mostrar tomas que aún no existen físicamente.',
+      'Estructuramos el video para atrapar atención desde el inicio, aceleramos transiciones con curvas suaves e integramos escenas o locuciones con Inteligencia Artificial cuando el proyecto lo necesita.',
+    benefits: [
+      'Gancho visual diseñado en los primeros 2 a 3 segundos para evitar que pasen el video',
+      'Speed ramps y transiciones limpias que mantienen dinamismo sin marear',
+      'Generación de videos e insertos de apoyo con IA para ilustrar ideas',
+      'Subtítulos dinámicos pensados para personas que ven videos sin volumen'
+    ],
+    idealFor: 'Campañas de venta rápida, lanzamientos y anuncios pagos',
+    deliveryTag: 'Optical Flow Pro + Escenas IA',
     still: '/stills/still-casa.jpg',
-    projectRef: 'Casa en Venta · Hook & Rotoscopía',
-    details: ['Speed ramps sin cortes bruscos', 'Insertos conceptuales IA', 'Subtítulos kinetic de retención']
+    projectRef: 'Casa en Venta · Hook & Subtítulos'
   }
 ];
 
-const REAL_STILLS = [
-  {
-    id: 'st-346',
-    type: 'photo',
-    src: '/stills/still-346m2.jpg',
-    title: 'Propiedad Comercial 346,98 m²',
-    subtitle: 'Delimitación 3D sobre terreno en esquina Av. Santos Dumont'
-  },
-  {
-    id: 'st-av',
-    type: 'photo',
-    src: '/stills/still-avenida-3d.jpg',
-    title: 'Mapa Vial Animado 3D',
-    subtitle: 'Trazado luminoso de 5to y 7mo anillo en perspectiva aérea'
-  },
-  {
-    id: 'st-13k',
-    type: 'photo',
-    src: '/stills/still-13000m2.jpg',
-    title: 'Terreno 13.000 m²',
-    subtitle: 'Contorno glow anclado y lectura de superficie en movimiento'
-  },
-  {
-    id: 'st-240',
-    type: 'photo',
-    src: '/stills/still-depto-240.jpg',
-    title: 'Departamento de Lujo 240 m²',
-    subtitle: 'Rotoscopía + cuadros flotantes PiP de piscina e interiores'
-  },
-  {
-    id: 'st-scz',
-    type: 'photo',
-    src: '/stills/still-santacruz.jpg',
-    title: 'Storytelling Cruceño',
-    subtitle: 'Composición multicapa de monumentos y texto detrás del orador'
-  },
-  {
-    id: 'st-360',
-    type: 'photo',
-    src: '/stills/still-loteo-360.jpg',
-    title: 'Loteo Campestre 360 m²',
-    subtitle: 'Titulación 3D con perspectiva de ruta aérea'
-  },
-  {
-    id: 'st-barber',
-    type: 'photo',
-    src: '/video03.jpeg',
-    title: 'Chino Barber · Lifestyle',
-    subtitle: 'Rotoscopía de sujeto sobre tipografía cinematográfica'
-  },
-  {
-    id: 'st-gym',
-    type: 'photo',
-    src: '/stills/still-sportfit.jpg',
-    title: 'Sport Fit · Ritmo Comercial',
-    subtitle: 'Subtítulo en plano trasero sincronizado al movimiento'
-  }
-];
-
-const TimelineEngineeringSection = ({ asset, whatsappNumber, onSelectLightbox }) => {
+const TimelineEngineeringSection = ({ asset, onSelectLightbox }) => {
   const [selectedId, setSelectedId] = useState('fusion');
   const active = PIPELINE_MODULES.find((m) => m.id === selectedId) || PIPELINE_MODULES[0];
 
   return (
     <section
       id="ingenieria"
-      className="sync-dark-panel py-14 md:py-22 text-white border-b border-white/[0.08] overflow-hidden"
+      className="sync-dark-panel py-14 md:py-22 text-white overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <Reveal className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
+        <Reveal className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 gap-4">
           <div>
             <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-[#d4b475] mb-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#d4b475]" />
-              <span>Inside the Timeline · DaVinci Resolve Studio</span>
+              <span>Proceso de Postproducción</span>
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-white leading-none">
               Así construimos cada cuadro
             </h2>
           </div>
           <p className="text-zinc-400 text-xs md:text-sm max-w-md font-normal leading-relaxed">
-            Cuatro disciplinas ejecutadas en un flujo unificado de postproducción. Sin atajos automáticos ni acabados genéricos.
+            Cuatro pilares de edición en DaVinci Resolve Studio pensados para que tu video retenga atención y venda mejor.
           </p>
         </Reveal>
 
-        {/* Inspector interactivo del pipeline */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-7 mb-12 md:mb-16">
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            {PIPELINE_MODULES.map((mod) => {
-              const Icon = mod.icon;
-              const isSelected = mod.id === selectedId;
-              return (
-                <button
-                  key={mod.id}
-                  type="button"
-                  onClick={() => setSelectedId(mod.id)}
-                  className={`text-left p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between ${
-                    isSelected
-                      ? 'bg-white/[0.08] border-[#d4b475]/55 shadow-[0_18px_40px_-18px_rgba(212,180,117,0.22)]'
-                      : 'bg-white/[0.02] border-white/10 hover:bg-white/[0.05] hover:border-white/20'
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-4">
-                      <span className="w-9 h-9 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center text-[#d4b475]">
-                        <Icon size={17} />
-                      </span>
-                      <span className="font-mono text-[9.5px] uppercase tracking-wider text-zinc-400">
-                        {mod.code}
-                      </span>
-                    </div>
-                    <h3 className="text-base sm:text-lg font-extrabold tracking-tight text-white mb-2">
-                      {mod.name}
-                    </h3>
-                    <p className="text-xs text-zinc-400 leading-relaxed font-normal mb-4">{mod.summary}</p>
+        {/* Selector limpio en 4 pilares sin trazos pesados */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+          {PIPELINE_MODULES.map((mod) => {
+            const Icon = mod.icon;
+            const isSelected = mod.id === selectedId;
+            return (
+              <button
+                key={mod.id}
+                type="button"
+                onClick={() => setSelectedId(mod.id)}
+                className={`text-left p-4 sm:p-5 rounded-2xl transition-all duration-200 flex flex-col justify-between ${
+                  isSelected
+                    ? 'bg-white text-zinc-950 shadow-[0_20px_45px_-20px_rgba(255,255,255,0.25)]'
+                    : 'bg-white/[0.04] text-white hover:bg-white/[0.08]'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span
+                      className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+                        isSelected ? 'bg-zinc-950 text-[#d4b475]' : 'bg-white/[0.08] text-[#d4b475]'
+                      }`}
+                    >
+                      <Icon size={16} />
+                    </span>
+                    <span
+                      className={`font-mono text-[10px] font-bold tracking-wider ${
+                        isSelected ? 'text-zinc-500' : 'text-zinc-500'
+                      }`}
+                    >
+                      PASO {mod.step}
+                    </span>
                   </div>
+                  <h3 className="text-sm sm:text-base font-extrabold tracking-tight mb-1.5">{mod.name}</h3>
+                  <p className={`text-xs leading-relaxed ${isSelected ? 'text-zinc-600' : 'text-zinc-400'}`}>
+                    {mod.shortBenefit}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
 
-                  <div className="pt-3 border-t border-white/[0.07] flex items-center justify-between font-mono text-[10px]">
-                    <span className={isSelected ? 'text-[#d4b475]' : 'text-zinc-500'}>{mod.metric}</span>
-                    <span className="text-zinc-400">{isSelected ? 'ACTIVO' : 'VER →'}</span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Tarjeta visual en vivo del módulo seleccionado */}
-          <div className="lg:col-span-5 rounded-3xl bg-black/70 border border-white/15 p-4 sm:p-5 flex flex-col justify-between">
-            <div
-              onClick={() =>
-                onSelectLightbox({
-                  type: 'photo',
-                  src: active.still,
-                  title: active.name,
-                  subtitle: active.projectRef
-                })
-              }
-              className="group relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-[330px] rounded-2xl overflow-hidden bg-zinc-950 border border-white/10 cursor-pointer"
-            >
-              <img
-                src={asset(active.still)}
-                alt={active.projectRef}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
-              <span className="absolute left-3 top-3 px-2.5 py-1 rounded-md bg-black/75 border border-white/15 font-mono text-[9.5px] uppercase tracking-wider text-[#d4b475]">
-                {active.metric}
-              </span>
-              <span className="absolute right-3 top-3 w-8 h-8 rounded-full bg-black/65 border border-white/20 text-white flex items-center justify-center group-hover:bg-white group-hover:text-zinc-950 transition-colors">
-                <Maximize2 size={13} />
-              </span>
-              <div className="absolute left-3.5 right-3.5 bottom-3.5">
-                <span className="font-mono text-[9.5px] uppercase tracking-wider text-zinc-400 block">
-                  Fotograma real de producción
+        {/* Panel detallado limpio con más contenido útil para el cliente */}
+        <div className="rounded-3xl bg-[#101015] p-5 sm:p-8 lg:p-9 shadow-[0_28px_70px_-28px_rgba(0,0,0,0.8)]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-9 items-center">
+            {/* Contenido completo y directo */}
+            <div className="lg:col-span-7 space-y-5">
+              <div>
+                <span className="inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-[#d4b475] mb-2">
+                  {active.step} · {active.deliveryTag}
                 </span>
-                <b className="text-sm sm:text-base font-bold text-white tracking-tight">{active.projectRef}</b>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-snug mb-2.5">
+                  {active.headline}
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">{active.summary}</p>
+              </div>
+
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-3">
+                  Qué aplicamos en tu producción
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {active.benefits.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-start gap-2.5 p-3 rounded-xl bg-white/[0.03] text-xs text-zinc-200 leading-relaxed"
+                    >
+                      <CheckCircle2 size={15} className="text-[#d4b475] shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <div className="px-3.5 py-2 rounded-xl bg-white/[0.04] text-[11px] text-zinc-300">
+                  <span className="text-zinc-500 mr-1.5 font-mono text-[10px] uppercase">Ideal para:</span>
+                  <strong className="font-semibold text-white">{active.idealFor}</strong>
+                </div>
               </div>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-white/10 space-y-2">
-              <div className="font-mono text-[9.5px] uppercase tracking-[0.2em] text-zinc-500">
-                Especificaciones aplicadas en escena
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {active.details.map((d) => (
-                  <span
-                    key={d}
-                    className="px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/10 font-mono text-[10px] text-zinc-200"
-                  >
-                    {d}
+            {/* Vista visual limpia sin bordes */}
+            <div className="lg:col-span-5">
+              <div
+                onClick={() =>
+                  onSelectLightbox({
+                    type: 'photo',
+                    src: active.still,
+                    title: active.name,
+                    subtitle: active.projectRef
+                  })
+                }
+                className="group relative h-[280px] sm:h-[340px] lg:h-[370px] rounded-2xl overflow-hidden bg-zinc-950 cursor-pointer shadow-2xl"
+              >
+                <img
+                  src={asset(active.still)}
+                  alt={active.projectRef}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+                <span className="absolute right-3 top-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md text-white flex items-center justify-center group-hover:bg-white group-hover:text-zinc-950 transition-colors">
+                  <Maximize2 size={13} />
+                </span>
+                <div className="absolute left-4 right-4 bottom-4">
+                  <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#d4b475] block mb-0.5">
+                    Ejemplo real en Sync Pro
                   </span>
-                ))}
+                  <b className="text-sm sm:text-base font-bold text-white tracking-tight block">{active.projectRef}</b>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Galería curada de Fotogramas & Composiciones Reales de Sync Pro */}
-        <Reveal className="pt-8 border-t border-white/10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
-            <div>
-              <span className="font-mono text-[9.5px] uppercase tracking-[0.22em] text-zinc-400 block mb-1">
-                Archivo Técnico · Stills de Composiciones Propias
-              </span>
-              <h3 className="text-lg sm:text-xl font-extrabold uppercase tracking-tight text-white">
-                Frames & Tracking Real
-              </h3>
-            </div>
-            <span className="font-mono text-[10px] text-zinc-400">
-              Toca cualquier fotograma para inspeccionar el detalle 1:1
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-3">
-            {REAL_STILLS.map((shot) => (
-              <figure
-                key={shot.id}
-                onClick={() => onSelectLightbox(shot)}
-                className="group relative m-0 aspect-[9/16] rounded-xl overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-[#d4b475]/50 hover:shadow-xl"
-              >
-                <img
-                  src={asset(shot.src)}
-                  alt={shot.title}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
-                <figcaption className="absolute left-2 right-2 bottom-2 text-left pointer-events-none">
-                  <b className="block text-[10px] font-bold uppercase tracking-tight text-white leading-tight line-clamp-1">
-                    {shot.title}
-                  </b>
-                  <span className="block text-[9px] text-zinc-400 leading-tight line-clamp-1 mt-0.5">
-                    {shot.subtitle}
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-
-          <div className="mt-8 flex justify-center">
-            <a
-              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                'Hola Sync Pro, vi su desglose de ingeniería en DaVinci Resolve y quiero cotizar una producción con ustedes.'
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-white text-zinc-950 font-bold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all shadow-lg"
-            >
-              <MessageCircle size={15} /> Quiero este nivel en mi marca
-            </a>
-          </div>
-        </Reveal>
       </div>
     </section>
   );

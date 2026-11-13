@@ -672,9 +672,9 @@ const App = () => {
     { label: 'Marcas', href: '#marcas' },
     { label: 'Antes / Después', href: '#antes-despues' },
     { label: 'Casos', href: '#casos-estudio' },
-    { label: 'Timeline', href: '#ingenieria' },
+    { label: 'Proceso', href: '#ingenieria' },
     { label: 'Planes', href: '#planes-edicion' },
-    { label: 'Aplicar', href: '#contacto' }
+    { label: 'Cotizar', href: '#contacto' }
   ];
 
   return (
@@ -702,7 +702,7 @@ const App = () => {
             href="#contacto"
             className="bg-white text-zinc-950 px-3.5 sm:px-4 py-2 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider hover:bg-zinc-200 transition-all flex items-center gap-1.5"
           >
-            <span>Aplicar</span>
+            <span>Cotizar</span>
             <ArrowUpRight size={13} />
           </a>
         </div>
