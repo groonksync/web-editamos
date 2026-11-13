@@ -4,6 +4,12 @@
 
 :root {
   --bg-light: #ffffff;
+  --studio-black: #050507;
+  --studio-champagne: #d4b475;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html, body {
@@ -11,19 +17,27 @@ html, body {
   color: #18181b;
   margin: 0;
   overflow-x: clip;
+  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Escenario principal en negro y gris carbón (estilo Estudio Vector adaptado a Sync Pro) */
+/* Escenario principal oscuro tipo sala de etalonaje cinematográfico */
 .sync-stage {
   background:
-    radial-gradient(70% 60% at 100% 0%, rgba(161, 161, 170, 0.20), transparent 60%),
-    radial-gradient(60% 50% at 0% 100%, rgba(82, 82, 91, 0.26), transparent 60%),
-    linear-gradient(160deg, #050505 0%, #0d0d10 55%, #18181b 100%);
+    radial-gradient(65% 55% at 92% 0%, rgba(212, 180, 117, 0.08), transparent 62%),
+    radial-gradient(60% 50% at 8% 100%, rgba(161, 161, 170, 0.14), transparent 60%),
+    linear-gradient(165deg, #050507 0%, #0b0b0f 55%, #121218 100%);
 }
 
-/* Máscara suave en los bordes laterales de los carruseles (más sutil en móvil para no recortar tarjetas) */
+/* Superficie secundaria oscura para secciones de ingeniería y contacto */
+.sync-dark-panel {
+  background:
+    radial-gradient(80% 60% at 85% 10%, rgba(212, 180, 117, 0.07), transparent 60%),
+    linear-gradient(180deg, #070709 0%, #0d0d12 100%);
+}
+
+/* Máscara suave en los bordes laterales de los carruseles */
 .sync-edge-mask {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.5%, #000 97.5%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 2.5%, #000 97.5%, transparent);
@@ -36,9 +50,13 @@ html, body {
   }
 }
 
-/* Tarjeta individual dentro del carrusel infinito (Reels & Así trabajamos) */
+/* Tarjeta individual dentro del carrusel infinito */
 .sync-reel-card {
   transition: transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.sync-reel-sub {
+  transition: opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1), transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (hover: hover) {
@@ -46,7 +64,17 @@ html, body {
   .sync-reel-card:focus-visible {
     transform: translateY(-14px) scale(1.07);
     z-index: 20;
-    box-shadow: 0 34px 68px -20px rgba(0, 0, 0, 0.88), 0 0 0 1px rgba(255, 255, 255, 0.28);
+    box-shadow: 0 34px 68px -20px rgba(0, 0, 0, 0.88), 0 0 0 1px rgba(212, 180, 117, 0.35);
+  }
+
+  .sync-reel-card .sync-reel-sub {
+    opacity: 0.72;
+    transform: translateY(2px);
+  }
+
+  .sync-reel-card:hover .sync-reel-sub {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -70,8 +98,7 @@ html, body {
   animation-play-state: paused;
 }
 
-/* Cintillo de insignias (sección "Edición que destaca"): animación CSS en el compositor,
-   mucho más ligera que animar por JavaScript en equipos de gama baja */
+/* Cintillo técnico inferior por compositor GPU */
 @keyframes syncTapeScroll {
   0% {
     transform: translate3d(0, 0, 0);
@@ -84,11 +111,11 @@ html, body {
 .sync-tape-track {
   display: flex;
   width: max-content;
-  animation: syncTapeScroll 38s linear infinite;
+  animation: syncTapeScroll 42s linear infinite;
   will-change: transform;
 }
 
-/* Entrada escalonada y limpia del encabezado principal (solo transform/opacity) */
+/* Entrada escalonada y limpia del encabezado principal */
 @keyframes syncRise {
   from {
     opacity: 0;
@@ -101,10 +128,10 @@ html, body {
 }
 
 .sync-rise {
-  animation: syncRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation: syncRise 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
-/* Aparición suave de la imagen/video sobre su carátula, sin parpadeos en negro */
+/* Aparición suave del video sobre su carátula, sin parpadeos negros */
 .sync-media-fade {
   opacity: 0;
   transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
@@ -114,7 +141,7 @@ html, body {
   opacity: 1;
 }
 
-/* Insignia "toca para reproducir" cuando el ahorro de datos o una red muy lenta está activo */
+/* Insignia play en ahorro de datos / redes lentas */
 .sync-play-badge {
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease;
 }
@@ -123,19 +150,21 @@ html, body {
   transform: scale(1.1);
 }
 
-/* Respeto total a "reducir movimiento": sin animaciones decorativas */
+/* Respeto total a "reducir movimiento" */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .sync-rise,
   .sync-brand-track,
   .sync-tape-track {
     animation: none !important;
   }
 
-  .sync-media-fade {
-    transition: none;
-  }
-
-  .sync-reel-card {
+  .sync-media-fade,
+  .sync-reel-card,
+  .sync-reel-sub {
     transition: none;
   }
 }
@@ -159,13 +188,12 @@ html, body {
   background: #a1a1aa;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
